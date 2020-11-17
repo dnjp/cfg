@@ -1,0 +1,48 @@
+[submodule "sources/git.sr.ht/danieljamespost/st"]
+	path = sources/git.sr.ht/danieljamespost/st
+	url = git@git.sr.ht:~danieljamespost/st
+[submodule "sources/git.sr.ht/danieljamespost/plan9port"]
+	path = sources/git.sr.ht/danieljamespost/plan9port
+	url = git@git.sr.ht:~danieljamespost/plan9port
+[submodule "sources/git.sr.ht/danieljamespost/nyne"]
+	path = sources/git.sr.ht/danieljamespost/nyne
+	url = git@git.sr.ht:~danieljamespost/nyne
+[submodule "sources/git.sr.ht/danieljamespost/edwood"]
+	path = sources/git.sr.ht/danieljamespost/edwood
+	url = git@git.sr.ht:~danieljamespost/edwood
+[submodule "sources/git.sr.ht/danieljamespost/dmenu"]
+	path = sources/git.sr.ht/danieljamespost/dmenu
+	url = git@git.sr.ht:~danieljamespost/dmenu
+[submodule "sources/git.sr.ht/danieljamespost/dwm"]
+	path = sources/git.sr.ht/danieljamespost/dwm
+	url = git@git.sr.ht:~danieljamespost/dwm
+[submodule "sources/git.sr.ht/danieljamespost/slstatus"]
+	path = sources/git.sr.ht/danieljamespost/slstatus
+	url = git@git.sr.ht:~danieljamespost/slstatus
+[submodule "sources/git.sr.ht/danieljamespost/rc"]
+	path = sources/git.sr.ht/danieljamespost/rc
+	url = git@git.sr.ht:~danieljamespost/rc
+[submodule "sources/github.com/vim/vim"]
+	path = sources/github.com/vim/vim
+	url = https://github.com/vim/vim.git
+[submodule "sources/github.com/hashicorp/terraform"]
+	path = sources/github.com/hashicorp/terraform
+	url = https://github.com/hashicorp/terraform.git
+[submodule "sources/github.com/fhs/acme-lsp"]
+	path = sources/github.com/fhs/acme-lsp
+	url = https://github.com/fhs/acme-lsp.git
+[submodule "sources/github.com/magicant/yash"]
+	path = sources/github.com/magicant/yash
+	url = https://github.com/magicant/yash.git
+[submodule "sources/git.sr.ht/~sircmpwn/aerc"]
+	path = sources/git.sr.ht/sircmpwn/aerc
+	url = https://git.sr.ht/~sircmpwn/aerc
+[submodule "sources/git.sr.ht/emersion/mrsh"]
+	path = sources/git.sr.ht/emersion/mrsh
+	url = https://git.sr.ht/~emersion/mrsh
+[submodule "sources/repo.or.cz/nvi"]
+	path = sources/repo.or.cz/nvi
+	url = https://repo.or.cz/nvi.git
+[submodule "sources/github.com/jarun/nnn"]
+	path = sources/github.com/jarun/nnn
+	url = https://github.com/jarun/nnn.git
