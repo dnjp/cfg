@@ -1,0 +1,41 @@
+#!/bin/env rc
+
+fn envvars {
+	export tabstop=8
+	export INSIDE_ACME=true
+	export PAGER=nobs
+	export MANPAGER=nobs
+}
+
+fn setupshell {
+	acmeshell=$PLAN9/bin/rc
+	. $HOME/lib/profile
+	# . $HOME/.profile
+}
+
+fn setupplumber {
+	cat $home/9/plumbing | 9p write plumb/rules
+	9 plumber
+}
+
+fn setupfonts {
+	fontsrv &
+	font=/mnt/font/MesloLGS-Regular/9a/font
+}
+
+fn startedwood {
+	exec edwood -a -f $font
+}
+
+fn startacme {
+	exec acme -a -f $lfont 
+}
+
+envvars
+setupshell
+# setupplumber
+setupfonts
+
+# startacme
+startedwood
+

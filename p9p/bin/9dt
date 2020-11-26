@@ -1,0 +1,3 @@
+#!/bin/sh
+
+drawterm -a 205.166.94.112 -c 205.166.94.112 -u daniel

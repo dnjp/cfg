@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+covertmp="/tmp/cover.tmp.out"
+coverout="/tmp/cover.out"
+funccover="/tmp/func_cover.out"
+
+echo "running tests..."
+GO111MODULE=on CGO_ENABLED=0 go test ./... -coverprofile $covertmp -coverpkg=./...
+
+echo "calculating coverage..."
+cat $covertmp | grep -v '/static/' | grep -v '/testutils/' | grep -v '/seed/' > $coverout
+GO111MODULE=on CGO_ENABLED=0 go tool cover -func $coverout > $funccover
+cat $funccover

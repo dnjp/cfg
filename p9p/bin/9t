@@ -1,0 +1,10 @@
+#!/bin/env rc
+
+. $home/lib/profile
+font=$PLAN9/font/fixed/unicode.7x13.font
+
+SHELL=$PLAN9/bin/rc
+INSIDE_ACME=true
+TERM=dump
+
+exec 9term -s -l -f $font $SHELL -l &

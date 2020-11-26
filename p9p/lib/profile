@@ -1,0 +1,211 @@
+prompt=('; ' '  ')
+
+NO_COLOR=1
+
+BROWSER='brave'
+# EDITOR='editinacme'
+EDITOR='vi'
+VISUAL=$EDITOR
+PAGER=nobs
+MANPAGER=nobs
+
+. $HOME/Nextcloud/secrets/secrets.rc
+
+NEXTCLOUD=/home/daniel/Nextcloud/
+MARTIN=/home/daniel/src/work/martin-bidder
+PLAN9=/usr/local/plan9
+GOROOT=/usr/local/go
+GOPATH=$HOME/go
+LC_ALL=en_US.utf8
+
+SKIM_DEFAULT_OPTIONS='--color=bw'
+
+NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
+# JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+JAVA_HOME=/usr/lib/jvm/java-14-openjdk
+
+HARVEY=/home/daniel/src/personal/harvey
+
+path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin)
+
+fn ls { 9 ls $* }
+fn find { 9 find $* }
+fn sort { 9 sort $* }
+
+fn h { cd $HOME }
+fn mar { cd $MARTIN }
+fn per { cd $HOME/src/personal }
+fn src { cd $HOME/src }
+fn next { cd $NEXTCLOUD }
+fn cfg { cd $HOME/src/config }
+fn dow { cd $HOME/Downloads }
+fn drop { cd $HOME/Dropbox }
+fn cl { clear }
+fn cd { builtin cd $* && awd }
+fn l { ls $* | mc }
+fn la { ls -a $* | mc }
+fn '..' { cd .. }
+
+fn code { code-insiders $* }
+fn e { editinacme $* }
+
+fn g { git $* }
+fn gs { git status }
+fn gc { git commit -am $* }
+fn gp { git push }
+fn ga { git add }
+
+fn t { tmux -2 -u $* }
+fn tat { tmux attach -t $* }
+fn ts { tmux ls $* }
+fn tk { tmux kill-session -t $* }
+
+fn pdf { evince }
+
+fn runlisp { sbcl --script }
+
+fn pf { ipfs }
+fn pfreadme { ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme }
+pfbase=QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv
+
+fn tf { terraform $* -no-color }
+fn tp { terraform plan }
+fn ta { terraform apply }
+
+fn k { kubectl $* }
+fn kpo { kubectl get po $* }
+fn wkpow { watch kubectl get po -o wide }
+fn ksv { kubectl get svc $* }
+fn kdp { kubectl get deploy $* }
+fn kin { kubectl get ingress $* }
+fn kdb { kubectl -n db }
+fn kmon { kubectl -n monitoring }
+
+fn redis-east-con { redis-cli -u redis://$REDIS_EAST_SECRET@$REDIS_EAST_PUB/0 }
+fn redis-west-con { redis-cli -u redis://$REDIS_WEST_SECRET@$REDIS_WEST_PUB/0 }
+fn redislabs-east-con { redis-cli -u redis://$CACHE_EAST_SECRET@$CACHE_EAST_HOST/0 }
+fn redislabs-west-con { redis-cli -u redis://$CACHE_WEST_SECRET@$CACHE_WEST_HOST/0 }
+
+fn dev-con { gcloud beta container clusters get-credentials martin-bidder-dev-east --region us-east4 --project martin-bidder-dev }
+fn stage-con { gcloud beta container clusters get-credentials martin-bidder-stage-east --region us-east4 --project martin-bidder-stage }
+fn stage-west-con { gcloud beta container clusters get-credentials martin-bidder-stage-west --region us-west1 --project martin-bidder-stage }
+fn prod-con { gcloud beta container clusters get-credentials martin-bidder-prod-east --region us-east4 --project martin-bidder-prod }
+fn prod-west-con { gcloud beta container clusters get-credentials martin-bidder-prod-west --region us-west1 --project martin-bidder-prod }
+fn test-con { gcloud container clusters get-credentials martin-bidder-stage-test --region us-east4 --project martin-bidder-stage }
+
+fn cg { cargo }
+fn cr { cargo run }
+fn cb { cargo build }
+
+fn scheme { racket -l sicp --repl }
+
+VCPKG_ROOT=/home/daniel/vcpkg
+OpenCV_DIR=/home/daniel/vcpkg/packages/opencv4_x64-linux/share/opencv
+DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
+VCPKG_TARGET_TRIPLET=/home/daniel/vcpkg/installed/x64-linux
+CMAKE_TOOLCHAIN_FILE=/home/daniel/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+_JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
+
+FZF_DEFAULT_OPTS=--no-color
+
+fn wtc {
+	cmd=$*
+	while() {
+		eval $cmd
+		echo
+		echo
+		sleep 5
+	}
+}
+
+fn nvm {
+	bash $home/bin/nvm
+}
+
+fn gcloud-config {
+	gcloud config configurations activate $1
+	gcloud info | grep Project
+}
+
+fn mon {
+	xrandr --output HDMI1 --right-of eDP1 --auto
+}
+
+fn startmail {
+	plumber
+	factotum
+	factotum -g 'proto=pass service=imap server=imap.gmail.com user=daniel@martin.ai !password?'
+	mailfs -t imap.gmail.com
+}
+
+fn plumb-update {
+	cat $HOME/lib/plumbing | 9p write plumb/rules
+}
+
+fn psql-con {
+	psql -Atx postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME
+}
+
+fn local-opts {
+        MCACHE_HOST=localhost
+	MCACHE_PORT=8080
+	NODE_ENV=staging
+	BIDDER_GRPC_SERVICE_HOST=localhost
+	BIDDER_GRPC_SERVICE_PORT=7000
+	REDIS_PRIV=$REDIS_EAST_PUB
+	REDIS_SECRET=$REDIS_EAST_SECRET
+	REGION=us-east4
+}
+
+fn prod-opts {
+	NODE_ENV=production
+	BIDDER_GRPC_SERVICE_HOST=localhost
+	BIDDER_GRPC_SERVICE_PORT=7000
+	REDIS_PRIV=$REDIS_EAST_PUB
+	REDIS_SECRET=$REDIS_EAST_SECRET
+	REGION=us-east4
+}
+
+fn stage-opts {
+	NODE_ENV=staging
+	BIDDER_GRPC_SERVICE_HOST=localhost
+	BIDDER_GRPC_SERVICE_PORT=7000
+	REDIS_PRIV=$REDIS_EAST_PUB
+	REDIS_SECRET=$REDIS_EAST_SECRET
+	REGION=us-east4
+}
+
+fn linkerd-start {
+	linkerd dashboard $*
+}
+
+fn sniff {
+	kubectl sniff $*
+}
+
+fn ssh-sdf {
+	ssh danieljamespost@tty.sdf.org
+}
+
+fn ssh-plan9 {
+	ssh danieljamespost@vps2.sdf.org
+}
+
+fn goose-run {
+	goose postgres postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME $*
+}
+
+fn scale-deploy {
+	pat=$1
+	num=$2
+	deployments=`{kubectl get deploy | rg $pat | awk '{print $1}'}
+	for (i in $deployments) kubectl scale deploy $i --replicas=$num
+}
+
+fn kube-pods {
+	pat=$1
+	cmd=$2
+	pods=`{kubectl get po | rg $pat | awk '{print $1}'}
+	for (i in $pods) eval $cmd
+}

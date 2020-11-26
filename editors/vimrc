@@ -1,0 +1,270 @@
+"""""""""""""""""""""""""""""""""""
+"        general settings
+"""""""""""""""""""""""""""""""""""
+" set nocompatible				" don't try to be traditional vi
+set compatible				" don't try to be traditional vi
+
+" path
+set path+=**
+
+" visual
+" set nonumber 					" turn off line numbers
+set number
+
+" set nomesg 					" disallow message
+set noshowmode 					" do not show '-- INSERT --'
+set noruler					" turn off position information
+set report=0					" don't show messages like '4 lines yanked'
+set laststatus=0				" disable status line
+
+" syntax/color
+set t_Co=0					" turn off all colors
+syntax off					" turn off syntax highlighting
+
+" general settings
+filetype plugin on	 			" filetype support
+set noswapfile					" don't create swap files
+set cedit=OA					" \t to complete ex commands
+set clipboard=unnamedplus			" enable clipboard support for X
+set nostartofline				" keep cursor at same position when scrolling
+set noerrorbells				" turn off alerts
+" set shortmess=I 				" turn off splash screen
+set autoread					" always refresh file
+set hidden					" hides buffers instead of closing them
+set ttyfast					" send more chars to screen for drawing
+set ttimeout					" reduce time waited for key presses to complete
+set ttimeoutlen=50
+
+" searching
+set ignorecase					" ignore case when searching
+set incsearch					" start searching right away when typing
+" set hlsearch					" highlight terms when searching
+set nohlsearch 					" don't highlight search terms
+set wildmenu					" display matching files when tab complete
+" set tags^=.git/tags;~
+set tags+=tags;/
+
+" visual helpers
+set showmatch 					" show matching delimiter
+set matchtime=2 				" delay for delimiter highlight
+set wildmenu					" better menu in command mode
+set wildmode=longest:full,full
+
+" indentation
+set noexpandtab					" use hard tabs by default
+set tabstop=8 					" set tab to equal 8 spaces
+set wrapmargin=8 				" set margin
+set backspace=indent,eol,start			" inteligent backspace behavior
+set autoindent					" auto indentation based on last line
+set smartindent					" indentation based on syntax
+
+" file browsing
+set autochdir					" change pwd to working file
+let g:netrw_banner=0        			" disable annoying banner
+let g:netrw_browse_split=4  			" open in prior window
+let g:netrw_altv=1          			" open splits to the right
+let g:netrw_liststyle=3     			" tree view
+" let g:netrw_list_hide=netrw_gitignore#Hide()
+" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+" switch to pwd of current file
+" autocmd BufEnter * lcd %:p:h 
+
+" make vim not highlight line numbers
+hi LineNr         term=NONE ctermfg=6 guifg=Brown
+
+"""""""""""""""""""""""""""""""""""
+"            navigation
+"""""""""""""""""""""""""""""""""""
+
+" - Use ^] to jump to tag under cursor
+" - Use g^] for ambiguous tags
+" - Use ^t to jump back up the tag sta
+" - ^x^n for JUST this file
+" - ^x^f for filenames (works with our path trick!)
+" - ^x^] for tags only
+" - ^n for anything specified by the 'complete' option
+" - Use ^n and ^p to go back and forth in the suggestion list
+command! MakeTags !ctags -R .
+set omnifunc=syntaxcomplete#Complete
+
+
+"""""""""""""""""""""""""""""""""""
+"        keyboard shortcuts
+"""""""""""""""""""""""""""""""""""
+" set leader key
+" map <Space> <Leader>
+
+map <C-_> :.!samfile=%<Space>com<CR>
+
+" space-ctrl-/ to un/comment current selection
+map   :'<,'>!samfile=%<Space>com
+
+" work with the clipboard in wayland
+" xnoremap "+y y:call system("wl-copy", @")<cr>
+" nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+" nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
+
+" use xsel to copy text to clipboard for pasting when vim is suspended
+" function! CopyText()
+"   normal gv"+y
+"   :call system('xsel -ib', getreg('+'))
+" endfunction
+" vmap <leader>y :call CopyText()
+
+" easily switch buffers with ctrl+b
+nnoremap <leader>l :b<Space>
+
+" Git
+nnoremap gs :!git status<CR>
+nnoremap gc :!git commit -am "
+nnoremap gp :!git push<CR>
+
+" saving
+nnoremap ss :w<CR>
+
+nnoremap <leader>gd <C-]>
+
+"""""""""""""""""""""""""""""""""""
+"        filetype settings
+"""""""""""""""""""""""""""""""""""
+" racket
+au BufReadPost *.rkt,*.rktl set filetype=racket
+au filetype racket set lisp expandtab tabstop=2 softtabstop=2 shiftwidth=2
+set lispwords+=public-method,override-method,private-method,syntax-case,syntax-rules
+
+" common lisp
+au BufReadPost *.lisp,*.lsp,*.cl set filetype=lisp
+au filetype lisp set lisp cpoptions-=mp tabstop=2 softtabstop=2 shiftwidth=2
+setlocal suffixesadd=.lisp,cl path+=/usr/src/lisp/**
+au filetype list setlocal include=(:file\
+
+" clojure
+au BufReadPost *.clj set filetype=clojure
+au filetype clojure set lisp cpoptions-=mp tabstop=2 softtabstop=2 shiftwidth=2
+
+function FormatBuffer()
+  if &modified && !empty(findfile('.clang-format', expand('%:p:h') . ';'))
+    let cursor_pos = getpos('.')
+    :%!clang-format
+    :%s/\s\+$//e
+    call setpos('.', cursor_pos)
+  endif
+endfunction
+
+" c
+au BufReadPost *.c,*.h set filetype=c
+au filetype c set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab cindent
+" " autocmd FileType c setlocal makeprg=astyle\ --style=allman\ --indent=tab=8\ %
+autocmd BufWritePre *.h,*.c :call FormatBuffer()
+" autocmd QuickFixCmdPost [^l]* cwindow
+
+" c++
+au BufReadPost *.cpp,*.cxx,*.cc,*.hh,*.hpp set filetype=cpp
+" au filetype cpp set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+" au filetype cpp set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab cindent
+" autocmd FileType cpp setlocal makeprg=clang-format\ -style=WebKit\ -i\ %
+" autocmd BufWritePost *.cpp,*.cxx,*.cc,*.hh,*.hpp silent make! <afile> | silent redraw!
+autocmd BufWritePre *.cpp,*.cxx,*.cc,*.hh,*.hpp :call FormatBuffer()
+" autocmd QuickFixCmdPost [^l]* cwindow
+
+" go
+au BufReadPost *.go set filetype=go
+au filetype go set noexpandtab shiftwidth=8 softtabstop=8 tabstop=8
+ab pl fmt.Println
+autocmd FileType go setlocal makeprg=gofmt\ -w\ %
+autocmd BufWritePost *.go silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+
+
+" html
+au BufReadPost *.html set filetype=html
+au filetype html set shiftwidth=2 tabstop=2 expandtab
+
+
+" css
+au BufReadPost *.css set filetype=css
+au filetype css set shiftwidth=2 tabstop=2 expandtab
+
+" javascript
+au BufReadPost *.js set filetype=javascript
+au filetype javascript set shiftwidth=2 tabstop=2 expandtab
+autocmd FileType javascript setlocal makeprg=jslint\ %
+autocmd BufWritePost *.js silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+ab cl console.log
+
+" java
+au BufReadPost *.java set filetype=java
+au filetype java set shiftwidth=2 tabstop=2 expandtab
+autocmd FileType java setlocal makeprg=prettier\ %\ --write\ --loglevel\ error
+autocmd BufWritePost *.java silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+
+" markdown
+au BufReadPost *.md set filetype=markdown
+au filetype markdown set tabstop=2 shiftwidth=2 softtabstop=2 expandtab textwidth=80 
+" autocmd BufRead,BufNewFile *.md setlocal spell
+au filetype markdown set complete+=kspell
+" autocmd FileType markdown setlocal makeprg=prettier\ %\ --write\ --loglevel\ error
+" autocmd BufWritePost *.md silent make! <afile> | silent redraw!
+" autocmd QuickFixCmdPost [^l]* cwindow
+
+" protobuf
+au BufReadPost *.proto set filetype=protobuf
+au filetype protobuf set shiftwidth=4 tabstop=4 expandtab
+autocmd FileType protobuf setlocal makeprg=clang-format\ -style=file\ -i\ %
+autocmd BufWritePost *.proto silent make! <afile> | silent redraw!
+
+" terraform
+au BufReadPost *.tf set filetype=terraform
+au filetype terraform set shiftwidth=2 tabstop=2 expandtab
+autocmd FileType terraform setlocal makeprg=terraform\ fmt
+autocmd BufWritePost *.tf silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+
+" python
+au BufReadPost *.py set filetype=python
+au filetype python set tabstop=4 shiftwidth=4 expandtab
+
+" rust
+au BufReadPost *.rs set filetype=rust
+au filetype rust set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+autocmd FileType rust setlocal makeprg=rustfmt\ %
+autocmd BufWritePost *.rs silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+ab pln println!
+
+" yaml
+au BufReadPost *.yaml set filetype=yaml
+au filetype yaml set ts=2 sts=2 sw=2 expandtab
+autocmd FileType yaml setlocal makeprg=yamlcheck\ %
+autocmd BufWritePost *.yaml silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+
+" json
+au BufReadPost *.json set filetype=json
+au filetype json set shiftwidth=2 tabstop=2 expandtab
+autocmd FileType json setlocal makeprg=prettier\ %\ --write\ --loglevel\ error
+autocmd BufWritePost *.json silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
+
+function! LF()
+    let temp = tempname()
+    exec 'silent !lf -selection-path=' . shellescape(temp)
+    if !filereadable(temp)
+        redraw!
+        return
+    endif
+    let names = readfile(temp)
+    if empty(names)
+        redraw!
+        return
+    endif
+    exec 'edit ' . fnameescape(names[0])
+    for name in names[1:]
+        exec 'argadd ' . fnameescape(name)
+    endfor
+    redraw!
+endfunction
+command! -bar LF call LF()

@@ -46,3 +46,12 @@
 [submodule "sources/github.com/jarun/nnn"]
 	path = sources/github.com/jarun/nnn
 	url = https://github.com/jarun/nnn.git
+[submodule "sources/github.com/window-maker/wmaker"]
+	path = sources/github.com/window-maker/wmaker
+	url = https://github.com/window-maker/wmaker.git
+[submodule "sources/github.com/alacritty/alacritty"]
+	path = sources/github.com/alacritty/alacritty
+	url = https://github.com/alacritty/alacritty.git
+[submodule "sources/github.com/andreberg/Meslo-Font"]
+	path = sources/github.com/andreberg/Meslo-Font
+	url = https://github.com/andreberg/Meslo-Font.git

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# setxkbmap us -variant colemak
+# setxkbmap -option ctrl:nocaps
+# setxkbmap -option 'caps:ctrl_modifier'
+# xset r rate 200 60
+
+# -option caps:swapescape
+
+setxkbmap us -variant colemak 
+# setxkbmap us 
+setxkbmap -option ctrl:nocaps
+setxkbmap -option 'caps:ctrl_modifier'
+xcape -e 'Control_L=Escape' -t 200
+xset r rate 200 60

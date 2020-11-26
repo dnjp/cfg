@@ -1,0 +1,6 @@
+#!/usr/bin/env rc
+
+contents=`{xclip -o -sel clip}
+newcontents=`{echo $contents | sed 's/\"/''/g'}
+echo $newcontents
+eval $newcontents
