@@ -1,0 +1,58 @@
+{
+  FrameBorderColor = "#000000";
+  FTitleColor = "#ffffff";
+  MenuDisabledColor = "#666666";
+  EnforceIconMargin = NO;
+  IconTitleBack = "#000000";
+  PixmapPath = (
+    "/home/daniel/GNUstep/Library/WindowMaker/Pixmaps",
+    "/usr/share/pixmaps",
+    "/home/daniel/GNUstep/Library/WindowMaker/Backgrounds",
+    "/home/daniel/GNUstep/Library/WindowMaker/CachedPixmaps",
+    "~/pixmaps",
+    "/usr/local/share/WindowMaker/Pixmaps",
+    "/usr/local/share/WindowMaker/Backgrounds",
+    "/usr/local/share/pixmaps"
+  );
+  SnapToTopMaximizesFullscreen = YES;
+  AutoArrangeIcons = YES;
+  ClipTitleColor = "#000000";
+  MiniwindowPreviewBalloons = YES;
+  ClipTitleFont = "Verdana:bold:pixelsize=10";
+  MoveTo12to6Head = None;
+  HighlightColor = "#ffffff";
+  FrameFocusedBorderColor = "#000000";
+  OpaqueResize = YES;
+  IconTitleFont = "Arial,sans serif:pixelsize=9";
+  WindowTitleFont = "Go:slant=0:weight=180:width=100:pixelsize=12";
+  WindowPlacement = smart;
+  LargeDisplayFont = "Trebuchet MS,sans serif:pixelsize=24";
+  CycleWorkspaces = YES;
+  CClipTitleColor = "#333333";
+  OpaqueMoveResizeKeyboard = YES;
+  IconPath = (
+    "/home/daniel/GNUstep/Library/Icons",
+    "/home/daniel/GNUstep/Library/WindowMaker/Pixmaps",
+    "/home/daniel/GNUstep/Library/WindowMaker/CachedPixmaps",
+    "~/pixmaps",
+    "/usr/local/share/WindowMaker/Icons",
+    "/usr/local/share/WindowMaker/Pixmaps",
+    "/usr/local/share/pixmaps"
+  );
+  MiniPreviewSize = 264;
+  IconTitleColor = "#ffffff";
+  SingleClickLaunch = YES;
+  MenuTextColor = "#000000";
+  SaveSessionOnExit = YES;
+  OpenTransientOnOwnerWorkspace = YES;
+  AntialiasedText = YES;
+  MenuTitleColor = "#ffffff";
+  UTitleColor = "#000000";
+  MenuTitleFont = "Trebuchet MS,sans serif:bold:pixelsize=12";
+  PTitleColor = "#ffffff";
+  WorkspaceNameDisplayPosition = bottom;
+  MoveTo6to12Head = None;
+  MenuTextFont = "Trebuchet MS,sans serif:pixelsize=12";
+  FrameSelectedBorderColor = "#ffffff";
+  HighlightTextColor = "#000000";
+}

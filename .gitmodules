@@ -55,3 +55,15 @@
 [submodule "sources/github.com/andreberg/Meslo-Font"]
 	path = sources/github.com/andreberg/Meslo-Font
 	url = https://github.com/andreberg/Meslo-Font.git
+[submodule "sources/github.com/jonls/redshift"]
+	path = sources/github.com/jonls/redshift
+	url = https://github.com/jonls/redshift.git
+[submodule "sources/github.com/BurntSushi/ripgrep"]
+	path = sources/github.com/BurntSushi/ripgrep
+	url = https://github.com/BurntSushi/ripgrep.git
+[submodule "sources/github.com/dinhvh/libetpan"]
+	path = sources/github.com/dinhvh/libetpan
+	url = https://github.com/dinhvh/libetpan.git
+[submodule "sources/git.claws-mail.org/claws"]
+	path = sources/git.claws-mail.org/claws
+	url = https://git.claws-mail.org/readonly/claws.git

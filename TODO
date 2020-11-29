@@ -1,0 +1,6 @@
+- Use nix instead of shell scripts and makefiles
+  - https://nixos.org/manual/nixpkgs/stable/#chap-stdenv
+  - https://nixos.org/manual/nix/stable/#chap-introduction
+  - https://www.nmattia.com/posts/2018-03-21-nix-reproducible-setup-linux-macos.html
+  - https://nixos.org/guides/nix-pills/pr01.html
+  - https://nixos.wiki/wiki/NixOS

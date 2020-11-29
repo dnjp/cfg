@@ -1,0 +1,16 @@
+#!/bin/sh
+
+kind=$(xinput --list | grep TrackPoint | awk '{print $4}')
+device=""
+case "$kind" in
+	"IBM")
+		device="TPPS/2 IBM TrackPoint"
+		;;
+	"Elan")
+		device="TPPS/2 Elan TrackPoint"
+		;;
+esac
+
+xinput --set-prop "$device" 'libinput Accel Speed' 1.0
+xinput --set-prop "$device" 'libinput Accel Profile Enabled' 0, 1
+xinput --set-prop "$device" 'Coordinate Transformation Matrix' 1.0 0 0 0 1.0 0 0 0 1

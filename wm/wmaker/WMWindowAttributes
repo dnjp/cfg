@@ -1,0 +1,6 @@
+{
+  edwood.edwood = {
+    AlwaysUserIcon = Yes;
+    Icon = "/usr/share/pixmaps/edwood.tiff";
+  };
+}
