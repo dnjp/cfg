@@ -79,3 +79,6 @@
 [submodule "sources/github.com/universal-ctags/ctags"]
 	path = sources/github.com/universal-ctags/ctags
 	url = https://github.com/universal-ctags/ctags.git
+[submodule "sources/github.com/linkerd/linkerd2"]
+	path = sources/github.com/linkerd/linkerd2
+	url = https://github.com/linkerd/linkerd2.git

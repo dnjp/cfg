@@ -264,6 +264,15 @@ ctags:
 	mkdir -p $(HOME)/.config/ctags
 	ln -s $(shell pwd)/editors/ctags $(HOME)/.config/ctags/.ctags
 
+linkerd:
+	cd sources/github.com/linkerd/linkerd2 && \
+		git clean -f -d && \
+		git reset --hard && \
+		git checkout main && \
+		git pull && \
+		git checkout stable-2.8.1 && \
+		go build -o linkerd cli/main.go && \
+		sudo cp ./linkerd /usr/local/bin/linkerd
 
 ###########################
 #      repo.or.cz
