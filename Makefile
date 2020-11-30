@@ -16,7 +16,8 @@ all: pkgsrc \
       terraform \
       gcloud \
       tmux \
-      ctags
+      ctags \
+      linkerd
 
 ###########################
 #      Variables
