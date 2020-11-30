@@ -1,0 +1,420 @@
+# make dash happy
+export ENV=$HOME/.profile;
+export PS1='; '
+
+# No color
+export NO_COLOR=1
+
+# defaults
+export BROWSER="brave"
+export EDITOR='editinacme'
+export VISUAL=$EDITOR
+export TERMCMD="9t"
+export SKIM_DEFAULT_OPTIONS='--color=bw'
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
+
+# window manager
+export XDG_CURRENT_DESKTOP=sway
+
+# wayland
+export MOZ_ENABLE_WAYLAND=1
+export XDG_SESSION_TYPE=wayland
+
+# constants
+NEXTCLOUD=/home/daniel/Nextcloud/
+MARTIN=/home/daniel/src/work/martin-bidder
+PLAN9=/usr/local/plan9
+GOROOT=/usr/local/go
+GOPATH=$HOME/go
+NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
+# JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+JAVA_HOME=/usr/lib/jvm/java-14-openjdk
+HARVEY=/home/daniel/src/personal/harvey
+NVM_DIR="$HOME/src/config/programs/nvm"
+SKIM_DIR=$HOME/.skim
+
+
+# source external scipts
+. ~/Nextcloud/secrets/secrets.sh
+. $MARTIN/shell/aliases.sh
+. $MARTIN/shell/functions.sh
+# . $NVM_DIR/nvm.sh
+
+# Navigation
+alias h="cd ~"
+alias mar="cd ~/src/work/martin-bidder"
+alias per="cd ~/src/personal"
+alias cfg="cd ~/src/config"
+alias src="cd ~/src"
+alias dow="cd ~/Downloads"
+alias notes="cd ~/notes"
+alias drop="cd ~/Dropbox"
+alias c="clear"
+alias l="ls"
+alias ".."="cd .."
+alias "~"="cd ~"
+alias n="nnn $*"
+alias e="editinacme $*"
+# github.com/boyter/scc
+alias sloc="scc $*"
+
+next() { 
+	cd ~/Nextcloud 
+}
+
+if [ "$INSIDE_ACME" ]; then
+
+	# handle man pages more cleanly
+	export PAGER=nobs
+	export MANPAGER=nobs
+
+	# set font
+	export font=$PLAN9/font/pelm/euro.8.font
+	export lfont=$PLAN9/font/lucsans/unicode.7.font
+
+	# Patch cd command for acme
+	_cd () {
+		\cd "$@" && awd
+	}
+	alias cd=_cd
+fi
+
+# unix defaults
+alias cp="cp -i"                                                # Confirm before overwriting something
+alias df='df -h'                                                # Human-readable sizes
+alias free='free -m'                                            # Show sizes in MB
+
+# Git
+alias g="git $*"
+alias gs="git status"
+alias gc="git commit -am"
+alias gp="git push"
+alias ga="git add"
+alias gitu='git add . && git commit && git push'
+
+# Tmux
+alias t="tmux -2 -u"
+alias tat="tmux attach -t"
+alias ts="tmux ls"
+alias tk="tmux kill-session -t"
+
+# scripts
+export PATH=$PATH:/home/daniel/src/bin
+
+# skim
+export PATH=$PATH:$SKIM_DIR/bin
+
+# SSH
+alias "sshedge"="ssh daniel@192.168.1.1"
+alias "sshacpro"="ssh ubnt@192.168.1.2"
+
+# Plan9
+export PATH=$PATH:$PLAN9/bin
+
+# Google
+PATH=$PATH:$HOME/google-cloud-sdk/bin/:
+
+# my scripts
+PATH=$PATH:$HOME/bin/:
+
+# Snap
+export PATH=$PATH:/snap/bin
+export PATH=$PATH:/var/lib/snapd/snap/bin
+
+# Golang
+export GOROOT=/usr/local/go
+export PATH=$PATH:/usr/local/go/bin
+# export GOPATH="$HOME/go"
+PATH=$PATH:$GOPATH/bin:
+
+# Python
+export PATH=$PATH:$HOME/.local/bin
+
+# Monorepo
+export PATH=$PATH:$MARTIN/bin
+
+# vcpkg
+export VCPKG_FEATURE_FLAGS="manifests"
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Java
+# export _JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
+
+# FZF
+export FZF_DEFAULT_OPTS='--no-color'
+
+# Linkerd
+export PATH=$PATH:/home/daniel/.linkerd2/bin
+
+gcloudconfig() {
+	gcloud config configurations activate $1
+	gcloud info | grep Project
+}
+
+##########################################################################
+#
+#                           Plan 9 Commands
+#
+##########################################################################
+alias 9660srv="$PLAN9/bin/9660srv"
+alias 9a="$PLAN9/bin/9a"
+alias 9ar="$PLAN9/bin/9ar"
+alias 9c="$PLAN9/bin/9c"
+alias 9fs="$PLAN9/bin/9fs"
+alias 9import="$PLAN9/bin/9import"
+alias 9l="$PLAN9/bin/9l"
+alias 9p="$PLAN9/bin/9p"
+alias 9pfuse="$PLAN9/bin/9pfuse"
+alias 9pserve="$PLAN9/bin/9pserve"
+alias acid="$PLAN9/bin/acid"
+alias acidtypes="$PLAN9/bin/acidtypes"
+alias acmeevent="$PLAN9/bin/acmeevent"
+alias adict="$PLAN9/bin/adict"
+alias aescbc="$PLAN9/bin/aescbc"
+alias ascii="$PLAN9/bin/ascii"
+alias asn12dsa="$PLAN9/bin/asn12dsa"
+alias asn12rsa="$PLAN9/bin/asn12rsa"
+alias astro="$PLAN9/bin/astro"
+alias auxclog="$PLAN9/bin/auxclog"
+alias auxstats="$PLAN9/bin/auxstats"
+alias awd="$PLAN9/bin/awd"
+alias awk="$PLAN9/bin/awk"
+alias B="$PLAN9/bin/B"
+alias basename="$PLAN9/bin/basename"
+alias bc="$PLAN9/bin/bc"
+alias bmp="$PLAN9/bin/bmp"
+alias bundle="$PLAN9/bin/bundle"
+alias bunzip2="$PLAN9/bin/bunzip2"
+alias bzip2="$PLAN9/bin/bzip2"
+alias cal="$PLAN9/bin/cal"
+alias calendar="$PLAN9/bin/calendar"
+alias cat="$PLAN9/bin/cat"
+alias catclock="$PLAN9/bin/catclock"
+alias cb="$PLAN9/bin/cb"
+alias cleanname="$PLAN9/bin/cleanname"
+alias clock="$PLAN9/bin/clock"
+alias cmapcube="$PLAN9/bin/cmapcube"
+alias cmp="$PLAN9/bin/cmp"
+alias col="$PLAN9/bin/col"
+alias colors="$PLAN9/bin/colors"
+alias comm="$PLAN9/bin/comm"
+alias compress="$PLAN9/bin/compress"
+alias core="$PLAN9/bin/core"
+alias crop="$PLAN9/bin/crop"
+alias date="$PLAN9/bin/date"
+alias db="$PLAN9/bin/db"
+alias dc="$PLAN9/bin/dc"
+alias dd="$PLAN9/bin/dd"
+alias delatex="$PLAN9/bin/delatex"
+alias deroff="$PLAN9/bin/deroff"
+alias devdraw="$PLAN9/bin/devdraw"
+alias dial="$PLAN9/bin/dial"
+alias dict="$PLAN9/bin/dict"
+alias diff="$PLAN9/bin/diff"
+alias disk="$PLAN9/bin/disk"
+alias disknfs="$PLAN9/bin/disknfs"
+alias dns="$PLAN9/bin/dns"
+alias dnsdebug="$PLAN9/bin/dnsdebug"
+alias dnsquery="$PLAN9/bin/dnsquery"
+alias dnstcp="$PLAN9/bin/dnstcp"
+alias doctype="$PLAN9/bin/doctype"
+alias dsa2pub="$PLAN9/bin/dsa2pub"
+alias dsa2ssh="$PLAN9/bin/dsa2ssh"
+alias dsagen="$PLAN9/bin/dsagen"
+alias dsasign="$PLAN9/bin/dsasign"
+alias du="$PLAN9/bin/du"
+alias dump9660="$PLAN9/bin/dump9660"
+alias E="$PLAN9/bin/E"
+alias echo="$PLAN9/bin/echo"
+alias ed="$PLAN9/bin/ed"
+alias eqn="$PLAN9/bin/eqn"
+alias factor="$PLAN9/bin/factor"
+alias factotum="$PLAN9/bin/factotum"
+alias file="$PLAN9/bin/file"
+alias fmt="$PLAN9/bin/fmt"
+alias fontsrv="$PLAN9/bin/fontsrv"
+alias fortune="$PLAN9/bin/fortune"
+alias fossil="$PLAN9/bin/fossil"
+alias freq="$PLAN9/bin/freq"
+alias fs="$PLAN9/bin/fs"
+alias fsize="$PLAN9/bin/fsize"
+alias Getdir="$PLAN9/bin/Getdir"
+alias getflags="$PLAN9/bin/getflags"
+alias gif="$PLAN9/bin/gif"
+alias grap="$PLAN9/bin/grap"
+alias graph="$PLAN9/bin/graph"
+alias grep="$PLAN9/bin/grep"
+alias gunzip="$PLAN9/bin/gunzip"
+alias gview="$PLAN9/bin/gview"
+alias gzip="$PLAN9/bin/gzip"
+alias hget="$PLAN9/bin/hget"
+alias hist="$PLAN9/bin/hist"
+alias hoc="$PLAN9/bin/hoc"
+alias htmlfmt="$PLAN9/bin/htmlfmt"
+alias htmlroff="$PLAN9/bin/htmlroff"
+alias ico="$PLAN9/bin/ico"
+alias iconv="$PLAN9/bin/iconv"
+alias idiff="$PLAN9/bin/idiff"
+alias img="$PLAN9/bin/img"
+alias import="$PLAN9/bin/import"
+alias ipso="$PLAN9/bin/ipso"
+alias join="$PLAN9/bin/join"
+alias jpg="$PLAN9/bin/jpg"
+alias kill="$PLAN9/bin/kill"
+alias label="$PLAN9/bin/label"
+alias lc="$PLAN9/bin/lc"
+alias lex="$PLAN9/bin/lex"
+alias listen1="$PLAN9/bin/listen1"
+alias look="$PLAN9/bin/look"
+alias lookman="$PLAN9/bin/lookman"
+alias ls="$PLAN9/bin/ls"
+alias macedit="$PLAN9/bin/macedit"
+alias mail="$PLAN9/bin/mail"
+alias Mail="$PLAN9/bin/Mail"
+alias mailfs="$PLAN9/bin/mailfs"
+alias mapd="$PLAN9/bin/mapd"
+alias mc="$PLAN9/bin/mc"
+alias md5sum="$PLAN9/bin/md5sum"
+alias mk="$PLAN9/bin/mk"
+alias mk9660="$PLAN9/bin/mk9660"
+alias mkdir="$PLAN9/bin/mkdir"
+alias mklatinkbd="$PLAN9/bin/mklatinkbd"
+alias mount="$PLAN9/bin/mount"
+alias mtime="$PLAN9/bin/mtime"
+alias namespace="$PLAN9/bin/namespace"
+alias ndbipquery="$PLAN9/bin/ndbipquery"
+alias ndbmkdb="$PLAN9/bin/ndbmkdb"
+alias ndbmkhash="$PLAN9/bin/ndbmkhash"
+alias ndbmkhosts="$PLAN9/bin/ndbmkhosts"
+alias ndbquery="$PLAN9/bin/ndbquery"
+alias netfileget="$PLAN9/bin/netfileget"
+alias netfilelib.rc="$PLAN9/bin/netfilelib.rc"
+alias netfileput="$PLAN9/bin/netfileput"
+alias Netfiles="$PLAN9/bin/Netfiles"
+alias netfilestat="$PLAN9/bin/netfilestat"
+alias netkey="$PLAN9/bin/netkey"
+alias news="$PLAN9/bin/news"
+alias nobs="$PLAN9/bin/nobs"
+alias nroff="$PLAN9/bin/nroff"
+alias osxvers="$PLAN9/bin/osxvers"
+alias p="$PLAN9/bin/p"
+alias page="$PLAN9/bin/page"
+alias paint="$PLAN9/bin/paint"
+alias passwd="$PLAN9/bin/passwd"
+alias pbd="$PLAN9/bin/pbd"
+alias pemdecode="$PLAN9/bin/pemdecode"
+alias pemencode="$PLAN9/bin/pemencode"
+alias pic="$PLAN9/bin/pic"
+alias plot="$PLAN9/bin/plot"
+alias plumb="$PLAN9/bin/plumb"
+alias plumber="$PLAN9/bin/plumber"
+alias png="$PLAN9/bin/png"
+alias ppm="$PLAN9/bin/ppm"
+alias pr="$PLAN9/bin/pr"
+alias primes="$PLAN9/bin/primes"
+alias proof="$PLAN9/bin/proof"
+alias ps="$PLAN9/bin/ps"
+alias psdownload="$PLAN9/bin/psdownload"
+alias psfonts="$PLAN9/bin/psfonts"
+alias psu="$PLAN9/bin/psu"
+alias psv="$PLAN9/bin/psv"
+alias quote1="$PLAN9/bin/quote1"
+alias quote2="$PLAN9/bin/quote2"
+alias ramfs="$PLAN9/bin/ramfs"
+alias read="$PLAN9/bin/read"
+alias readcons="$PLAN9/bin/readcons"
+alias resample="$PLAN9/bin/resample"
+alias rm="$PLAN9/bin/rm"
+alias rsa2csr="$PLAN9/bin/rsa2csr"
+alias rsa2pub="$PLAN9/bin/rsa2pub"
+alias rsa2ssh="$PLAN9/bin/rsa2ssh"
+alias rsa2x509="$PLAN9/bin/rsa2x509"
+alias rsafill="$PLAN9/bin/rsafill"
+alias rsagen="$PLAN9/bin/rsagen"
+alias samsave="$PLAN9/bin/samsave"
+alias samterm="$PLAN9/bin/samterm"
+alias scat="$PLAN9/bin/scat"
+alias secstore="$PLAN9/bin/secstore"
+alias secstored="$PLAN9/bin/secstored"
+alias secuser="$PLAN9/bin/secuser"
+alias sed="$PLAN9/bin/sed"
+alias seq="$PLAN9/bin/seq"
+alias sftpcache="$PLAN9/bin/sftpcache"
+alias sha1sum="$PLAN9/bin/sha1sum"
+alias sig="$PLAN9/bin/sig"
+alias slay="$PLAN9/bin/slay"
+alias sleep="$PLAN9/bin/sleep"
+alias soelim="$PLAN9/bin/soelim"
+alias sort="$PLAN9/bin/sort"
+alias spell="$PLAN9/bin/spell"
+alias split="$PLAN9/bin/split"
+alias sprog="$PLAN9/bin/sprog"
+alias srv="$PLAN9/bin/srv"
+alias ssam="$PLAN9/bin/ssam"
+alias ssh-agent="$PLAN9/bin/ssh-agent"
+alias stack="$PLAN9/bin/stack"
+alias start="$PLAN9/bin/start"
+alias stats="$PLAN9/bin/stats"
+alias statusbar="$PLAN9/bin/statusbar"
+alias stop="$PLAN9/bin/stop"
+alias strings="$PLAN9/bin/strings"
+alias sum="$PLAN9/bin/sum"
+alias svgpic="$PLAN9/bin/svgpic"
+alias tail="$PLAN9/bin/tail"
+alias tar="$PLAN9/bin/tar"
+alias tbl="$PLAN9/bin/tbl"
+alias tcolors="$PLAN9/bin/tcolors"
+alias tcs="$PLAN9/bin/tcs"
+alias tee="$PLAN9/bin/tee"
+alias test="$PLAN9/bin/test"
+alias time="$PLAN9/bin/time"
+alias togif="$PLAN9/bin/togif"
+alias toico="$PLAN9/bin/toico"
+alias topng="$PLAN9/bin/topng"
+alias toppm="$PLAN9/bin/toppm"
+alias touch="$PLAN9/bin/touch"
+alias tpic="$PLAN9/bin/tpic"
+alias tr="$PLAN9/bin/tr"
+alias tr2post="$PLAN9/bin/tr2post"
+alias tref="$PLAN9/bin/tref"
+alias troff="$PLAN9/bin/troff"
+alias troff2html="$PLAN9/bin/troff2html"
+alias troff2png="$PLAN9/bin/troff2png"
+alias tweak="$PLAN9/bin/tweak"
+alias u="$PLAN9/bin/u"
+alias uncompress="$PLAN9/bin/uncompress"
+alias unicode="$PLAN9/bin/unicode"
+alias uniq="$PLAN9/bin/uniq"
+alias units="$PLAN9/bin/units"
+alias unmount="$PLAN9/bin/unmount"
+alias unutf="$PLAN9/bin/unutf"
+alias unvac="$PLAN9/bin/unvac"
+alias unzip="$PLAN9/bin/unzip"
+alias upas="$PLAN9/bin/upas"
+alias u.rc="$PLAN9/bin/u.rc"
+alias usage="$PLAN9/bin/usage"
+alias vac="$PLAN9/bin/vac"
+alias vacfs="$PLAN9/bin/vacfs"
+alias vbackup="$PLAN9/bin/vbackup"
+alias vcat="$PLAN9/bin/vcat"
+alias venti="$PLAN9/bin/venti"
+alias vmount="$PLAN9/bin/vmount"
+alias vmount0="$PLAN9/bin/vmount0"
+alias vnfs="$PLAN9/bin/vnfs"
+alias vwhois="$PLAN9/bin/vwhois"
+alias wc="$PLAN9/bin/wc"
+alias web="$PLAN9/bin/web"
+alias win="$PLAN9/bin/win"
+alias wintext="$PLAN9/bin/wintext"
+alias winwatch="$PLAN9/bin/winwatch"
+alias wmail="$PLAN9/bin/wmail"
+alias xd="$PLAN9/bin/xd"
+alias xshove="$PLAN9/bin/xshove"
+alias yacc="$PLAN9/bin/yacc"
+alias yesterday="$PLAN9/bin/yesterday"
+alias yuv="$PLAN9/bin/yuv"
+alias zcat="$PLAN9/bin/zcat"
+alias zerotrunc="$PLAN9/bin/zerotrunc"
+alias zip="$PLAN9/bin/zip"

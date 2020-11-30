@@ -67,3 +67,9 @@
 [submodule "sources/git.claws-mail.org/claws"]
 	path = sources/git.claws-mail.org/claws
 	url = https://git.claws-mail.org/readonly/claws.git
+[submodule "sources/git.savannah.gnu.org/bash"]
+	path = sources/git.savannah.gnu.org/bash
+	url = https://git.savannah.gnu.org/git/bash.git
+[submodule "sources/github.com/9fans/go"]
+	path = sources/github.com/9fans/go
+	url = https://github.com/9fans/go.git

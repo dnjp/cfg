@@ -1,24 +1,55 @@
+all: pkgsrc \
+      git \
+      plan9port \
+      go \
+      rust \
+      bash \
+      meslo \
+      vim \
+      alacritty \
+      ripgrep \
+      edwood \
+      nyne \
+      editinacme \
+      acmelsp \
+      aerc \
+      terraform \
+      gcloud
+
+###########################
+#      Variables
+###########################
+
 SHELL := /bin/bash
 PROFILE := "~/.yashrc"
 
 # pkgsrc
 BOOTSTRAP_TAR := bootstrap-el7-trunk-x86_64-20200724.tar.gz
 BOOTSTRAP_SHA := 478d2e30f150712a851f8f4bcff7f60026f65c9e
-PKGS := $(shell cat ./pkgs.txt)
+PKGS := $(shell cat ./PKGS)
 
 # set path for plan9 and go
 export PATH := $(PATH):/usr/local/plan9/bin:/usr/local/go/bin
 
-###########################
-#      Variables
-###########################
 user=daniel
 nbin=/home/daniel/bin
 goversion=1.14.7
 
+
 ###########################
 #         Deps
 ###########################
+
+git:
+	ssh-keygen -t ed25519 -C "danieljamespost@posteo.net"
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_rsa
+	ln -s $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
+	echo
+	echo
+	cat ~/.ssh/id_rsa.pub
+	echo
+	echo "copy the above and add it to git providers"
 
 pkgsrc:
 ifeq ($(wildcard /usr/pkg/.*),)
@@ -48,20 +79,15 @@ ifeq ($(wildcard /usr/local/plan9/.*),)
 	ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
 endif
 
-rustinstalled := $(shell command -v cargo 2> /dev/null)
 rust:
-ifndef rustinstalled
+ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
 
-homebrew:
-	bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-brews:
-	brew install ${BREWS}
-	# echo 'export PATH="/home/linuxbrew/.linuxbrew/opt/go@1.14/bin:$PATH"' >> ${PROFILE}
-	# echo 'export PATH="/home/linuxbrew/.linuxbrew/opt/node@12/bin:$PATH"' >> ${PROFILE}
-  	# LDFLAGS="-L/home/linuxbrew/.linuxbrew/opt/llvm/lib -Wl,-rpath,/home/linuxbrew/.linuxbrew/opt/llvm/lib"
+gcloud: bash
+ifeq ($(shell command -v gcloud 2> /dev/null),)
+	curl https://sdk.cloud.google.com | bash
+endif
 
 ###########################
 #        Sourcehut
@@ -204,6 +230,9 @@ libetpan:
 		./autogen.sh && \
 		make && \
 		sudo make install
+editinacme:
+	cd sources/github.com/9fans/go && \
+		go install acme/editinacme/main.go
 
 
 ###########################
@@ -230,4 +259,22 @@ claws: libetpan
 		make && \
 		sudo make install
 
+
+###########################
+#  git.savannah.gnu.org
+###########################
+bash:
+	cd sources/git.savannah.gnu.org/bash && \
+		./configure \
+			--enable-strict-posix-default \
+			--enable-readline \
+			--enable-multibyte \
+			--enable-history \
+			--enable-job-control && \
+		make && \
+		sudo make install 
+	sudo sh -c "echo '/usr/local/bin/bash' >> /etc/shells" && \
+	chsh -s /usr/local/bin/bash $(user)
+	ln -s ./shells/bashrc ~/.bashrc
+	ln -s ./shells/profile ~/.profile
 

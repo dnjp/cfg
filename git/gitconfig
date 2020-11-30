@@ -1,0 +1,26 @@
+[user]
+	name = Daniel
+	email = danieljamespost@posteo.net
+[use]
+	name = Daniel Posthuma
+[core]
+	# editor = editinacme
+	editor = vim
+[alias]
+	co = checkout
+	ctags = !.git/hooks/ctags
+	check = log --patch --reverse "HEAD~"..
+	fmt-patch = format-patch HEAD~ -o
+[init]
+	templatedir = ~/.git_template
+[pull]
+	rebase = false
+[github]
+	user = danieljamespost
+[sendemail]
+	smtpserver = posteo.de
+	smtpuser = danieljamespost@posteo.net
+	smtpencryption = tls
+	smtpserverport = 587
+[color]
+	ui = false
