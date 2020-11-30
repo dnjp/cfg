@@ -1,8 +1,7 @@
 """""""""""""""""""""""""""""""""""
 "        general settings
 """""""""""""""""""""""""""""""""""
-" set nocompatible				" don't try to be traditional vi
-set compatible				" don't try to be traditional vi
+set nocompatible				" don't try to be traditional vi
 
 " path
 set path+=**
@@ -28,7 +27,7 @@ set cedit=OA					" \t to complete ex commands
 set clipboard=unnamedplus			" enable clipboard support for X
 set nostartofline				" keep cursor at same position when scrolling
 set noerrorbells				" turn off alerts
-" set shortmess=I 				" turn off splash screen
+set shortmess=I 				" turn off splash screen
 set autoread					" always refresh file
 set hidden					" hides buffers instead of closing them
 set ttyfast					" send more chars to screen for drawing
@@ -88,12 +87,18 @@ hi LineNr         term=NONE ctermfg=6 guifg=Brown
 command! MakeTags !ctags -R .
 set omnifunc=syntaxcomplete#Complete
 
+" tas
+map tn :tn
+map tp :tp
+map ts :ts
 
 """""""""""""""""""""""""""""""""""
 "        keyboard shortcuts
 """""""""""""""""""""""""""""""""""
 " set leader key
-" map <Space> <Leader>
+map <Space> <Leader>
+
+map qq :q!
 
 map <C-_> :.!samfile=%<Space>com<CR>
 

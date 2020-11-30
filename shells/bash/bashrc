@@ -1,4 +1,4 @@
-. ~/.profile
+source ~/.profile
 
 # pkgsrc
 export PATH=/usr/pkg/sbin:/usr/pkg/bin:$PATH

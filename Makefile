@@ -211,8 +211,6 @@ wmaker:
 	ln -s $(shell pwd)/wm/wmaker/WindowMaker $(HOME)/GNUstep/Defaults/WindowMaker 
 
 alacritty: rust
-	# TODO: do this somewhere else
-	sudo pacman -S cmake freetype2 fontconfig pkg-config make libxcb
 	cd sources/github.com/alacritty/alacritty && \
 		cargo build --release && \
 		sudo tic -xe alacritty,alacritty-direct extra/alacritty.info && \
@@ -303,18 +301,20 @@ claws: libetpan
 ###########################
 #  git.savannah.gnu.org
 ###########################
-bash:
+bash: 
 	cd sources/git.savannah.gnu.org/bash && \
-		./configure \
-			--enable-strict-posix-default \
-			--enable-readline \
-			--enable-multibyte \
-			--enable-history \
-			--enable-job-control && \
+		echo "CFLAGS=${CFLAGS}" && \
+		./configure --prefix=/usr \
+			--without-bash-malloc \
+			--enable-readline && \
 		make && \
 		sudo make install 
-	sudo sh -c "echo '/usr/local/bin/bash' >> /etc/shells" && \
-	chsh -s /usr/local/bin/bash $(user)
-	ln -s ./shells/bashrc ~/.bashrc
+
+	sudo sh -c "echo '/usr/bin/bash' >> /etc/shells" && \
+	chsh -s /usr/bin/bash $(user)
+	sudo cp ./shells/bash/system.bashrc /etc/bash.bashrc
+	sudo cp ./shells/bash/system.bash_logout /etc/bash.bash_logout
+
+	ln -s ./shells/bash/bashrc ~/.bashrc
 	ln -s ./shells/profile ~/.profile
 

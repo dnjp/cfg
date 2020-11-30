@@ -1,8 +1,10 @@
 libX11
 libXft
+libXcb
 libXinerama
 fontconfig
 git
+make
 automake
 autoconf
 binutils
