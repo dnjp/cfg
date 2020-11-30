@@ -14,7 +14,9 @@ all: pkgsrc \
       acmelsp \
       aerc \
       terraform \
-      gcloud
+      gcloud \
+      tmux \
+      ctags
 
 ###########################
 #      Variables
@@ -70,12 +72,18 @@ ifeq ($(wildcard /usr/local/go/.*),)
 endif
 
 plan9port:
-ifeq ($(wildcard /usr/local/plan9/.*),)
 	cd sources/git.sr.ht/danieljamespost/plan9port && \
 		./PREINSTALL 
+ifeq ($(wildcard $(HOME)/lib/.*),)
 	ln -s $(shell pwd)/p9p/lib $(HOME)/lib 
+endif
+ifeq ($(wildcard $(HOME)/bin/.*),)
 	ln -s $(shell pwd)/p9p/bin $(HOME)/bin 
+endif
+ifeq ($(wildcard $(HOME)/mail/.*),)
 	ln -s $(shell pwd)/p9p/mail $(HOME)/mail 
+endif
+ifeq ($(wildcard $(HOME)/.msmtprc/),)
 	ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
 endif
 
@@ -150,14 +158,12 @@ aerc: go
 #        Github
 ###########################
 
-# fhs
 acmelsp: go
 	cd sources/github.com/fhs/acme-lsp && \
 		go install ./cmd/acme-lsp && \
 		go install ./cmd/L 
 	ln -s $(shell pwd)/p9p/lsp $(HOME)/.config/acme-lsp 
 
-# hashicorp
 terraform: go
 	cd sources/github.com/hashicorp/terraform \
 		&& git clean -f -d \
@@ -169,7 +175,6 @@ terraform: go
 		&& go build \
 		&& go install
 
-# magicant
 yash: 
 	cd sources/github.com/magicant/yash && \
 		./configure && \
@@ -178,7 +183,6 @@ yash:
 	sudo sh -c "echo '/usr/local/bin/yash' >> /etc/shells" && \
 	chsh -s /usr/local/bin/yash $(user)
 
-# vim
 vim: 
 	cd sources/github.com/vim/vim && \
 		./configure --enable-fontset --with-x --with-features=normal && \
@@ -215,14 +219,14 @@ meslo:
 		sudo unzip 'Meslo LG v1.2.1.zip' -d /usr/share/fonts/meslo
 		
 redshift:
-	cd sources/github/jonls/redshift && \
+	cd sources/github.com/jonls/redshift && \
 		./bootstrap.sh && \
 		./configure && \
 		make && \
 		sudo make install
 ripgrep:
-	cd sources/github/BurntSushi/ripgrep && \
-		./cargo build --release && \
+	cd sources/github.com/BurntSushi/ripgrep && \
+		cargo build --release && \
 		sudo cp ./target/release/rg /usr/local/bin/ 
 
 libetpan:
@@ -233,6 +237,23 @@ libetpan:
 editinacme:
 	cd sources/github.com/9fans/go && \
 		go install acme/editinacme/main.go
+
+tmux:
+	cd sources/github.com/tmux/tmux && \
+		sh ./autogen.sh && \
+		./configure && \
+		make && \
+		sudo make install
+	ln -s $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
+
+ctags:
+	cd sources/github.com/universal-ctags/ctags && \
+		sh ./autogen.sh && \
+		./configure && \
+		make && \
+		sudo make install
+	mkdir -p $(HOME)/.config/ctags
+	ln -s $(shell pwd)/editors/ctags $(HOME)/.config/ctags/.ctags
 
 
 ###########################

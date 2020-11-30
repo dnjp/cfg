@@ -32,3 +32,9 @@ ghostscript
 startup-notification
 libcanberra
 netsurf
+m4
+libtool
+libevent
+perl
+pkg-config
+gettext

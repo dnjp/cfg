@@ -73,3 +73,9 @@
 [submodule "sources/github.com/9fans/go"]
 	path = sources/github.com/9fans/go
 	url = https://github.com/9fans/go.git
+[submodule "sources/github.com/tmux/tmux"]
+	path = sources/github.com/tmux/tmux
+	url = https://github.com/tmux/tmux.git
+[submodule "sources/github.com/universal-ctags/ctags"]
+	path = sources/github.com/universal-ctags/ctags
+	url = https://github.com/universal-ctags/ctags.git
