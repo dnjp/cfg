@@ -38,3 +38,4 @@ libevent
 perl
 pkg-config
 gettext
+sqlite
