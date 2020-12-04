@@ -1,6 +1,4 @@
-all: pkgsrc \
-      git \
-      plan9port \
+all: plan9port \
       go \
       rust \
       bash \
@@ -17,7 +15,10 @@ all: pkgsrc \
       gcloud \
       tmux \
       ctags \
-      linkerd
+      linkerd \
+      kubectl \
+      golint \
+      staticcheck
 
 ###########################
 #      Variables
@@ -32,7 +33,7 @@ BOOTSTRAP_SHA := 478d2e30f150712a851f8f4bcff7f60026f65c9e
 PKGS := $(shell cat ./PKGS)
 
 # set path for plan9 and go
-export PATH := $(PATH):/usr/local/plan9/bin:/usr/local/go/bin
+export PATH := $(PATH):/usr/local/plan9/bin:/usr/local/go/bin:/usr/pkg/bin/:/usr/pkg/gcc10/bin
 
 user=daniel
 nbin=/home/daniel/bin
@@ -60,10 +61,9 @@ ifeq ($(wildcard /usr/pkg/.*),)
 	curl -o /tmp/${BOOTSTRAP_TAR} https://pkgsrc.joyent.com/packages/Linux/el7/bootstrap/${BOOTSTRAP_TAR} 
 	sudo tar -zxpf /tmp/${BOOTSTRAP_TAR} -C / 
 endif
-	export PATH=/usr/pkg/bin:$$PATH && \
-		sudo pkgin -y update && \
-		sudo pkgin -y upgrade && \
-		sudo pkgin -y install ${PKGS}
+		sudo /usr/pkg/bin/pkgin -y update && \
+		sudo /usr/pkg/bin/pkgin -y upgrade && \
+		sudo /usr/pkg/bin/pkgin -y install ${PKGS}
 
 go:
 ifeq ($(wildcard /usr/local/go/.*),)
@@ -73,19 +73,21 @@ ifeq ($(wildcard /usr/local/go/.*),)
 endif
 
 plan9port:
+ifeq ($(wildcard /usr/local/go/.*),)
 	cd sources/git.sr.ht/danieljamespost/plan9port && \
 		./PREINSTALL 
-ifeq ($(wildcard $(HOME)/lib/.*),)
-	ln -s $(shell pwd)/p9p/lib $(HOME)/lib 
-endif
-ifeq ($(wildcard $(HOME)/bin/.*),)
-	ln -s $(shell pwd)/p9p/bin $(HOME)/bin 
-endif
-ifeq ($(wildcard $(HOME)/mail/.*),)
-	ln -s $(shell pwd)/p9p/mail $(HOME)/mail 
-endif
-ifeq ($(wildcard $(HOME)/.msmtprc/),)
-	ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
+	ifeq ($(wildcard $(HOME)/lib/.*),)
+		ln -s $(shell pwd)/p9p/lib $(HOME)/lib 
+	endif
+	ifeq ($(wildcard $(HOME)/bin/.*),)
+		ln -s $(shell pwd)/p9p/bin $(HOME)/bin 
+	endif
+	ifeq ($(wildcard $(HOME)/mail/.*),)
+		ln -s $(shell pwd)/p9p/mail $(HOME)/mail 
+	endif
+	ifeq ($(wildcard $(HOME)/.msmtprc/),)
+		ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
+	endif
 endif
 
 rust:
@@ -137,15 +139,20 @@ edwood: go
 		go install
 
 nyne: go plan9port
+	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
 	cd sources/git.sr.ht/danieljamespost/nyne && \
 		mk && \
 		installdir=$(nbin) mk install 
-	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
 
 rc: 
 	cd sources/git.sr.ht/danieljamespost/rc && \
 		./boostrap &&
 		./configure --with-edit=readline && \
+		make && \
+		sudo make install
+
+noice:
+	cd sources/git.sr.ht/danieljamespost/noice && \
 		make && \
 		sudo make install
 
@@ -157,12 +164,18 @@ mrsh:
 		sudo make install
 
 # sircmpwn
-aerc: go
+scdoc:
+	cd sources/git.sr.ht/sircmpwn/scdoc && \
+		make && \
+		sudo make install
+
+aerc: go scdoc
 	cd sources/git.sr.ht/sircmpwn/aerc && \
 		make && \
 		sudo make install
-	ln -s $(shell pwd)/email/aerc/aerc.conf $(HOME).config/aerc/aerc.conf
-	ln -s $(shell pwd)/email/aerc/binds.conf $(HOME).config/aerc/binds.conf
+	mkdir -p $(HOME)/.config/aerc
+	ln -s $(shell pwd)/email/aerc/aerc.conf $(HOME)/.config/aerc/aerc.conf
+	ln -s $(shell pwd)/email/aerc/binds.conf $(HOME)/.config/aerc/binds.conf
 
 ###########################
 #        Github
@@ -182,7 +195,6 @@ terraform: go
 		&& git pull \
 		&& git checkout v0.13.1 \
 		&& go mod vendor \
-		&& go build \
 		&& go install
 
 yash: 
@@ -195,7 +207,12 @@ yash:
 
 vim: 
 	cd sources/github.com/vim/vim && \
-		./configure --enable-fontset --with-x --with-features=normal && \
+		./configure \
+			--enable-fontset \
+			--disable-gpm \
+			--enable-multibyte \
+			--with-x \
+			--with-features=normal && \
 		make && \
 		sudo make install
 	ln -s $(shell pwd)/editors/vimrc $(HOME)/.vimrc 
@@ -261,7 +278,7 @@ ctags:
 		make && \
 		sudo make install
 	mkdir -p $(HOME)/.config/ctags
-	ln -s $(shell pwd)/editors/ctags $(HOME)/.config/ctags/.ctags
+	ln -s $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
 
 linkerd:
 	cd sources/github.com/linkerd/linkerd2 && \
@@ -272,6 +289,20 @@ linkerd:
 		git checkout stable-2.8.1 && \
 		go build -o linkerd cli/main.go && \
 		sudo cp ./linkerd /usr/local/bin/linkerd
+
+golint:
+	cd sources/github.com/golang/lint/golint && \
+		go install
+
+staticcheck:
+	cd sources/github.com/dominikh/go-tools && \
+		go install cmd/staticcheck/staticcheck.go
+
+exercism:
+	cd sources/github.com/exercism/cli&& \
+		go build -o exercism.bin exercism/main.go && \
+		sudo cp ./exercism.bin /usr/local/bin/exercism
+
 
 ###########################
 #      repo.or.cz
@@ -302,8 +333,8 @@ claws: libetpan
 #  git.savannah.gnu.org
 ###########################
 bash: 
+# ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	cd sources/git.savannah.gnu.org/bash && \
-		echo "CFLAGS=${CFLAGS}" && \
 		./configure --prefix=/usr \
 			--without-bash-malloc \
 			--enable-readline && \
@@ -315,6 +346,15 @@ bash:
 	sudo cp ./shells/bash/system.bashrc /etc/bash.bashrc
 	sudo cp ./shells/bash/system.bash_logout /etc/bash.bash_logout
 
-	ln -s ./shells/bash/bashrc ~/.bashrc
-	ln -s ./shells/profile ~/.profile
+	ln -s $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
+	ln -s $(shell pwd)/shells/profile ${HOME}/.profile
+# endif
+
+###########################
+#  go.googlesource.com
+###########################
+
+gofonts:
+	sudo mkdir -p /usr/share/fonts/go
+	sudo cp sources/go.googlesource.com/image/font/gofont/ttfs/* /usr/share/fonts/go/
 

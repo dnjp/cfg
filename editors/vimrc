@@ -6,6 +6,9 @@ set nocompatible				" don't try to be traditional vi
 " path
 set path+=**
 
+" tags
+set tags+=tags;/
+
 " visual
 " set nonumber 					" turn off line numbers
 set number
@@ -40,14 +43,14 @@ set incsearch					" start searching right away when typing
 " set hlsearch					" highlight terms when searching
 set nohlsearch 					" don't highlight search terms
 set wildmenu					" display matching files when tab complete
-" set tags^=.git/tags;~
-set tags+=tags;/
+set wildignore+=*/min/*,*/vendor/*,*/node_modules/*
 
 " visual helpers
 set showmatch 					" show matching delimiter
 set matchtime=2 				" delay for delimiter highlight
 set wildmenu					" better menu in command mode
-set wildmode=longest:full,full
+" set wildmode=longest:full,full
+set wildmode=longest,list
 
 " indentation
 set noexpandtab					" use hard tabs by default
@@ -58,7 +61,7 @@ set autoindent					" auto indentation based on last line
 set smartindent					" indentation based on syntax
 
 " file browsing
-set autochdir					" change pwd to working file
+" set autochdir					" change pwd to working file
 let g:netrw_banner=0        			" disable annoying banner
 let g:netrw_browse_split=4  			" open in prior window
 let g:netrw_altv=1          			" open splits to the right
@@ -71,6 +74,10 @@ let g:netrw_liststyle=3     			" tree view
 
 " make vim not highlight line numbers
 hi LineNr         term=NONE ctermfg=6 guifg=Brown
+set fillchars+=vert:\ 
+" hi VertSplit ctermbg=NONE guibg=NONE
+hi! VertSplit ctermfg=0 ctermbg=0 term=NONE
+
 
 """""""""""""""""""""""""""""""""""
 "            navigation
@@ -85,18 +92,22 @@ hi LineNr         term=NONE ctermfg=6 guifg=Brown
 " - ^n for anything specified by the 'complete' option
 " - Use ^n and ^p to go back and forth in the suggestion list
 command! MakeTags !ctags -R .
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 
-" tas
-map tn :tn
-map tp :tp
-map ts :ts
 
 """""""""""""""""""""""""""""""""""
 "        keyboard shortcuts
 """""""""""""""""""""""""""""""""""
 " set leader key
 map <Space> <Leader>
+
+" finding files
+map <leader>f :find 
+
+" tags
+map tn :tn
+map tp :tp
+map ts :ts
 
 map qq :q!
 
@@ -160,7 +171,7 @@ endfunction
 " c
 au BufReadPost *.c,*.h set filetype=c
 au filetype c set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab cindent
-" " autocmd FileType c setlocal makeprg=astyle\ --style=allman\ --indent=tab=8\ %
+autocmd FileType c setlocal makeprg=astyle\ --style=kr\ --indent=tab=8\ %
 autocmd BufWritePre *.h,*.c :call FormatBuffer()
 " autocmd QuickFixCmdPost [^l]* cwindow
 

@@ -82,3 +82,24 @@
 [submodule "sources/github.com/linkerd/linkerd2"]
 	path = sources/github.com/linkerd/linkerd2
 	url = https://github.com/linkerd/linkerd2.git
+[submodule "sources/git.sr.ht/sircmpwn/scdoc"]
+	path = sources/git.sr.ht/sircmpwn/scdoc
+	url = git@git.sr.ht:~sircmpwn/scdoc
+[submodule "sources/github.com/golang/lint"]
+	path = sources/github.com/golang/lint
+	url = https://github.com/golang/lint
+[submodule "sources/github.com/dominikh/go-tools"]
+	path = sources/github.com/dominikh/go-tools
+	url = https://github.com/dominikh/go-tools.git
+[submodule "sources/git.sr.ht/danieljamespost/noice"]
+	path = sources/git.sr.ht/danieljamespost/noice
+	url = git@git.sr.ht:~danieljamespost/noice
+[submodule "sources/go.googlesource.com/image"]
+	path = sources/go.googlesource.com/image
+	url = https://go.googlesource.com/image
+[submodule "sources/github.com/exercism/cli"]
+	path = sources/github.com/exercism/cli
+	url = https://github.com/exercism/cli.git
+[submodule "sources/github.com/ThrowTheSwitch/Unity"]
+	path = sources/github.com/ThrowTheSwitch/Unity
+	url = https://github.com/ThrowTheSwitch/Unity.git
