@@ -53,7 +53,7 @@ alias e="editinacme $*"
 # github.com/boyter/scc
 alias sloc="scc $*"
 alias next="cd ~/Nextcloud"
-alias learnc="cd $HOME/exercism/c"
+alias learn="cd $HOME/exercism"
 
 
 if [ "$INSIDE_ACME" ]; then

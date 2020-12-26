@@ -21,7 +21,8 @@ setupplumber() {
 
 setupfonts() {
 	fontsrv &
-	font=/mnt/font/MesloLGS-Regular/9a/font
+	# font=/mnt/font/MesloLGS-Regular/9a/font
+	font=$PLAN9/font/lucsans/unicode.8.font
 }
 
 startedwood() {

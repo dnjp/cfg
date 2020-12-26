@@ -6,8 +6,3 @@ if [ -f '/home/daniel/google-cloud-sdk/path.bash.inc' ]; then . '/home/daniel/go
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/daniel/google-cloud-sdk/completion.bash.inc' ]; then . '/home/daniel/google-cloud-sdk/completion.bash.inc'; fi
 
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"

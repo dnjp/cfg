@@ -10,8 +10,8 @@ set path+=**
 set tags+=tags;/
 
 " visual
-" set nonumber 					" turn off line numbers
-set number
+set nonumber 					" turn off line numbers
+" set number
 
 " set nomesg 					" disallow message
 set noshowmode 					" do not show '-- INSERT --'
@@ -102,7 +102,13 @@ command! MakeTags !ctags -R .
 map <Space> <Leader>
 
 " finding files
-map <leader>f :find 
+" map <leader>f :find 
+set rtp+=~/.skim
+map <leader>f :SK
+
+
+" make
+map <leader>m :!make 
 
 " tags
 map tn :tn
@@ -220,11 +226,10 @@ autocmd QuickFixCmdPost [^l]* cwindow
 " markdown
 au BufReadPost *.md set filetype=markdown
 au filetype markdown set tabstop=2 shiftwidth=2 softtabstop=2 expandtab textwidth=80 
-" autocmd BufRead,BufNewFile *.md setlocal spell
 au filetype markdown set complete+=kspell
-" autocmd FileType markdown setlocal makeprg=prettier\ %\ --write\ --loglevel\ error
-" autocmd BufWritePost *.md silent make! <afile> | silent redraw!
-" autocmd QuickFixCmdPost [^l]* cwindow
+autocmd FileType markdown setlocal makeprg=prettier\ --write\ --print-width\ 80\ --prose-wrap\ always\ % 
+autocmd BufWritePost *.md silent make! <afile> | silent redraw!
+autocmd QuickFixCmdPost [^l]* cwindow
 
 " protobuf
 au BufReadPost *.proto set filetype=protobuf
@@ -254,9 +259,6 @@ ab pln println!
 " yaml
 au BufReadPost *.yaml set filetype=yaml
 au filetype yaml set ts=2 sts=2 sw=2 expandtab
-autocmd FileType yaml setlocal makeprg=yamlcheck\ %
-autocmd BufWritePost *.yaml silent make! <afile> | silent redraw!
-autocmd QuickFixCmdPost [^l]* cwindow
 
 " json
 au BufReadPost *.json set filetype=json

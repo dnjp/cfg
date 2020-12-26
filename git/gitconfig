@@ -11,8 +11,6 @@
 	ctags = !.git/hooks/ctags
 	check = log --patch --reverse "HEAD~"..
 	fmt-patch = format-patch HEAD~ -o
-[init]
-	templatedir = ~/.git_template
 [pull]
 	rebase = false
 [github]

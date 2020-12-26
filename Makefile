@@ -312,7 +312,9 @@ nvi:
 	cd sources/repo.or.cz/nvi/dist && \
 		./distrib
 	cd sources/repo.or.cz/nvi/build.unix && \
-		../dist/configure --enable-widechar && \
+		../dist/configure \
+			--program-prefix=n \
+			--enable-widechar && \
 		make && \
 		sudo make install 
 	ln -s $(shell pwd)/editors/exrc $(HOME)/.exrc 

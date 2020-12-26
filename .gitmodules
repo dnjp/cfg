@@ -103,3 +103,7 @@
 [submodule "sources/github.com/ThrowTheSwitch/Unity"]
 	path = sources/github.com/ThrowTheSwitch/Unity
 	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "sources/git.savannah.gnu.org/emacs"]
+	path = sources/git.savannah.gnu.org/emacs
+	url = git://git.savannah.gnu.org/emacs.git
+	branch = feature/native-comp

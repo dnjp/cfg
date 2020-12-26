@@ -76,6 +76,9 @@ map  F :vs /tmp/fzffile:r!sk -c 'git ls-files $(git rev-parse --show-toplevel)
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+" make
+map  m :!make 
+
 " generate tags
 map  t :!ctags -R .
 
