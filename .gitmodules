@@ -107,3 +107,6 @@
 	path = sources/git.savannah.gnu.org/emacs
 	url = git://git.savannah.gnu.org/emacs.git
 	branch = feature/native-comp
+[submodule "sources/github.com/deadpixi/sam"]
+	path = sources/github.com/deadpixi/sam
+	url = https://github.com/deadpixi/sam.git

@@ -18,7 +18,8 @@ all: plan9port \
       linkerd \
       kubectl \
       golint \
-      staticcheck
+      staticcheck \
+      sam
 
 ###########################
 #      Variables
@@ -74,7 +75,7 @@ endif
 
 plan9port:
 ifeq ($(wildcard /usr/local/go/.*),)
-	cd sources/git.sr.ht/danieljamespost/plan9port && \
+	cd sources/github.com/dnjp/plan9port && \
 		./PREINSTALL 
 	ifeq ($(wildcard $(HOME)/lib/.*),)
 		ln -s $(shell pwd)/p9p/lib $(HOME)/lib 
@@ -112,50 +113,6 @@ kubectl:
 ###########################
 #        Sourcehut
 ###########################
-
-# danieljamespost
-dmenu: 
-	cd sources/git.sr.ht/danieljamespost/dmenu && \
-		make && \
-		sudo make install
-
-dwm: 
-	cd sources/git.sr.ht/danieljamespost/dwm && \
-		make && \
-		sudo make install
-
-st: 
-	cd sources/git.sr.ht/danieljamespost/st && \
-		make && \
-		sudo make install
-
-slstatus: 
-	cd sources/git.sr.ht/danieljamespost/slstatus && \
-		make && \
-		sudo make install
-
-edwood: go
-	cd sources/git.sr.ht/danieljamespost/edwood && \
-		go install
-
-nyne: go plan9port
-	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
-	cd sources/git.sr.ht/danieljamespost/nyne && \
-		mk && \
-		installdir=$(nbin) mk install 
-
-rc: 
-	cd sources/git.sr.ht/danieljamespost/rc && \
-		./boostrap &&
-		./configure --with-edit=readline && \
-		make && \
-		sudo make install
-
-noice:
-	cd sources/git.sr.ht/danieljamespost/noice && \
-		make && \
-		sudo make install
-
 # emersion
 mrsh:
 	cd sources/git.sr.ht/emersion/mrsh && \
@@ -180,6 +137,53 @@ aerc: go scdoc
 ###########################
 #        Github
 ###########################
+# danieljamespost
+dmenu: 
+	cd sources/github.com/dnjp/dmenu && \
+		make && \
+		sudo make install
+
+dwm: 
+	cd sources/github.com/dnjp/dwm && \
+		make && \
+		sudo make install
+
+st: 
+	cd sources/github.com/dnjp/st && \
+		make && \
+		sudo make install
+
+slstatus: 
+	cd sources/github.com/dnjp/slstatus && \
+		make && \
+		sudo make install
+
+edwood: go
+	cd sources/github.com/dnjp/edwood && \
+		go install
+
+nyne: go plan9port
+	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
+	cd sources/github.com/dnjp/nyne && \
+		mk && \
+		installdir=$(nbin) mk install 
+
+rc: 
+	cd sources/github.com/dnjp/rc && \
+		./boostrap &&
+		./configure --with-edit=readline && \
+		make && \
+		sudo make install
+
+noice:
+	cd sources/github.com/dnjp/noice && \
+		make && \
+		sudo make install
+
+sam:
+	cd sources/github.com/deadpixi/sam/ && \
+		make && \
+		sudo make install
 
 acmelsp: go
 	cd sources/github.com/fhs/acme-lsp && \
