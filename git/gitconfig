@@ -4,8 +4,8 @@
 [use]
 	name = Daniel Posthuma
 [core]
-	# editor = editinacme
-	editor = vim
+	editor = editinacme
+	# editor = vim
 [alias]
 	co = checkout
 	ctags = !.git/hooks/ctags

@@ -2,6 +2,9 @@
 
 . $HOME/.profile
 
+# '!' is ignored in bash
+export PS1='! '
+
 envvars() {
 	export tabstop=8
 	export INSIDE_ACME=true
@@ -15,18 +18,20 @@ setupshell() {
 }
 
 setupplumber() {
-	cat $home/9/plumbing | 9p write plumb/rules
+	# cat $home/lib/plumbing | 9p write plumb/rules
 	9 plumber
 }
 
 setupfonts() {
 	fontsrv &
 	# font=/mnt/font/MesloLGS-Regular/9a/font
-	font=$PLAN9/font/lucsans/unicode.8.font
+	font=/mnt/font/GoRegular/10a/font
+	lfont=/mnt/font/GoMono/9a/font
+	# font=$PLAN9/font/lucsans/unicode.8.font
 }
 
 startedwood() {
-	exec edwood -a -f $font
+	exec edwood -a -f $font -F $lfont
 }
 
 startacme() {

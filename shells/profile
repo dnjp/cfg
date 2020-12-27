@@ -8,8 +8,8 @@ export ENV=$HOME/.profile;
 export NO_COLOR=1
 
 # defaults
-export BROWSER="brave"
-export EDITOR='vim'
+export BROWSER="brave-browser"
+export EDITOR='editinacme'
 export VISUAL=$EDITOR
 export TERMCMD="9t"
 export SKIM_DEFAULT_OPTIONS='--color=bw'

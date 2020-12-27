@@ -1,27 +1,27 @@
 [submodule "sources/git.sr.ht/danieljamespost/st"]
-	path = sources/git.sr.ht/danieljamespost/st
-	url = git@git.sr.ht:~danieljamespost/st
+	path = sources/github.com/dnjp/st
+	url = git@github.com:dnjp/st.git
 [submodule "sources/git.sr.ht/danieljamespost/plan9port"]
-	path = sources/git.sr.ht/danieljamespost/plan9port
-	url = git@git.sr.ht:~danieljamespost/plan9port
+	path = sources/github.com/dnjp/plan9port
+	url = git@github.com:dnjp/plan9port.git
 [submodule "sources/git.sr.ht/danieljamespost/nyne"]
-	path = sources/git.sr.ht/danieljamespost/nyne
-	url = git@git.sr.ht:~danieljamespost/nyne
+	path = sources/github.com/dnjp/nyne
+	url = git@github.com:dnjp/nyne.git
 [submodule "sources/git.sr.ht/danieljamespost/edwood"]
-	path = sources/git.sr.ht/danieljamespost/edwood
-	url = git@git.sr.ht:~danieljamespost/edwood
+	path = sources/github.com/dnjp/edwood
+	url = git@github.com:dnjp/edwood.git
 [submodule "sources/git.sr.ht/danieljamespost/dmenu"]
-	path = sources/git.sr.ht/danieljamespost/dmenu
-	url = git@git.sr.ht:~danieljamespost/dmenu
+	path = sources/github.com/dnjp/dmenu
+	url = git@github.com:dnjp/dmenu.git
 [submodule "sources/git.sr.ht/danieljamespost/dwm"]
-	path = sources/git.sr.ht/danieljamespost/dwm
-	url = git@git.sr.ht:~danieljamespost/dwm
+	path = sources/github.com/dnjp/dwm
+	url = git@github.com:dnjp/dwm.git
 [submodule "sources/git.sr.ht/danieljamespost/slstatus"]
-	path = sources/git.sr.ht/danieljamespost/slstatus
-	url = git@git.sr.ht:~danieljamespost/slstatus
+	path = sources/github.com/dnjp/slstatus
+	url = git@github.com:dnjp/slstatus.git
 [submodule "sources/git.sr.ht/danieljamespost/rc"]
-	path = sources/git.sr.ht/danieljamespost/rc
-	url = git@git.sr.ht:~danieljamespost/rc
+	path = sources/github.com/dnjp/rc
+	url = git@github.com:dnjp/rc.git
 [submodule "sources/github.com/vim/vim"]
 	path = sources/github.com/vim/vim
 	url = https://github.com/vim/vim.git
@@ -92,8 +92,8 @@
 	path = sources/github.com/dominikh/go-tools
 	url = https://github.com/dominikh/go-tools.git
 [submodule "sources/git.sr.ht/danieljamespost/noice"]
-	path = sources/git.sr.ht/danieljamespost/noice
-	url = git@git.sr.ht:~danieljamespost/noice
+	path = sources/github.com/dnjp/noice
+	url = git@github.com:dnjp/noice.git
 [submodule "sources/go.googlesource.com/image"]
 	path = sources/go.googlesource.com/image
 	url = https://go.googlesource.com/image
