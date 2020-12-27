@@ -31,7 +31,7 @@ setupfonts() {
 }
 
 startedwood() {
-	exec edwood -a -f $font -F $lfont
+	exec edwood -a -f $font -F $lfont -l $HOME/edwood.dump
 }
 
 startacme() {

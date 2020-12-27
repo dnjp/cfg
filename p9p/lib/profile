@@ -3,8 +3,8 @@ prompt=('; ' '  ')
 NO_COLOR=1
 
 BROWSER='brave'
-# EDITOR='editinacme'
-EDITOR='vi'
+EDITOR='editinacme'
+# EDITOR='vi'
 VISUAL=$EDITOR
 PAGER=nobs
 MANPAGER=nobs
@@ -37,12 +37,13 @@ fn mar { cd $MARTIN }
 fn per { cd $HOME/src/personal }
 fn src { cd $HOME/src }
 fn next { cd $NEXTCLOUD }
-fn cfg { cd $HOME/src/config }
+fn cfg { cd $HOME/src/cfg }
 fn dow { cd $HOME/Downloads }
 fn drop { cd $HOME/Dropbox }
 fn cl { clear }
 fn cd { builtin cd $* && awd }
 fn l { ls $* | mc }
+fn lc { 9 lc $* }
 fn la { ls -a $* | mc }
 fn '..' { cd .. }
 
@@ -147,35 +148,6 @@ fn psql-con {
 	psql -Atx postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME
 }
 
-fn local-opts {
-        MCACHE_HOST=localhost
-	MCACHE_PORT=8080
-	NODE_ENV=staging
-	BIDDER_GRPC_SERVICE_HOST=localhost
-	BIDDER_GRPC_SERVICE_PORT=7000
-	REDIS_PRIV=$REDIS_EAST_PUB
-	REDIS_SECRET=$REDIS_EAST_SECRET
-	REGION=us-east4
-}
-
-fn prod-opts {
-	NODE_ENV=production
-	BIDDER_GRPC_SERVICE_HOST=localhost
-	BIDDER_GRPC_SERVICE_PORT=7000
-	REDIS_PRIV=$REDIS_EAST_PUB
-	REDIS_SECRET=$REDIS_EAST_SECRET
-	REGION=us-east4
-}
-
-fn stage-opts {
-	NODE_ENV=staging
-	BIDDER_GRPC_SERVICE_HOST=localhost
-	BIDDER_GRPC_SERVICE_PORT=7000
-	REDIS_PRIV=$REDIS_EAST_PUB
-	REDIS_SECRET=$REDIS_EAST_SECRET
-	REGION=us-east4
-}
-
 fn linkerd-start {
 	linkerd dashboard $*
 }
@@ -196,14 +168,14 @@ fn goose-run {
 	goose postgres postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME $*
 }
 
-fn scale-deploy {
+fn scaledeploy {
 	pat=$1
 	num=$2
 	deployments=`{kubectl get deploy | rg $pat | awk '{print $1}'}
 	for (i in $deployments) kubectl scale deploy $i --replicas=$num
 }
 
-fn kube-pods {
+fn kubepods {
 	pat=$1
 	cmd=$2
 	pods=`{kubectl get po | rg $pat | awk '{print $1}'}

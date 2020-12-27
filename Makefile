@@ -1,9 +1,11 @@
 all: plan9port \
       go \
+      gofonts \
       rust \
-      bash \
+      rc \
       meslo \
       vim \
+      nvi \
       alacritty \
       ripgrep \
       edwood \
@@ -170,10 +172,15 @@ nyne: go plan9port
 
 rc: 
 	cd sources/github.com/dnjp/rc && \
-		./boostrap &&
+		./bootstrap && \
 		./configure --with-edit=readline && \
 		make && \
 		sudo make install
+ifeq ($(wildcard $(HOME)/.rcrc/),)
+	ln -s $(shell pwd)/shells/rcrc $(HOME)/.rcrc
+endif
+	sudo sh -c "echo '/usr/local/bin/rc' >> /etc/shells"
+	chsh -s /usr/local/bin/rc $(user)
 
 noice:
 	cd sources/github.com/dnjp/noice && \
