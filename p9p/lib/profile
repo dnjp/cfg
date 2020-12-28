@@ -122,7 +122,7 @@ fn nvm{
 	bash $home/bin/nvm
 }
 
-fn gcloud-config{
+fn proj{
 	gcloud config configurations activate $1
 	gcloud info | grep Project
 }

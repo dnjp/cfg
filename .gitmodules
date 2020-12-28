@@ -110,3 +110,6 @@
 [submodule "sources/github.com/deadpixi/sam"]
 	path = sources/github.com/deadpixi/sam
 	url = https://github.com/deadpixi/sam.git
+[submodule "sources/github.com/golang/tools"]
+	path = sources/github.com/golang/tools
+	url = https://github.com/golang/tools.git

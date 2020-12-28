@@ -10,7 +10,7 @@ all: plan9port \
       vim \
       nvi \
       edwood \
-      sam
+      sam \
       nyne \
       editinacme \
       acmelsp \
@@ -21,6 +21,7 @@ all: plan9port \
       linkerd \
       kubectl \
       golint \
+      gotools \
       staticcheck
 
 ###########################
@@ -314,6 +315,10 @@ linkerd:
 golint:
 	cd sources/github.com/golang/lint/golint && \
 		go install
+
+gotools:
+	cd sources/github.com/golang/tools && \
+		go install ./...
 
 staticcheck:
 	cd sources/github.com/dominikh/go-tools && \
