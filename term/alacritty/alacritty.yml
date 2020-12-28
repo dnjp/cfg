@@ -9,20 +9,17 @@ window:
 font:
   normal:
     # family: Meslo LG S
-    family: Go Mono
+    # family: Go Mono
+    family: Lucida Sans Typewriter
     style: Regular
 
   bold:
-    family: Go Mono
+    family: Lucida Sans Typewriter
     style: Bold
 
   italic:
-    family: Go Mono
+    family: Lucida Sans Typewriter
     style: Italic
-
-  bold_italic:
-    family: Meslo LG S
-    style: Bold Italic
 
   size: 5.5
 

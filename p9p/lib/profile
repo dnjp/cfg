@@ -26,7 +26,7 @@ JAVA_HOME=/usr/lib/jvm/java-14-openjdk
 
 HARVEY=/home/daniel/src/personal/harvey
 
-path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin)
+path=($PLAN9/bin /bin /usr/bin /usr/local/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin)
 
 fn ls { 9 ls $* }
 fn find { 9 find $* }
@@ -181,3 +181,61 @@ fn kubepods {
 	pods=`{kubectl get po | rg $pat | awk '{print $1}'}
 	for (i in $pods) eval $cmd
 }
+
+fn f { 
+	pattern=$*
+	for(file in `{9 du -a ./ | 9 awk '{print $2}' | 9 sed 's/\.\/\//.\//g'}){
+		if(9 test -d $file){
+			9 echo $file
+		}
+		if not{
+			if(9 test -x $file){
+				9 echo $file
+			}
+			if not{
+				# echo $file:^`{9 grep -n $pattern $file}
+				# 9 grep -n $pattern $file | echo $file:^`{awk '{print}'}
+				9 grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
+				# for(line in `{9 grep -n $pattern $file | awk '{print}'}){
+					# echo $line
+					# echo $file:$line
+				# }
+				echo
+			}
+		}
+	}
+}
+
+ps1=$prompt
+tab='	'
+nl='
+'
+fn cd{
+	builtin cd $1 && awd &&
+	switch($#*){
+	case 0
+		dir=$home
+		prompt=($ps1 $tab)
+	case *
+		switch($1){
+		case /*
+			dir=$1
+			prompt=($nl^'> '^`{basename `{pwd}}^$nl^$ps1 $tab)
+		case */* ..*
+			dir=()
+			prompt=($nl^'> '^`{basename `{pwd}}^$nl^$ps1 $tab)
+		case *
+			dir=()
+			prompt=($nl^'> '^`{basename `{pwd}}^$nl^$ps1 $tab)
+		}
+	}
+}
+
+fn pwd{
+	if(~ $#dir 0)
+		dir=‘{/bin/pwd}
+	echo $dir
+}
+
+
+

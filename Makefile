@@ -1,9 +1,10 @@
 all: plan9port \
       go \
+      lucidafonts \
       gofonts \
+      meslofonts \
       rust \
       rc \
-      meslo \
       vim \
       nvi \
       alacritty \
@@ -111,6 +112,10 @@ kubectl:
 	curl -Lo /tmp/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/linux/amd64/kubectl
 	chmod +x /tmp/kubectl
 	sudo mv /tmp/kubectl /usr/local/bin/kubectl
+
+lucidafonts:
+	sudo mkdir -p /usr/share/fonts/lucida
+	sudo cp fonts/lucida/* /usr/share/fonts/lucida/
 
 ###########################
 #        Sourcehut
@@ -249,7 +254,7 @@ alacritty: rust
 	mkdir -p $(HOME)/.config/alacritty
 	ln -s $(shell pwd)/term/alacritty/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
-meslo:
+meslofonts:
 	sudo mkdir -p /usr/share/fonts/meslo
 	cd sources/github.com/andreberg/Meslo-Font/dist/v1.2.1 && \
 		sudo unzip 'Meslo LG v1.2.1.zip' -d /usr/share/fonts/meslo
