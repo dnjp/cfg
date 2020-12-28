@@ -37,80 +37,80 @@ CMAKE_TOOLCHAIN_FILE=/home/daniel/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 path=($PLAN9/bin /bin /usr/bin /usr/local/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin)
 
-fn ls { 9 ls $* }
-fn sort { 9 sort $* }
-fn lc { 9 lc $* }
+fn ls{ 9 ls $* }
+fn sort{ 9 sort $* }
+fn lc{ 9 lc $* }
 
-fn h { cd $HOME }
-fn mar { cd $MARTIN }
-fn per { cd $HOME/src/personal }
-fn src { cd $HOME/src }
-fn next { cd $NEXTCLOUD }
-fn cfg { cd $HOME/src/cfg }
-fn dow { cd $HOME/Downloads }
-fn drop { cd $HOME/Dropbox }
-fn cl { clear }
-fn cd { builtin cd $* && awd }
-fn l { ls $* | mc }
-fn la { ls -a $* | mc }
-fn '..' { cd .. }
+fn h{ cd $HOME }
+fn mar{ cd $MARTIN }
+fn per{ cd $HOME/src/personal }
+fn src{ cd $HOME/src }
+fn next{ cd $NEXTCLOUD }
+fn cfg{ cd $HOME/src/cfg }
+fn dow{ cd $HOME/Downloads }
+fn drop{ cd $HOME/Dropbox }
+fn cl{ clear }
+fn cd{ builtin cd $* && awd }
+fn l{ ls $* | mc }
+fn la{ ls -a $* | mc }
+fn '..'{ cd .. }
 
-fn code { code-insiders $* }
-fn e { editinacme $* }
+fn code{ code-insiders $* }
+fn e{ editinacme $* }
 
-fn g { git $* }
-fn gs { git status }
-fn gc { git commit -am $* }
-fn gp { git push }
-fn ga { git add }
+fn g{ git $* }
+fn gs{ git status }
+fn gc{ git commit -am $* }
+fn gp{ git push }
+fn ga{ git add }
 
-fn t { tmux -2 -u $* }
-fn tat { tmux attach -t $* }
-fn ts { tmux ls $* }
-fn tk { tmux kill-session -t $* }
+fn t{ tmux -2 -u $* }
+fn tat{ tmux attach -t $* }
+fn ts{ tmux ls $* }
+fn tk{ tmux kill-session -t $* }
 
-fn pdf { evince }
+fn pdf{ evince }
 
-fn runlisp { sbcl --script }
+fn runlisp{ sbcl --script }
 
-fn pf { ipfs }
-fn pfreadme { ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme }
+fn pf{ ipfs }
+fn pfreadme{ ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme }
 pfbase=QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv
 
-fn tf { terraform $* -no-color }
-fn tp { terraform plan }
-fn ta { terraform apply }
+fn tf{ terraform $* -no-color }
+fn tp{ terraform plan }
+fn ta{ terraform apply }
 
-fn k { kubectl $* }
-fn kpo { kubectl get po $* }
-fn wkpow { watch kubectl get po -o wide }
-fn ksv { kubectl get svc $* }
-fn kdp { kubectl get deploy $* }
-fn kin { kubectl get ingress $* }
-fn kdb { kubectl -n db }
-fn kmon { kubectl -n monitoring }
+fn k{ kubectl $* }
+fn kpo{ kubectl get po $* }
+fn wkpow{ watch kubectl get po -o wide }
+fn ksv{ kubectl get svc $* }
+fn kdp{ kubectl get deploy $* }
+fn kin{ kubectl get ingress $* }
+fn kdb{ kubectl -n db }
+fn kmon{ kubectl -n monitoring }
 
-fn redis-east-con { redis-cli -u redis://$REDIS_EAST_SECRET@$REDIS_EAST_PUB/0 }
-fn redis-west-con { redis-cli -u redis://$REDIS_WEST_SECRET@$REDIS_WEST_PUB/0 }
-fn redislabs-east-con { redis-cli -u redis://$CACHE_EAST_SECRET@$CACHE_EAST_HOST/0 }
-fn redislabs-west-con { redis-cli -u redis://$CACHE_WEST_SECRET@$CACHE_WEST_HOST/0 }
+fn redis-east-con{ redis-cli -u redis://$REDIS_EAST_SECRET@$REDIS_EAST_PUB/0 }
+fn redis-west-con{ redis-cli -u redis://$REDIS_WEST_SECRET@$REDIS_WEST_PUB/0 }
+fn redislabs-east-con{ redis-cli -u redis://$CACHE_EAST_SECRET@$CACHE_EAST_HOST/0 }
+fn redislabs-west-con{ redis-cli -u redis://$CACHE_WEST_SECRET@$CACHE_WEST_HOST/0 }
 
-fn dev-con { gcloud beta container clusters get-credentials martin-bidder-dev-east --region us-east4 --project martin-bidder-dev }
-fn stage-con { gcloud beta container clusters get-credentials martin-bidder-stage-east --region us-east4 --project martin-bidder-stage }
-fn stage-west-con { gcloud beta container clusters get-credentials martin-bidder-stage-west --region us-west1 --project martin-bidder-stage }
-fn prod-con { gcloud beta container clusters get-credentials martin-bidder-prod-east --region us-east4 --project martin-bidder-prod }
-fn prod-west-con { gcloud beta container clusters get-credentials martin-bidder-prod-west --region us-west1 --project martin-bidder-prod }
-fn test-con { gcloud container clusters get-credentials martin-bidder-stage-test --region us-east4 --project martin-bidder-stage }
+fn dev-con{ gcloud beta container clusters get-credentials martin-bidder-dev-east --region us-east4 --project martin-bidder-dev }
+fn stage-con{ gcloud beta container clusters get-credentials martin-bidder-stage-east --region us-east4 --project martin-bidder-stage }
+fn stage-west-con{ gcloud beta container clusters get-credentials martin-bidder-stage-west --region us-west1 --project martin-bidder-stage }
+fn prod-con{ gcloud beta container clusters get-credentials martin-bidder-prod-east --region us-east4 --project martin-bidder-prod }
+fn prod-west-con{ gcloud beta container clusters get-credentials martin-bidder-prod-west --region us-west1 --project martin-bidder-prod }
+fn test-con{ gcloud container clusters get-credentials martin-bidder-stage-test --region us-east4 --project martin-bidder-stage }
 
-fn cg { cargo }
-fn cr { cargo run }
-fn cb { cargo build }
+fn cg{ cargo }
+fn cr{ cargo run }
+fn cb{ cargo build }
 
-fn scheme { racket -l sicp --repl }
+fn scheme{ racket -l sicp --repl }
 
-fn wtc {
+fn wtc{
 	cmd=$*
-	while() {
+	while(){
 		eval $cmd
 		echo
 		echo
@@ -118,70 +118,70 @@ fn wtc {
 	}
 }
 
-fn nvm {
+fn nvm{
 	bash $home/bin/nvm
 }
 
-fn gcloud-config {
+fn gcloud-config{
 	gcloud config configurations activate $1
 	gcloud info | grep Project
 }
 
-fn mon {
+fn mon{
 	xrandr --output HDMI1 --right-of eDP1 --auto
 }
 
-fn startmail {
+fn startmail{
 	plumber
 	factotum
 	factotum -g 'proto=pass service=imap server=imap.gmail.com user=daniel@martin.ai !password?'
 	mailfs -t imap.gmail.com
 }
 
-fn plumb-update {
+fn plumb-update{
 	cat $HOME/lib/plumbing | 9p write plumb/rules
 }
 
-fn psql-con {
+fn psql-con{
 	psql -Atx postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME
 }
 
-fn linkerd-start {
+fn linkerd-start{
 	linkerd dashboard $*
 }
 
-fn sniff {
+fn sniff{
 	kubectl sniff $*
 }
 
-fn ssh-sdf {
+fn ssh-sdf{
 	ssh danieljamespost@tty.sdf.org
 }
 
-fn ssh-plan9 {
+fn ssh-plan9{
 	ssh danieljamespost@vps2.sdf.org
 }
 
-fn goose-run {
+fn goose-run{
 	goose postgres postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME $*
 }
 
-fn scaledeploy {
+fn scaledeploy{
 	pat=$1
 	num=$2
 	deployments=`{kubectl get deploy | rg $pat | awk '{print $1}'}
-	for (i in $deployments) kubectl scale deploy $i --replicas=$num
+	for(i in $deployments) kubectl scale deploy $i --replicas=$num
 }
 
-fn kubepods {
+fn kubepods{
 	pat=$1
 	cmd=$2
 	pods=`{kubectl get po | rg $pat | awk '{print $1}'}
-	for (i in $pods) eval $cmd
+	for(i in $pods) eval $cmd
 }
 
 ignore='tags|TAGS|node_modules|.git'
-fn f { 
+fn f{ 
 	pattern=$*
 	for(file in `{9 du -a ./ | 9 awk '{print $2}' | 9 sed 's/\.\/\//.\//g' | 9 grep -v $ignore}){
 		if(! 9 test -d $file && ! 9 test -x $file){
@@ -190,7 +190,7 @@ fn f {
 	}
 }
 
-fn ff {
+fn ff{
 	pattern=$1
 	dir=`{git rev-parse --show-toplevel}
 	du -a $dir | grep -v $ignore | grep $pattern
