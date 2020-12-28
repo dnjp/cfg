@@ -19,18 +19,27 @@ GOPATH=$HOME/go
 LC_ALL=en_US.utf8
 
 SKIM_DEFAULT_OPTIONS='--color=bw'
+FZF_DEFAULT_OPTS=--no-color
 
 NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
+
 # JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 JAVA_HOME=/usr/lib/jvm/java-14-openjdk
+_JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
 
 HARVEY=/home/daniel/src/personal/harvey
+
+VCPKG_ROOT=/home/daniel/vcpkg
+OpenCV_DIR=/home/daniel/vcpkg/packages/opencv4_x64-linux/share/opencv
+DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
+VCPKG_TARGET_TRIPLET=/home/daniel/vcpkg/installed/x64-linux
+CMAKE_TOOLCHAIN_FILE=/home/daniel/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 path=($PLAN9/bin /bin /usr/bin /usr/local/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin)
 
 fn ls { 9 ls $* }
-fn find { 9 find $* }
 fn sort { 9 sort $* }
+fn lc { 9 lc $* }
 
 fn h { cd $HOME }
 fn mar { cd $MARTIN }
@@ -43,7 +52,6 @@ fn drop { cd $HOME/Dropbox }
 fn cl { clear }
 fn cd { builtin cd $* && awd }
 fn l { ls $* | mc }
-fn lc { 9 lc $* }
 fn la { ls -a $* | mc }
 fn '..' { cd .. }
 
@@ -99,16 +107,6 @@ fn cr { cargo run }
 fn cb { cargo build }
 
 fn scheme { racket -l sicp --repl }
-
-VCPKG_ROOT=/home/daniel/vcpkg
-OpenCV_DIR=/home/daniel/vcpkg/packages/opencv4_x64-linux/share/opencv
-DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
-VCPKG_TARGET_TRIPLET=/home/daniel/vcpkg/installed/x64-linux
-CMAKE_TOOLCHAIN_FILE=/home/daniel/vcpkg/scripts/buildsystems/vcpkg.cmake
-
-_JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
-
-FZF_DEFAULT_OPTS=--no-color
 
 fn wtc {
 	cmd=$*
@@ -182,28 +180,20 @@ fn kubepods {
 	for (i in $pods) eval $cmd
 }
 
+ignore='tags|TAGS|node_modules|.git'
 fn f { 
 	pattern=$*
-	for(file in `{9 du -a ./ | 9 awk '{print $2}' | 9 sed 's/\.\/\//.\//g'}){
-		if(9 test -d $file){
-			9 echo $file
-		}
-		if not{
-			if(9 test -x $file){
-				9 echo $file
-			}
-			if not{
-				# echo $file:^`{9 grep -n $pattern $file}
-				# 9 grep -n $pattern $file | echo $file:^`{awk '{print}'}
-				9 grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
-				# for(line in `{9 grep -n $pattern $file | awk '{print}'}){
-					# echo $line
-					# echo $file:$line
-				# }
-				echo
-			}
+	for(file in `{9 du -a ./ | 9 awk '{print $2}' | 9 sed 's/\.\/\//.\//g' | 9 grep -v $ignore}){
+		if(! 9 test -d $file && ! 9 test -x $file){
+			9 grep -n $pattern $file | 9 awk '{print "'^$file:^'"$0}'
 		}
 	}
+}
+
+fn ff {
+	pattern=$1
+	dir=`{git rev-parse --show-toplevel}
+	du -a $dir | grep -v $ignore | grep $pattern
 }
 
 ps1=$prompt
@@ -236,6 +226,4 @@ fn pwd{
 		dir=‘{/bin/pwd}
 	echo $dir
 }
-
-
 

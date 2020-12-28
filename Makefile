@@ -1,28 +1,27 @@
 all: plan9port \
       go \
+      rc \
+      rust \
       lucidafonts \
       gofonts \
       meslofonts \
-      rust \
-      rc \
+      alacritty \
+      tmux \
       vim \
       nvi \
-      alacritty \
-      ripgrep \
       edwood \
+      sam
       nyne \
       editinacme \
       acmelsp \
       aerc \
       terraform \
       gcloud \
-      tmux \
       ctags \
       linkerd \
       kubectl \
       golint \
-      staticcheck \
-      sam
+      staticcheck
 
 ###########################
 #      Variables
@@ -197,12 +196,14 @@ sam:
 		make && \
 		sudo make install
 
+# fhs
 acmelsp: go
 	cd sources/github.com/fhs/acme-lsp && \
 		go install ./cmd/acme-lsp && \
 		go install ./cmd/L 
 	ln -s $(shell pwd)/p9p/lsp $(HOME)/.config/acme-lsp 
 
+# terraform
 terraform: go
 	cd sources/github.com/hashicorp/terraform \
 		&& git clean -f -d \
@@ -213,6 +214,7 @@ terraform: go
 		&& go mod vendor \
 		&& go install
 
+# magicant
 yash: 
 	cd sources/github.com/magicant/yash && \
 		./configure && \
@@ -221,6 +223,7 @@ yash:
 	sudo sh -c "echo '/usr/local/bin/yash' >> /etc/shells" && \
 	chsh -s /usr/local/bin/yash $(user)
 
+# vim
 vim: 
 	cd sources/github.com/vim/vim && \
 		./configure \
@@ -233,6 +236,7 @@ vim:
 		sudo make install
 	ln -s $(shell pwd)/editors/vimrc $(HOME)/.vimrc 
 
+# window-maker
 wmaker:
 	cd sources/github.com/window-maker/wmaker && \
 		./autogen.sh && \
@@ -243,6 +247,7 @@ wmaker:
 	ln -s $(shell pwd)/wm/wmaker/WPrefs $(HOME)/GNUstep/Defaults/WPrefs 
 	ln -s $(shell pwd)/wm/wmaker/WindowMaker $(HOME)/GNUstep/Defaults/WindowMaker 
 
+# alacritty
 alacritty: rust
 	cd sources/github.com/alacritty/alacritty && \
 		cargo build --release && \
@@ -323,7 +328,6 @@ exercism:
 ###########################
 #      repo.or.cz
 ###########################
-
 nvi:
 	cd sources/repo.or.cz/nvi/dist && \
 		./distrib
@@ -339,7 +343,6 @@ nvi:
 ###########################
 #  git.claws-mail.org
 ###########################
-
 claws: libetpan
 	cd sources/git.claws-mail.org/claws && \
 		./autogen.sh && \
@@ -351,7 +354,7 @@ claws: libetpan
 #  git.savannah.gnu.org
 ###########################
 bash: 
-# ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
+ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	cd sources/git.savannah.gnu.org/bash && \
 		./configure --prefix=/usr \
 			--without-bash-malloc \
@@ -366,7 +369,7 @@ bash:
 
 	ln -s $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
 	ln -s $(shell pwd)/shells/profile ${HOME}/.profile
-# endif
+endif
 
 ###########################
 #  go.googlesource.com
