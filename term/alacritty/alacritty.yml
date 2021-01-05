@@ -10,18 +10,18 @@ font:
   normal:
     # family: Meslo LG S
     # family: Go Mono
-    family: Lucida Sans Typewriter
+    family: LucidaConsole
     style: Regular
 
   bold:
-    family: Lucida Sans Typewriter
+    family: LucidaConsole
     style: Bold
 
   italic:
-    family: Lucida Sans Typewriter
+    family: LucidaConsole
     style: Italic
 
-  size: 5.5
+  size: 6
 
 custom_cursor_colors: true
 

@@ -22,8 +22,8 @@ fn setupplumber {
 fn setupfonts {
 	fontsrv &
 	# font=/mnt/font/MesloLGS-Regular/9a/font
-	font=/mnt/font/LucidaSans/10a/font
-	lfont=/mnt/font/LucidaConsole/10a/font
+	font=/mnt/font/LucidaSans/9a/font
+	lfont=/mnt/font/LucidaConsole/9a/font
 	# font=$PLAN9/font/lucsans/unicode.8.font
 }
 
@@ -32,7 +32,8 @@ fn startedwood {
 }
 
 fn startacme {
-	exec acme -a -f $lfont 
+	# exec acme -a -f $lfont -F $lfont 
+	exec acme -a
 }
 
 envvars
@@ -40,6 +41,6 @@ setupshell
 # setupplumber
 setupfonts
 
-# startacme
-startedwood
+startacme
+# startedwood
 

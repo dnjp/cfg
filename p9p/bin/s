@@ -2,4 +2,6 @@
 
 . $home/lib/profile
 
-font=$PLAN9/font/lucsans/unicode.7.font $PLAN9/bin/sam $*
+# font=$PLAN9/font/lucsans/unicode.7.font 
+
+$PLAN9/bin/sam -a $*

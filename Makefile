@@ -41,7 +41,7 @@ export PATH := $(PATH):/usr/local/plan9/bin:/usr/local/go/bin:/usr/pkg/bin/:/usr
 
 user=daniel
 nbin=/home/daniel/bin
-goversion=1.14.7
+goversion=1.15.6
 
 
 ###########################
@@ -61,9 +61,9 @@ git:
 
 pkgsrc:
 ifeq ($(wildcard /usr/pkg/.*),)
-	echo "installing pkgsrc..." 
-	curl -o /tmp/${BOOTSTRAP_TAR} https://pkgsrc.joyent.com/packages/Linux/el7/bootstrap/${BOOTSTRAP_TAR} 
-	sudo tar -zxpf /tmp/${BOOTSTRAP_TAR} -C / 
+	echo "installing pkgsrc..."
+	curl -o /tmp/${BOOTSTRAP_TAR} https://pkgsrc.joyent.com/packages/Linux/el7/bootstrap/${BOOTSTRAP_TAR}
+	sudo tar -zxpf /tmp/${BOOTSTRAP_TAR} -C /
 endif
 		sudo /usr/pkg/bin/pkgin -y update && \
 		sudo /usr/pkg/bin/pkgin -y upgrade && \
@@ -77,17 +77,17 @@ ifeq ($(wildcard /usr/local/go/.*),)
 endif
 
 plan9port:
-ifeq ($(wildcard /usr/local/go/.*),)
+ifeq ($(wildcard /usr/local/plan9/.*),)
 	cd sources/github.com/dnjp/plan9port && \
-		./PREINSTALL 
+		./PREINSTALL
 	ifeq ($(wildcard $(HOME)/lib/.*),)
-		ln -s $(shell pwd)/p9p/lib $(HOME)/lib 
+		ln -s $(shell pwd)/p9p/lib $(HOME)/lib
 	endif
 	ifeq ($(wildcard $(HOME)/bin/.*),)
-		ln -s $(shell pwd)/p9p/bin $(HOME)/bin 
+		ln -s $(shell pwd)/p9p/bin $(HOME)/bin
 	endif
 	ifeq ($(wildcard $(HOME)/mail/.*),)
-		ln -s $(shell pwd)/p9p/mail $(HOME)/mail 
+		ln -s $(shell pwd)/p9p/mail $(HOME)/mail
 	endif
 	ifeq ($(wildcard $(HOME)/.msmtprc/),)
 		ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
@@ -145,22 +145,22 @@ aerc: go scdoc
 #        Github
 ###########################
 # danieljamespost
-dmenu: 
+dmenu:
 	cd sources/github.com/dnjp/dmenu && \
 		make && \
 		sudo make install
 
-dwm: 
+dwm:
 	cd sources/github.com/dnjp/dwm && \
 		make && \
 		sudo make install
 
-st: 
+st:
 	cd sources/github.com/dnjp/st && \
 		make && \
 		sudo make install
 
-slstatus: 
+slstatus:
 	cd sources/github.com/dnjp/slstatus && \
 		make && \
 		sudo make install
@@ -173,9 +173,9 @@ nyne: go plan9port
 	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
 	cd sources/github.com/dnjp/nyne && \
 		mk && \
-		installdir=$(nbin) mk install 
+		installdir=$(nbin) mk install
 
-rc: 
+rc:
 	cd sources/github.com/dnjp/rc && \
 		./bootstrap && \
 		./configure --with-edit=readline && \
@@ -201,8 +201,8 @@ sam:
 acmelsp: go
 	cd sources/github.com/fhs/acme-lsp && \
 		go install ./cmd/acme-lsp && \
-		go install ./cmd/L 
-	ln -s $(shell pwd)/p9p/lsp $(HOME)/.config/acme-lsp 
+		go install ./cmd/L
+	ln -s $(shell pwd)/p9p/lsp $(HOME)/.config/acme-lsp
 
 # terraform
 terraform: go
@@ -216,16 +216,16 @@ terraform: go
 		&& go install
 
 # magicant
-yash: 
+yash:
 	cd sources/github.com/magicant/yash && \
 		./configure && \
 		make && \
-		sudo make install 
+		sudo make install
 	sudo sh -c "echo '/usr/local/bin/yash' >> /etc/shells" && \
 	chsh -s /usr/local/bin/yash $(user)
 
 # vim
-vim: 
+vim:
 	cd sources/github.com/vim/vim && \
 		./configure \
 			--enable-fontset \
@@ -235,18 +235,18 @@ vim:
 			--with-features=normal && \
 		make && \
 		sudo make install
-	ln -s $(shell pwd)/editors/vimrc $(HOME)/.vimrc 
+	ln -s $(shell pwd)/editors/vimrc $(HOME)/.vimrc
 
 # window-maker
 wmaker:
 	cd sources/github.com/window-maker/wmaker && \
 		./autogen.sh && \
 		./configure && make && sudo make install
-	ln -s $(shell pwd)/wm/wmaker/WMGLOBAL $(HOME)/GNUstep/Defaults/WMGLOBAL 
-	ln -s $(shell pwd)/wm/wmaker/WMRootMenu $(HOME)/GNUstep/Defaults/WMRootMenu 
-	ln -s $(shell pwd)/wm/wmaker/WMWindowAttributes $(HOME)/GNUstep/Defaults/WMWindowAttributes 
-	ln -s $(shell pwd)/wm/wmaker/WPrefs $(HOME)/GNUstep/Defaults/WPrefs 
-	ln -s $(shell pwd)/wm/wmaker/WindowMaker $(HOME)/GNUstep/Defaults/WindowMaker 
+	ln -s $(shell pwd)/wm/wmaker/WMGLOBAL $(HOME)/GNUstep/Defaults/WMGLOBAL
+	ln -s $(shell pwd)/wm/wmaker/WMRootMenu $(HOME)/GNUstep/Defaults/WMRootMenu
+	ln -s $(shell pwd)/wm/wmaker/WMWindowAttributes $(HOME)/GNUstep/Defaults/WMWindowAttributes
+	ln -s $(shell pwd)/wm/wmaker/WPrefs $(HOME)/GNUstep/Defaults/WPrefs
+	ln -s $(shell pwd)/wm/wmaker/WindowMaker $(HOME)/GNUstep/Defaults/WindowMaker
 
 # alacritty
 alacritty: rust
@@ -264,7 +264,7 @@ meslofonts:
 	sudo mkdir -p /usr/share/fonts/meslo
 	cd sources/github.com/andreberg/Meslo-Font/dist/v1.2.1 && \
 		sudo unzip 'Meslo LG v1.2.1.zip' -d /usr/share/fonts/meslo
-		
+
 redshift:
 	cd sources/github.com/jonls/redshift && \
 		./bootstrap.sh && \
@@ -274,7 +274,7 @@ redshift:
 ripgrep:
 	cd sources/github.com/BurntSushi/ripgrep && \
 		cargo build --release && \
-		sudo cp ./target/release/rg /usr/local/bin/ 
+		sudo cp ./target/release/rg /usr/local/bin/
 
 libetpan:
 	cd sources/github.com/dinhvh/libetpan && \
@@ -341,8 +341,8 @@ nvi:
 			--program-prefix=n \
 			--enable-widechar && \
 		make && \
-		sudo make install 
-	ln -s $(shell pwd)/editors/exrc $(HOME)/.exrc 
+		sudo make install
+	ln -s $(shell pwd)/editors/exrc $(HOME)/.exrc
 
 
 ###########################
@@ -358,14 +358,14 @@ claws: libetpan
 ###########################
 #  git.savannah.gnu.org
 ###########################
-bash: 
+bash:
 ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	cd sources/git.savannah.gnu.org/bash && \
 		./configure --prefix=/usr \
 			--without-bash-malloc \
 			--enable-readline && \
 		make && \
-		sudo make install 
+		sudo make install
 
 	sudo sh -c "echo '/usr/bin/bash' >> /etc/shells" && \
 	chsh -s /usr/bin/bash $(user)

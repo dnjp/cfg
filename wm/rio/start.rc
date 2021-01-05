@@ -1,0 +1,13 @@
+#!/usr/bin/env rc
+
+. /home/daniel/lib/profile
+
+nextcloud & \
+xscreensaver -no-splash & \
+redshift & \
+kb & \
+trackpoint & \
+fontsrv & \
+plumber & \
+factotum & \
+exec rio -term 9t -virtuals 3

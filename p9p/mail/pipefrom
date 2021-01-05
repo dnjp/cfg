@@ -10,4 +10,4 @@ if(~ $1 -*){
         exit 1
 }
 
-msmtp -f danieljamespost@posteo.net $*
+msmtp -f daniel@martin.ai $*

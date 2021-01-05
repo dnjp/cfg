@@ -8,7 +8,8 @@
 #############################################
 # colemak with CapsLock as Escape/Control
 #############################################
-setxkbmap us -variant colemak 
+# setxkbmap us -variant colemak 
+setxkbmap us
 setxkbmap -option ctrl:nocaps
 setxkbmap -option 'caps:ctrl_modifier'
 xcape -e 'Control_L=Escape' -t 200

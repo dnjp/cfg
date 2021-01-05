@@ -2,9 +2,8 @@ prompt=('; ' '  ')
 
 NO_COLOR=1
 
-BROWSER='brave'
+BROWSER='brave-browser'
 EDITOR='editinacme'
-# EDITOR='vi'
 VISUAL=$EDITOR
 PAGER=nobs
 MANPAGER=nobs
@@ -14,6 +13,8 @@ MANPAGER=nobs
 NEXTCLOUD=/home/daniel/Nextcloud/
 MARTIN=/home/daniel/src/work/martin-bidder
 PLAN9=/usr/local/plan9
+. $PLAN9/lib/acme.rc
+
 GOROOT=/usr/local/go
 GOPATH=$HOME/go
 LC_ALL=en_US.utf8
@@ -23,9 +24,8 @@ FZF_DEFAULT_OPTS=--no-color
 
 NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
 
-# JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 JAVA_HOME=/usr/lib/jvm/java-14-openjdk
-_JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
+_JAVA_AWT_WM_NONREPARENTING=1 
 
 HARVEY=/home/daniel/src/personal/harvey
 
@@ -35,23 +35,21 @@ DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
 VCPKG_TARGET_TRIPLET=/home/daniel/vcpkg/installed/x64-linux
 CMAKE_TOOLCHAIN_FILE=/home/daniel/vcpkg/scripts/buildsystems/vcpkg.cmake
 
-path=($PLAN9/bin /bin /usr/bin /usr/local/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin)
-
-fn ls{ 9 ls $* }
-fn sort{ 9 sort $* }
-fn lc{ 9 lc $* }
+path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin /snap/bin)
+# if($INSIDE_ACME==1){
+#	path=($PLAN9/bin $path)
+# }
 
 fn h{ cd $HOME }
 fn mar{ cd $MARTIN }
 fn per{ cd $HOME/src/personal }
-fn src{ cd $HOME/src }
 fn next{ cd $NEXTCLOUD }
 fn cfg{ cd $HOME/src/cfg }
 fn dow{ cd $HOME/Downloads }
 fn drop{ cd $HOME/Dropbox }
 fn cl{ clear }
 fn cd{ builtin cd $* && awd }
-fn l{ ls $* | mc }
+fn l{ 9 ls $* | mc }
 fn la{ ls -a $* | mc }
 fn '..'{ cd .. }
 
@@ -111,6 +109,7 @@ fn scheme{ racket -l sicp --repl }
 fn wtc{
 	cmd=$*
 	while(){
+		echo '---------------------------------------'
 		eval $cmd
 		echo
 		echo
@@ -166,13 +165,6 @@ fn goose-run{
 	goose postgres postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME $*
 }
 
-fn scaledeploy{
-	pat=$1
-	num=$2
-	deployments=`{kubectl get deploy | rg $pat | awk '{print $1}'}
-	for(i in $deployments) kubectl scale deploy $i --replicas=$num
-}
-
 fn kubepods{
 	pat=$1
 	cmd=$2
@@ -181,7 +173,7 @@ fn kubepods{
 }
 
 ignore='tags|TAGS|node_modules|.git'
-fn f{ 
+fn f{
 	pattern=$*
 	for(file in `{9 du -a ./ | 9 awk '{print $2}' | 9 sed 's/\.\/\//.\//g' | 9 grep -v $ignore}){
 		if(! 9 test -d $file && ! 9 test -x $file){
@@ -191,10 +183,32 @@ fn f{
 }
 
 fn ff{
-	pattern=$1
-	dir=`{git rev-parse --show-toplevel}
-	du -a $dir | grep -v $ignore | grep $pattern
+	toplevel=`{git rev-parse --show-toplevel}
+	matches=`{>[2]/dev/null git ls-files $toplevel |9 grep $"*}
+	switch ($#matches) {
+		case 1
+			B $matches(1)
+		case *
+			9 echo '-------- ff '^$"*^' --------'
+			for (match in $matches) {
+				9 echo $match
+			}
+	}
 }
+
+
+fn scaledeploy{
+	for(i in `{kubectl get deploy | 9 grep $1 | 9 awk '{print $1}'}){
+		kubectl scale deploy $i --replicas=$2
+	}
+}
+
+fn restartdeploy{
+	for(i in `{kubectl get deploy | 9 grep $1 | 9 awk '{print $1}'}){
+		kubectl rollout restart deploy $i
+	}
+}
+
 
 ps1=$prompt
 tab='	'
@@ -226,4 +240,22 @@ fn pwd{
 		dir=‘{/bin/pwd}
 	echo $dir
 }
+
+fn awk{ 9 awk $* }
+fn bunzip2{ 9 bunzip2 $* }
+fn bzip2{ 9 bzip2 $* }
+fn cat{ 9 cat $* }
+fn dd{ 9 dd $* }
+fn echo{ 9 echo $* }
+fn ed{ 9 ed $* }
+fn fmt{ 9 fmt $* }
+fn lc{ 9 lc $* }
+fn ls{ 9 ls $* }
+fn mk{ 9 mk $* }
+fn mkdir{ 9 mkdir $* }
+fn nroff{ 9 nroff $* }
+fn ps{ 9 ps $* }
+fn rm{ 9 rm $* }
+fn sed{ 9 sed $* }
+fn zip{ 9 zip $* }
 
