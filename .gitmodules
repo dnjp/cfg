@@ -113,3 +113,6 @@
 [submodule "sources/github.com/golang/tools"]
 	path = sources/github.com/golang/tools
 	url = https://github.com/golang/tools.git
+[submodule "sources/git.sr.ht/ft/9pro"]
+	path = sources/git.sr.ht/ft/9pro
+	url = https://git.sr.ht/~ft/9pro

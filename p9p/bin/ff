@@ -1,5 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env rc
 
-git_dir="$(git rev-parse --show-toplevel)"
-search_term=$1
-find $git_dir -name "$search_term*"
+matches=`{>[2]/dev/null du -a | grep $"*}
+switch ($#matches) {
+	case 1
+		B $matches(1)
+	case *
+		echo '-------- ff '^$"*^' --------'
+		for (match in $matches) {
+			echo $match
+		}
+}

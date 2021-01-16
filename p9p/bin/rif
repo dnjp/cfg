@@ -4,6 +4,7 @@ fn rif{
 	pattern=$1
 	replace=$2
 	for(i in `{f $pattern | 9 awk '{print $1}' | 9 sed 's/:[0-9]*://g' | 9 uniq}){
+		echo $i
 		9 ed $i <<EOF
 g/$pattern/s//$replace/g
 w

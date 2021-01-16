@@ -21,14 +21,21 @@ font:
     family: LucidaConsole
     style: Italic
 
-  size: 6
+  size: 6.0
+  offset:
+    x: 0
+    y: 4
 
 custom_cursor_colors: true
 
 colors:
   primary:
-    background: '#f2f1ef'
-    foreground: '#000000'
+    # background: '#f2f1ef'
+    # foreground: '#000000'
+    # foreground: '#f2f1ef'
+    # background: '#000000'
+    background: '0x181818'
+    foreground: '0xd8d8d8'
 
   # primary:
     # background: '0x181818'

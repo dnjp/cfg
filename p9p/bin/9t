@@ -7,4 +7,6 @@ SHELL=$PLAN9/bin/rc
 INSIDE_ACME=true
 TERM=dump
 
+font=/mnt/font/GoMono/10a/font
+
 exec 9term -s

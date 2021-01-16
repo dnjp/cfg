@@ -4,13 +4,15 @@
 [use]
 	name = Daniel Posthuma
 [core]
-	editor = editinacme
+	# editor = editinacme
 	# editor = vim
+	# editor = E
+	editor = vi
 [alias]
 	co = checkout
 	ctags = !.git/hooks/ctags
 	check = log --patch --reverse "HEAD~"..
-	fmt-patch = format-patch HEAD~ -o
+	fmtpatch = format-patch HEAD~ -o
 [pull]
 	rebase = false
 [github]

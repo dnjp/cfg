@@ -10,4 +10,4 @@ trackpoint & \
 fontsrv & \
 plumber & \
 factotum & \
-exec rio -term 9t -virtuals 3
+exec rio -font 'GoRegular-10' -term 9t -virtuals 3

@@ -1,57 +1,64 @@
 prompt=('; ' '  ')
 
+font=/mnt/font/LucidaSans/10a/font
+
 NO_COLOR=1
 
 BROWSER='brave-browser'
-EDITOR='editinacme'
+# EDITOR='E'
+EDITOR='vi'
 VISUAL=$EDITOR
 PAGER=nobs
 MANPAGER=nobs
 
-. $HOME/Nextcloud/secrets/secrets.rc
+. $home/Nextcloud/secrets/secrets.rc
 
-NEXTCLOUD=/home/daniel/Nextcloud/
-MARTIN=/home/daniel/src/work/martin-bidder
+NEXTCLOUD=$home/Nextcloud/
+MARTIN=$home/src/work/martin-bidder
 PLAN9=/usr/local/plan9
 . $PLAN9/lib/acme.rc
 
 GOROOT=/usr/local/go
-GOPATH=$HOME/go
+GOPATH=$home/go
 LC_ALL=en_US.utf8
 
 SKIM_DEFAULT_OPTIONS='--color=bw'
 FZF_DEFAULT_OPTS=--no-color
 
-NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
+NVM_VERSION=$home/src/config/programs/nvm/versions/node/v12.18.4
 
-JAVA_HOME=/usr/lib/jvm/java-14-openjdk
+JAVA_home=/usr/lib/jvm/java-14-openjdk
 _JAVA_AWT_WM_NONREPARENTING=1 
 
-HARVEY=/home/daniel/src/personal/harvey
+HARVEY=$home/src/personal/harvey
 
-VCPKG_ROOT=/home/daniel/vcpkg
-OpenCV_DIR=/home/daniel/vcpkg/packages/opencv4_x64-linux/share/opencv
-DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
-VCPKG_TARGET_TRIPLET=/home/daniel/vcpkg/installed/x64-linux
-CMAKE_TOOLCHAIN_FILE=/home/daniel/vcpkg/scripts/buildsystems/vcpkg.cmake
+VCPKG_ROOT=$home/vcpkg
+OpenCV_DIR=$home/vcpkg/packages/opencv4_x64-linux/share/opencv
+DCMAKE_TOOLCHAIN_FILE=$home/vcpkg/scripts/buildsystems/vcpkg.cmake
+VCPKG_TARGET_TRIPLET=$home/vcpkg/installed/x64-linux
+CMAKE_TOOLCHAIN_FILE=$home/vcpkg/scripts/buildsystems/vcpkg.cmake
+SKIM=$home/.skim
+SNAP=/snap/
 
-path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $HOME/bin/ $HOME/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $HOME/go/bin/ $HOME/.local/bin $MARTIN/bin $VCPKG_ROOT $HOME/nand2tetris/tools/ $HOME/.cargo/bin $HOME/urbit /home/daniel/.gem/ruby/2.5.0/bin /home/daniel/.deno/bin/ /home/daniel/.yarn/bin /home/daniel/src/programs/nvm/versions/node/v14.4.0/bin /home/daniel/.linkerd2/bin /home/daniel/.krew/bin $NVM_VERSION/bin $HOME/appimage $HARVEY/linux_amd64/bin /snap/bin)
+path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $home/bin/ $home/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $home/go/bin/ $home/.local/bin $MARTIN/bin $VCPKG_ROOT $home/nand2tetris/tools/ $home/.cargo/bin $home/urbit $home/.gem/ruby/2.5.0/bin $home/.deno/bin/ $home/.yarn/bin $home/src/programs/nvm/versions/node/v14.4.0/bin $home/.linkerd2/bin $home/.krew/bin $NVM_VERSION/bin $home/appimage $HARVEY/linux_amd64/bin $SNAP/bin $SKIM/bin)
+
 # if($INSIDE_ACME==1){
 #	path=($PLAN9/bin $path)
 # }
 
-fn h{ cd $HOME }
+fn h{ cd $home }
 fn mar{ cd $MARTIN }
-fn per{ cd $HOME/src/personal }
+fn per{ cd $home/src/personal }
 fn next{ cd $NEXTCLOUD }
-fn cfg{ cd $HOME/src/cfg }
-fn dow{ cd $HOME/Downloads }
-fn drop{ cd $HOME/Dropbox }
+fn cfg{ cd $home/src/cfg }
+fn dow{ cd $home/Downloads }
+fn drop{ cd $home/Dropbox }
 fn cl{ clear }
 fn cd{ builtin cd $* && awd }
 fn l{ 9 ls $* | mc }
 fn la{ ls -a $* | mc }
 fn '..'{ cd .. }
+fn vi{ nvi $* }
 
 fn code{ code-insiders $* }
 fn e{ editinacme $* }
@@ -138,7 +145,7 @@ fn startmail{
 }
 
 fn plumb-update{
-	cat $HOME/lib/plumbing | 9p write plumb/rules
+	cat $home/lib/plumbing | 9p write plumb/rules
 }
 
 fn psql-con{

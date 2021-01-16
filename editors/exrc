@@ -1,4 +1,12 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"	       	     NOTES
+" - 7c represents pipe character 
+" -  represents <space>
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " set shell=/usr/local/bin/yash
@@ -63,10 +71,13 @@ map  l :e #
 map    :w:suspend
 
 " fuzzy find file in pwd tree
-map  f :vs /tmp/fzffile:r!sk "zy$:q!:Goedit "zp
+" map  f :vs /tmp/fzffile:r!sk "zy$:q!:Goedit "zp
+map  f :vs /tmp/fzffile:r!echo `{pwd}^`{sk 7c sed 's/\.\//\//g'} "zy$:q!:Goedit "zp
+
+map F :!f 
 
 " fuzzy find file in git tree
-map  F :vs /tmp/fzffile:r!sk -c 'git ls-files $(git rev-parse --show-toplevel)'"zy$:q!:Goedit "zp
+map  F :vs /tmp/fzffile:r!sk -c 'git ls-files `{git rev-parse --show-toplevel}'"zy$:q!:Goedit "zp
 
 " open file by line
 " map & wb"zye::!echo % >> %:editGI:!git grep  h"zpwi7c sk >> ::editGf:l"zyt:hDIEdit + h"zp:bg
@@ -109,8 +120,8 @@ map  << :'m,'k!samfile=% tabstop=8 a-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
 map  p :read ! xclip -o -sel clip
-map  y :'m,'k!xclip -sel clip && xclip -o -sel clip
-" map  y :E /tmp/pastefilep:.,$!xclip -sel clip 
+" map  y :'m,'k!xclip -sel clip && xclip -o -sel clip
+map  y :E /tmp/pastefilep:.,$!xclip -sel clip 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      git
@@ -132,6 +143,7 @@ map gc :!git commit -am '
 map gp :!git push
 
 " git blame on file
+" TODO: this should print in prettier columns
 map gb :E"zy1G:edit /tmpG:read !git blame -- #:o"zp!Gwc -lI:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -155,7 +167,10 @@ map gr :%rustfmt
 
 " go
 map go :%!gofmt
+map gd :!go doc 
+map gt :!cd `{dirname %} && go test 
 
 " prettier
 " map ge :%!prettier %
 map ge :%!prettier --print-width 80 --prose-wrap always %
+
