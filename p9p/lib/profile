@@ -40,7 +40,7 @@ CMAKE_TOOLCHAIN_FILE=$home/vcpkg/scripts/buildsystems/vcpkg.cmake
 SKIM=$home/.skim
 SNAP=/snap/
 
-path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $home/bin/ $home/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $home/go/bin/ $home/.local/bin $MARTIN/bin $VCPKG_ROOT $home/nand2tetris/tools/ $home/.cargo/bin $home/urbit $home/.gem/ruby/2.5.0/bin $home/.deno/bin/ $home/.yarn/bin $home/src/programs/nvm/versions/node/v14.4.0/bin $home/.linkerd2/bin $home/.krew/bin $NVM_VERSION/bin $home/appimage $HARVEY/linux_amd64/bin $SNAP/bin $SKIM/bin)
+path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $home/bin/rc $home/bin/amd64 $home/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $home/go/bin/ $home/.local/bin $MARTIN/bin $VCPKG_ROOT $home/nand2tetris/tools/ $home/.cargo/bin $home/urbit $home/.gem/ruby/2.5.0/bin $home/.deno/bin/ $home/.yarn/bin $home/src/programs/nvm/versions/node/v14.4.0/bin $home/.linkerd2/bin $home/.krew/bin $NVM_VERSION/bin $home/appimage $HARVEY/linux_amd64/bin $SNAP/bin $SKIM/bin)
 
 # if($INSIDE_ACME==1){
 #	path=($PLAN9/bin $path)

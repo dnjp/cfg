@@ -1,3 +1,0 @@
-#!/usr/bin/env rc
-
-B `{f GenClickNotif | awk '{print $1}' |sed 's/:$//g'}

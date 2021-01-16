@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=acme
 Comment=acme desktop shortcut
-Exec=/home/daniel/bin/9acme
+Exec=/home/daniel/bin/rc/9acme
 StartupWMClass=acme
 Terminal=false
 Type=Application

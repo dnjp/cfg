@@ -8,3 +8,4 @@ for(file in `{ du -a ./ | awk '{print $2}' | sed 's/\.\/\//.\//g' | grep -v $ign
 		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
 	}
 }
+

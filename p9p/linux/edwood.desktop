@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=edwood
-Comment=edwood desktop shortcut
-Exec=/home/daniel/bin/9acme
-StartupWMClass=edwood
-Terminal=false
-Type=Application
-Categories=Qt;Graphics;3DGraphics;
-Icon=/home/daniel/src/config/programs/plan9/dist/spaceglenda100.png

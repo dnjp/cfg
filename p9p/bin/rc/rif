@@ -1,4 +1,4 @@
-#!/bin/env rc
+#!/usr/local/plan9/bin/rc
 
 fn rif{
 	pattern=$1

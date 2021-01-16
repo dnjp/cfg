@@ -1,5 +1,0 @@
-#!/bin/bash
-
-width=$1
-echo -n "1,$" | 9p write acme/$winid/addr
-9p read acme/$winid/body | expand -t $width | 9p write acme/$winid/data
