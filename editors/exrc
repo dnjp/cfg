@@ -4,17 +4,14 @@
 " -  represents <space>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
-" set shell=/usr/local/bin/yash
+set shell=/usr/local/plan9/bin/rc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
-" set tags=/home/daniel/src/work/martin-bidder/tags
 set tags=tags
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -22,39 +19,30 @@ set tags=tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set tabstop=8
 set autoindent wrapmargin=8
-set wraplen=72
 set shiftwidth=8
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set nu
 set nomesg
 set showmode
 set showmatch
 set matchtime=3
 set nonumber
-" set number
 set noflash
 set ruler
 set verbose
 set leftright
-set extended
-set iclower
-set searchincr
+set searchincr		
 set wrapscan
 set report=1
 
 " ^V^V^V<tab>
 set filec=	
 set cedit=
-" extended regex
-set extended
 set terse
-set nolock
 set path=.
 set tildeop
-set windowname
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     navigation
@@ -71,21 +59,16 @@ map  l :e #
 map    :w:suspend
 
 " fuzzy find file in pwd tree
-" map  f :vs /tmp/fzffile:r!sk "zy$:q!:Goedit "zp
 map  f :vs /tmp/fzffile:r!echo `{pwd}^`{sk 7c sed 's/\.\//\//g'} "zy$:q!:Goedit "zp
-
-map F :!f 
 
 " fuzzy find file in git tree
 map  F :vs /tmp/fzffile:r!sk -c 'git ls-files `{git rev-parse --show-toplevel}'"zy$:q!:Goedit "zp
-
-" open file by line
-" map & wb"zye::!echo % >> %:editGI:!git grep  h"zpwi7c sk >> ::editGf:l"zyt:hDIEdit + h"zp:bg
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
+map F :!f 
 
 " make
 map  m :!make 
@@ -101,19 +84,21 @@ map K wb"zyw::o:!man "zp
 
 " use comment command from nyne
 " ctrl-/ to un/comment current line
-map  :.!samfile=% com
+map  :.!com -f %
 
 " space-ctrl-/ to un/comment current selection
-map   :'m,'k!samfile=% com
+map   :'m,'k!com -f % 
 
 " replace builtin >> command to use a+/a- commands from nyne
-map >> :.!samfile=% tabstop=8 a+
-map << :.!samfile=% tabstop=8 a-
+map >> :.!a+ -f % -t 8
+map << :.!a- -f % -t 8
 
 " space-{>>/<<} to un/indent selection
-map  >> :'m,'k!samfile=% tabstop=8 a+
-map  << :'m,'k!samfile=% tabstop=8 a-
+map  >> :'m,'k!a+ -f % -t 8
+map  << :'m,'k!a- -f % -t 8
 
+" plan9 plumber
+map 9p wb"zyy:E /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   clipboard
@@ -134,6 +119,9 @@ map g/ wb"zye::o:!git grep "zp
 map gs :!git status
 
 " git add
+map ga :!git add 
+
+" git add
 map gA :!git add -A
 
 " git commit
@@ -144,17 +132,20 @@ map gp :!git push
 
 " git blame on file
 " TODO: this should print in prettier columns
-map gb :E"zy1G:edit /tmpG:read !git blame -- #:o"zp!Gwc -lI:
+map gb :E"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   formatting
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+" 8 space indentation
+map 8 :set tabstop=8:set shiftwidth=8
+
 " 4 space indentation
-map g4 :set tabstop=4:set shiftwidth=4
+map 4 :set tabstop=4:set shiftwidth=4
 
 " 2 space indentation
-map g2 :set ts=2:set sw=2
+map 2 :set ts=2:set sw=2
 
 " format document using fmt
 map gF :%!fmt -s

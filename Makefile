@@ -37,7 +37,7 @@ BOOTSTRAP_SHA := 478d2e30f150712a851f8f4bcff7f60026f65c9e
 PKGS := $(shell cat ./PKGS)
 
 # set path for plan9 and go
-export PATH := $(PATH):/usr/local/plan9/bin:/usr/local/go/bin:/usr/pkg/bin/:/usr/pkg/gcc10/bin
+export PATH := /bin:$(PATH):/usr/local/plan9/bin:/usr/local/go/bin:/usr/pkg/bin/:/usr/pkg/gcc10/bin
 
 user=daniel
 nbin=/home/daniel/bin
@@ -197,6 +197,16 @@ sam:
 		make && \
 		sudo make install
 
+nvi:
+	cd sources/github.com/dnjp/nvi/dist && \
+		./distrib
+	cd sources/github.com/dnjp/nvi/build.unix && \
+		../dist/configure \
+			--enable-widechar && \
+		make && \
+		sudo make install
+	ln -s $(shell pwd)/editors/exrc $(HOME)/.exrc
+
 # fhs
 acmelsp: go
 	cd sources/github.com/fhs/acme-lsp && \
@@ -328,21 +338,6 @@ exercism:
 	cd sources/github.com/exercism/cli&& \
 		go build -o exercism.bin exercism/main.go && \
 		sudo cp ./exercism.bin /usr/local/bin/exercism
-
-
-###########################
-#      repo.or.cz
-###########################
-nvi:
-	cd sources/repo.or.cz/nvi/dist && \
-		./distrib
-	cd sources/repo.or.cz/nvi/build.unix && \
-		../dist/configure \
-			--program-prefix=n \
-			--enable-widechar && \
-		make && \
-		sudo make install
-	ln -s $(shell pwd)/editors/exrc $(HOME)/.exrc
 
 
 ###########################

@@ -40,11 +40,7 @@ CMAKE_TOOLCHAIN_FILE=$home/vcpkg/scripts/buildsystems/vcpkg.cmake
 SKIM=$home/.skim
 SNAP=/snap/
 
-path=(/bin /usr/bin /usr/local/bin $PLAN9/bin $home/bin/rc $home/bin/amd64 $home/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $home/go/bin/ $home/.local/bin $MARTIN/bin $VCPKG_ROOT $home/nand2tetris/tools/ $home/.cargo/bin $home/urbit $home/.gem/ruby/2.5.0/bin $home/.deno/bin/ $home/.yarn/bin $home/src/programs/nvm/versions/node/v14.4.0/bin $home/.linkerd2/bin $home/.krew/bin $NVM_VERSION/bin $home/appimage $HARVEY/linux_amd64/bin $SNAP/bin $SKIM/bin)
-
-# if($INSIDE_ACME==1){
-#	path=($PLAN9/bin $path)
-# }
+path=($PLAN9/bin /bin /usr/bin /usr/local/bin $home/bin/rc $home/bin/amd64 $home/google-cloud-sdk/bin/ /usr/local/bin/ /usr/local/go/bin $home/go/bin/ $home/.local/bin $MARTIN/bin $VCPKG_ROOT $home/nand2tetris/tools/ $home/.cargo/bin $home/urbit $home/.gem/ruby/2.5.0/bin $home/.deno/bin/ $home/.yarn/bin $home/src/programs/nvm/versions/node/v14.4.0/bin $home/.linkerd2/bin $home/.krew/bin $NVM_VERSION/bin $home/appimage $HARVEY/linux_amd64/bin $SNAP/bin $SKIM/bin)
 
 fn h{ cd $home }
 fn mar{ cd $MARTIN }
@@ -58,10 +54,11 @@ fn cd{ builtin cd $* && awd }
 fn l{ 9 ls $* | mc }
 fn la{ ls -a $* | mc }
 fn '..'{ cd .. }
-fn vi{ nvi $* }
+fn n{ noice $* }
 
 fn code{ code-insiders $* }
 fn e{ editinacme $* }
+fn vi{ nvi $* }
 
 fn g{ git $* }
 fn gs{ git status }
@@ -95,11 +92,6 @@ fn kin{ kubectl get ingress $* }
 fn kdb{ kubectl -n db }
 fn kmon{ kubectl -n monitoring }
 
-fn redis-east-con{ redis-cli -u redis://$REDIS_EAST_SECRET@$REDIS_EAST_PUB/0 }
-fn redis-west-con{ redis-cli -u redis://$REDIS_WEST_SECRET@$REDIS_WEST_PUB/0 }
-fn redislabs-east-con{ redis-cli -u redis://$CACHE_EAST_SECRET@$CACHE_EAST_HOST/0 }
-fn redislabs-west-con{ redis-cli -u redis://$CACHE_WEST_SECRET@$CACHE_WEST_HOST/0 }
-
 fn dev-con{ gcloud beta container clusters get-credentials martin-bidder-dev-east --region us-east4 --project martin-bidder-dev }
 fn stage-con{ gcloud beta container clusters get-credentials martin-bidder-stage-east --region us-east4 --project martin-bidder-stage }
 fn stage-west-con{ gcloud beta container clusters get-credentials martin-bidder-stage-west --region us-west1 --project martin-bidder-stage }
@@ -107,65 +99,9 @@ fn prod-con{ gcloud beta container clusters get-credentials martin-bidder-prod-e
 fn prod-west-con{ gcloud beta container clusters get-credentials martin-bidder-prod-west --region us-west1 --project martin-bidder-prod }
 fn test-con{ gcloud container clusters get-credentials martin-bidder-stage-test --region us-east4 --project martin-bidder-stage }
 
-fn cg{ cargo }
-fn cr{ cargo run }
-fn cb{ cargo build }
-
-fn scheme{ racket -l sicp --repl }
-
-fn wtc{
-	cmd=$*
-	while(){
-		echo '---------------------------------------'
-		eval $cmd
-		echo
-		echo
-		sleep 5
-	}
-}
-
-fn nvm{
-	bash $home/bin/nvm
-}
-
 fn proj{
 	gcloud config configurations activate $1
 	gcloud info | grep Project
-}
-
-fn mon{
-	xrandr --output HDMI1 --right-of eDP1 --auto
-}
-
-fn startmail{
-	plumber
-	factotum
-	factotum -g 'proto=pass service=imap server=imap.gmail.com user=daniel@martin.ai !password?'
-	mailfs -t imap.gmail.com
-}
-
-fn plumb-update{
-	cat $home/lib/plumbing | 9p write plumb/rules
-}
-
-fn psql-con{
-	psql -Atx postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME
-}
-
-fn linkerd-start{
-	linkerd dashboard $*
-}
-
-fn sniff{
-	kubectl sniff $*
-}
-
-fn ssh-sdf{
-	ssh danieljamespost@tty.sdf.org
-}
-
-fn ssh-plan9{
-	ssh danieljamespost@vps2.sdf.org
 }
 
 fn goose-run{
@@ -179,31 +115,6 @@ fn kubepods{
 	for(i in $pods) eval $cmd
 }
 
-ignore='tags|TAGS|node_modules|.git'
-fn f{
-	pattern=$*
-	for(file in `{9 du -a ./ | 9 awk '{print $2}' | 9 sed 's/\.\/\//.\//g' | 9 grep -v $ignore}){
-		if(! 9 test -d $file && ! 9 test -x $file){
-			9 grep -n $pattern $file | 9 awk '{print "'^$file:^'"$0}'
-		}
-	}
-}
-
-fn ff{
-	toplevel=`{git rev-parse --show-toplevel}
-	matches=`{>[2]/dev/null git ls-files $toplevel |9 grep $"*}
-	switch ($#matches) {
-		case 1
-			B $matches(1)
-		case *
-			9 echo '-------- ff '^$"*^' --------'
-			for (match in $matches) {
-				9 echo $match
-			}
-	}
-}
-
-
 fn scaledeploy{
 	for(i in `{kubectl get deploy | 9 grep $1 | 9 awk '{print $1}'}){
 		kubectl scale deploy $i --replicas=$2
@@ -213,32 +124,6 @@ fn scaledeploy{
 fn restartdeploy{
 	for(i in `{kubectl get deploy | 9 grep $1 | 9 awk '{print $1}'}){
 		kubectl rollout restart deploy $i
-	}
-}
-
-
-ps1=$prompt
-tab='	'
-nl='
-'
-fn cd{
-	builtin cd $1 && awd &&
-	switch($#*){
-	case 0
-		dir=$home
-		prompt=($ps1 $tab)
-	case *
-		switch($1){
-		case /*
-			dir=$1
-			prompt=($nl^'> '^`{basename `{pwd}}^$nl^$ps1 $tab)
-		case */* ..*
-			dir=()
-			prompt=($nl^'> '^`{basename `{pwd}}^$nl^$ps1 $tab)
-		case *
-			dir=()
-			prompt=($nl^'> '^`{basename `{pwd}}^$nl^$ps1 $tab)
-		}
 	}
 }
 

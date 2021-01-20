@@ -2,44 +2,18 @@
 
 . $HOME/lib/profile
 
-fn envvars {
-	export tabstop=8
-	export INSIDE_ACME=true
-	export PAGER=nobs
-	export MANPAGER=nobs
-}
+tabstop=8
+INSIDE_ACME=true
+PAGER=nobs
+MANPAGER=nobs
+acmeshell=$PLAN9/bin/rc
 
-fn setupshell {
-	acmeshell=$PLAN9/bin/rc
-	# . $HOME/.profile
-}
+9 plumber
 
-fn setupplumber {
-	# cat $home/lib/plumbing | 9p write plumb/rules
-	9 plumber
-}
+fontsrv &
+font=/mnt/font/LucidaSans/10a/font
+lfont=/mnt/font/LucidaConsole/10a/font
 
-fn setupfonts {
-	fontsrv &
-	# font=/mnt/font/MesloLGS-Regular/9a/font
-	font=/mnt/font/LucidaSans/10a/font
-	lfont=/mnt/font/LucidaConsole/10a/font
-	# font=$PLAN9/font/lucsans/unicode.8.font
-}
-
-fn startedwood {
-	exec edwood -a -f $font -F $lfont 
-}
-
-fn startacme {
-	exec acme -a -f $lfont -F $lfont 
-}
-
-envvars
-setupshell
-# setupplumber
-setupfonts
-
-startacme
-# startedwood
+# exec edwood -a -f $font -F $lfont 
+exec acme -a -f $lfont -F $lfont 
 
