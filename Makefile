@@ -4,15 +4,10 @@ all: plan9port \
       rust \
       lucidafonts \
       gofonts \
-      meslofonts \
       alacritty \
       tmux \
-      vim \
       nvi \
-      edwood \
-      sam \
       nyne \
-      editinacme \
       acmelsp \
       aerc \
       terraform \
@@ -48,16 +43,9 @@ goversion=1.15.6
 #         Deps
 ###########################
 
+.PHONY: git
 git:
-	ssh-keygen -t ed25519 -C "danieljamespost@posteo.net"
-	eval "$(ssh-agent -s)"
-	ssh-add ~/.ssh/id_rsa
 	ln -s $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
-	echo
-	echo
-	cat ~/.ssh/id_rsa.pub
-	echo
-	echo "copy the above and add it to git providers"
 
 pkgsrc:
 ifeq ($(wildcard /usr/pkg/.*),)
@@ -80,16 +68,17 @@ plan9port:
 ifeq ($(wildcard /usr/local/plan9/.*),)
 	cd sources/github.com/dnjp/plan9port && \
 		./PREINSTALL
-	ifeq ($(wildcard $(HOME)/lib/.*),)
+
+	ifeq ($(wildcard ${HOME}/lib/.*),)
 		ln -s $(shell pwd)/p9p/lib $(HOME)/lib
 	endif
-	ifeq ($(wildcard $(HOME)/bin/.*),)
+	ifeq ($(wildcard ${HOME}/bin/.*),)
 		ln -s $(shell pwd)/p9p/bin $(HOME)/bin
 	endif
-	ifeq ($(wildcard $(HOME)/mail/.*),)
+	ifeq ($(wildcard ${HOME}/mail/.*),)
 		ln -s $(shell pwd)/p9p/mail $(HOME)/mail
 	endif
-	ifeq ($(wildcard $(HOME)/.msmtprc/),)
+	ifeq ($(wildcard ${HOME}/.msmtprc/),)
 		ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
 	endif
 endif
@@ -170,10 +159,12 @@ edwood: go
 		go install
 
 nyne: go plan9port
+ifeq ($(wildcard ${HOME}/.config/nyne),)
 	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
+endif
 	cd sources/github.com/dnjp/nyne && \
 		mk && \
-		installdir=$(nbin) mk install
+		installdir=$(nbin)/amd64 mk install
 
 rc:
 	cd sources/github.com/dnjp/rc && \
@@ -209,9 +200,10 @@ nvi:
 
 # fhs
 acmelsp: go
-	cd sources/github.com/fhs/acme-lsp && \
-		go install ./cmd/acme-lsp && \
-		go install ./cmd/L
+	cd sources/github.com/fhs/acme-lsp/cmd/acme-lsp && \
+		go install 
+	cd sources/github.com/fhs/acme-lsp/cmd/L && \
+		go install 
 	ln -s $(shell pwd)/p9p/lsp $(HOME)/.config/acme-lsp
 
 # terraform

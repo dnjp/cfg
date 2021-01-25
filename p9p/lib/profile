@@ -4,7 +4,7 @@ font=/mnt/font/LucidaSans/10a/font
 
 NO_COLOR=1
 
-BROWSER='brave-browser'
+BROWSER='brave'
 # EDITOR='E'
 EDITOR='vi'
 VISUAL=$EDITOR
@@ -58,7 +58,6 @@ fn n{ noice $* }
 
 fn code{ code-insiders $* }
 fn e{ editinacme $* }
-fn vi{ nvi $* }
 
 fn g{ git $* }
 fn gs{ git status }

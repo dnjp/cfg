@@ -4,9 +4,6 @@
 [use]
 	name = Daniel Posthuma
 [core]
-	# editor = editinacme
-	# editor = vim
-	# editor = E
 	editor = vi
 [alias]
 	co = checkout
@@ -24,3 +21,5 @@
 	smtpserverport = 587
 [color]
 	ui = false
+[init]
+	defaultBranch = master

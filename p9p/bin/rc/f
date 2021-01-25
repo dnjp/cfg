@@ -3,8 +3,10 @@
 ignore='tags|TAGS|node_modules|.git'
 pattern=$*
 for(file in `{ du -a ./ | awk '{print $2}' | sed 's/\.\/\//.\//g' | grep -v $ignore}){
-	isascii=`{ file $file | grep -v *.out | awk '{print $2}' | grep Ascii }
-	if(1 = $isascii){
+	switch(`{ file $file }){
+	case *Ascii*
+		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
+	case *program*
 		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
 	}
 }

@@ -68,7 +68,16 @@ map  F :vs /tmp/fzffile:r!sk -c 'git ls-files `{git rev-parse --show-toplevel}
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
+" search for term
 map F :!f 
+
+" use `fe` command in $home/bin/rc to search for term 
+" and open single file if exists, otherwise display a 
+" list of matches which can be selected and opened 
+" with gd
+map gf wb"zyw:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/bfile:o"zp"xPJI:r!fe "zyy:q!:o"zpI:
+map gd "zyy:q!:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/defile:o'"zpkJxA'"xPJI:r!ffe "zyy:q!:o"zp
+
 
 " make
 map  m :!make 
@@ -148,20 +157,19 @@ map 4 :set tabstop=4:set shiftwidth=4
 map 2 :set ts=2:set sw=2
 
 " format document using fmt
-map gF :%!fmt -s
+map  gF :%!fmt -s
 
 " format paragraph using fmt
-map gf !}fmt
+map  gf !}fmt
 
 " rust
-map gr :%rustfmt
+map  gr :%rustfmt
 
 " go
-map go :%!gofmt
-map gd :!go doc 
-map gt :!cd `{dirname %} && go test 
+map  go :%!gofmt
+map  gd :!go doc 
+map  gt :!cd `{dirname %} && go test 
 
 " prettier
-" map ge :%!prettier %
-map ge :%!prettier --print-width 80 --prose-wrap always %
+map  ge :%!prettier --print-width 80 --prose-wrap always %
 
