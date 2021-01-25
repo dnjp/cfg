@@ -78,7 +78,6 @@ map F :!f
 map gf wb"zyw:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/bfile:o"zp"xPJI:r!fe "zyy:q!:o"zpI:
 map gd "zyy:q!:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/defile:o'"zpkJxA'"xPJI:r!ffe "zyy:q!:o"zp
 
-
 " make
 map  m :!make 
 

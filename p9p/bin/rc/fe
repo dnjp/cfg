@@ -19,6 +19,6 @@ switch ($#files) {
 			echo ':'
 		}
 	case *
-		f $pattern >> /tmp/bfiles
+		f $pattern > /tmp/bfiles
 		echo E /tmp/bfiles
 }
