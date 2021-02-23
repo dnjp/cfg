@@ -45,6 +45,11 @@ set path=.
 set tildeop
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"                     searching
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+set ignorecase
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                     navigation
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -64,10 +69,6 @@ map  f :vs /tmp/fzffile:r!echo `{pwd}^`{sk 7c sed 's/\.\//\//g'} "zy$:q!:G
 " fuzzy find file in git tree
 map  F :vs /tmp/fzffile:r!sk -c 'git ls-files `{git rev-parse --show-toplevel}'"zy$:q!:Goedit "zp
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   convenience
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 " search for term
 map F :!f 
 
@@ -75,8 +76,16 @@ map F :!f
 " and open single file if exists, otherwise display a 
 " list of matches which can be selected and opened 
 " with gd
-map gf wb"zyw:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/bfile:o"zp"xPJI:r!fe "zyy:q!:o"zpI:
-map gd "zyy:q!:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/defile:o'"zpkJxA'"xPJI:r!ffe "zyy:q!:o"zp
+map  gf wb"zyw:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/bfile:o"zp"xPJI:r!fe "zyy:q!:o"zpI:
+map  gg "zyy:q!:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/defile:o'"zpkJxA'"xPJI:r!ffe "zyy:q!:o"zp
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   convenience
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" execute command
+map ! :!
 
 " make
 map  m :!make 
@@ -85,27 +94,24 @@ map  m :!make
 map  t :!ctags -R .
 
 " replacement
-map rr :'m,'k s/
-
-" pull up man page for word under cursor
-map K wb"zyw::o:!man "zp
+map rr :'m,'a s/
 
 " use comment command from nyne
 " ctrl-/ to un/comment current line
 map  :.!com -f %
 
 " space-ctrl-/ to un/comment current selection
-map   :'m,'k!com -f % 
+map   :'m,'a!com -f % 
 
 " replace builtin >> command to use a+/a- commands from nyne
 map >> :.!a+ -f % -t 8
 map << :.!a- -f % -t 8
 
 " space-{>>/<<} to un/indent selection
-map  >> :'m,'k!a+ -f % -t 8
-map  << :'m,'k!a- -f % -t 8
+map  >> :'m,'a!a+ -f % -t 8
+map  << :'m,'a!a- -f % -t 8
 
-" plan9 plumber
+" plumber
 map 9p wb"zyy:E /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -113,7 +119,6 @@ map 9p wb"zyy:E /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
 map  p :read ! xclip -o -sel clip
-" map  y :'m,'k!xclip -sel clip && xclip -o -sel clip
 map  y :E /tmp/pastefilep:.,$!xclip -sel clip 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -124,33 +129,38 @@ map  y :E /tmp/pastefilep:.,$!xclip -sel clip
 map g/ wb"zye::o:!git grep "zp
 
 " git status
-map gs :!git status
+map gs :!git status >/tmp/statout >[2=1]:E /tmp/statout
 
 " git add
 map ga :!git add 
 
-" git add
+" git add all
 map gA :!git add -A
 
 " git commit
 map gc :!git commit -am '
 
+" git diff
+map gd :!git diff
+
 " git push
 map gp :!git push
 
 " git blame on file
-" TODO: this should print in prettier columns
 map gb :E"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   formatting
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+" toggle tab expansion
+map te :set expandtab
+
 " 8 space indentation
-map 8 :set tabstop=8:set shiftwidth=8
+map 8 :set tabstop=8:set sw=8
 
 " 4 space indentation
-map 4 :set tabstop=4:set shiftwidth=4
+map 4 :set tabstop=4:set sw=4
 
 " 2 space indentation
 map 2 :set ts=2:set sw=2
@@ -167,8 +177,8 @@ map  gr :%rustfmt
 " go
 map  go :%!gofmt
 map  gd :!go doc 
-map  gt :!cd `{dirname %} && go test 
+map  gt :!cd `{dirname %} && go test -race -bench Benchmark* -count=1 >/tmp/testout >[2=1] :E /tmp/testout
 
 " prettier
-map  ge :%!prettier --print-width 80 --prose-wrap always %
+map  P :%!prettier --print-width 80 --prose-wrap always %
 

@@ -6,3 +6,4 @@ if [ -f '/home/daniel/google-cloud-sdk/path.bash.inc' ]; then . '/home/daniel/go
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/daniel/google-cloud-sdk/completion.bash.inc' ]; then . '/home/daniel/google-cloud-sdk/completion.bash.inc'; fi
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

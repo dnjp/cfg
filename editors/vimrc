@@ -8,6 +8,10 @@
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set shell=/usr/local/plan9/bin/rc
+set path+=**
+set nocompatible				" don't try to be like traditional vi
+set cedit=					" ctrl-r to view command edit
+set rtp+=/home/daniel/.fzf
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
@@ -25,18 +29,9 @@ set backspace=indent,eol,start			" inteligent backspace behavior
 set autoindent					" auto indentation based on last line
 set smartindent					" indentation based on syntax
 
-"""""""""""""""""""""""""""""""""""
-"        general settings
-"""""""""""""""""""""""""""""""""""
-set nocompatible				" don't try to be like traditional vi
-
-" path
-set path+=**
-
-" tags
-set tags=tags
-
-" visual
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                     visuals
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 set nonumber 					" turn off line numbers
 
 set showmode 					" show '-- INSERT --'
@@ -47,27 +42,33 @@ set laststatus=0				" disable status line
 " syntax/color
 set t_Co=0					" turn off all colors
 syntax off					" turn off syntax highlighting
+set showmatch 					" show matching delimiter
+set matchtime=2 				" delay for delimiter highlight
+set wildmenu					" better menu in command mode
+set wildmode=longest,list
 
-" general settings
-filetype plugin on	 			" filetype support
+"""""""""""""""""""""""""""""""""""
+"        general settings
+"""""""""""""""""""""""""""""""""""
 set noswapfile					" don't create swap files
-set cedit=					" ctrl-r to view command edit
 set noerrorbells				" turn off alerts
 set shortmess=I 				" turn off splash screen
 set autoread					" always refresh file
 set hidden					" hides buffers instead of closing them
 
-" searching
+"""""""""""""""""""""""""""""""""""
+"        searching
+"""""""""""""""""""""""""""""""""""
 set ignorecase					" ignore case when searching
 set incsearch					" start searching right away when typing
 set nohlsearch 					" don't highlight search terms
 set wildmenu					" display matching files when tab complete
 
-" visual helpers
-set showmatch 					" show matching delimiter
-set matchtime=2 				" delay for delimiter highlight
-set wildmenu					" better menu in command mode
-set wildmode=longest,list
+" search in files
+map F :!f 
+
+" finding files
+map  f :FZF!
 
 """""""""""""""""""""""""""""""""""
 "            navigation
@@ -84,26 +85,20 @@ set wildmode=longest,list
 
 " fast quit
 map gg 1G
-map qq :q!
+map qq :bd!
 map ss :w
 
-" easily switch buffers with ctrl+b
+" easily switch buffers with space+l
 nnoremap  l :b #
 
 " make ctrl-w behave like nvi
 map  
 
-" finding files
-map  f :vs /tmp/fzffile:r!echo `{pwd}^`{sk}:.!sed 's/\.\//\//g'"zy$:q!:Goedit "zp
-map  F :vs /tmp/fzffile:r!echo `{sk -c 'git ls-files `{git rev-parse --show-toplevel}'}"zy$:q!:Goedit "zp
-
 """""""""""""""""""""""""""""""""""
 "             convenience
 """""""""""""""""""""""""""""""""""
-map F :!f 
-
-" make
 map  m :!make 
+map ! :!
 
 " generate tags
 map  t :!ctags -R .
@@ -119,17 +114,6 @@ map  :.!com -f %
 " space-ctrl-/ to un/comment current selection
 map   :'<,'>!com -f % 
 
-" replace builtin >> command to use a+/a- commands from nyne
-map >> :.!a+ -f % -t 8
-map << :.!a- -f % -t 8
-
-" space-{>>/<<} to un/indent selection
-map  >> :'<,'>!a+ -f % -t 8
-map  << :'<,'>!a- -f % -t 8
-
-" pull up man page for word under cursor
-map K wb"zyw:i!man "zp
-
 " plan9 plumber
 map 9p wb"zyy:sp /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
 
@@ -137,7 +121,7 @@ map 9p wb"zyy:sp /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
 "                   clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""
 map  p :read ! xclip -o -sel clip
-map  y :vs /tmp/pastefilep:.,$!xclip -sel clip 
+map  y :sp /tmp/pastefilep:.,$!xclip -sel clip 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      git
@@ -147,7 +131,7 @@ map  y :vs /tmp/pastefilep:.,$!xclip -sel clip
 map g/ wb"zye::o:!git grep "zp
 
 " git status
-map gs :!git status
+map gs :!git status >/tmp/statout >[2=1]:sp:e /tmp/statout
 
 " git add
 map ga :!git add 
@@ -156,7 +140,7 @@ map ga :!git add
 map gA :!git add -A
 
 " git commit
-map gc :!git commit -am '
+map gc :!git commit -a 
 
 " git push
 map gp :!git push
@@ -170,7 +154,11 @@ map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o
 "                   formatting
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+" toggle tab expansion
 map te :set expandtab
+
+" 8 space indentation
+map 8 :set tabstop=8^M:set sw=8^M
 
 " 4 space indentation
 map 4 :set tabstop=4:set shiftwidth=4
@@ -185,14 +173,13 @@ map gF :%!fmt -s
 map gf !}fmt
 
 " rust
-map gr :%rustfmt
+map  gr :%rustfmt
 
 " go
-map go :%!gofmt
-map gd :!go doc 
-map gt :!cd `{dirname %} && go test 
+map  go :%!gofmt
+map  gd :!go doc 
+map  gt :!cd `{dirname %} && go test 
 
 " prettier
-" map ge :%!prettier %
-map ge :%!prettier --print-width 80 --prose-wrap always %
+map  P :%!prettier --print-width 80 --prose-wrap always %
 

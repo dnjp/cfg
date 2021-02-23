@@ -4,11 +4,14 @@ curfile=$1
 glob=$2
 
 input=`{ echo $glob | awk '{print $1}' }
-files=`{ echo $input | sed 's/:[0-9]*//g' }
+echo 'INPUT: '^$input
+files=`{ echo $input | sed 's/:[0-9]*//g' | sed 's/^\.\///g' }
+echo 'FILES: '^$files
 num=`{ echo $input | sed 's/\:/ : /g' | awk '{print $3}' }
+echo 'NUM: '^$num
 
-switch($files){
-case ./$curfile
+switch($curfile){
+case *$files
 	echo ':'^$num
 case *
 	echo 'E +:'^$num^' '^$files

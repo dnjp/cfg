@@ -6,7 +6,6 @@ all: plan9port \
       gofonts \
       alacritty \
       tmux \
-      nvi \
       nyne \
       acmelsp \
       aerc \
@@ -209,11 +208,11 @@ acmelsp: go
 # terraform
 terraform: go
 	cd sources/github.com/hashicorp/terraform \
-		&& git clean -f -d \
+		&& git clean -fdx \
 		&& git reset --hard \
 		&& git checkout master \
 		&& git pull \
-		&& git checkout v0.13.1 \
+		&& git checkout v0.14.6 \
 		&& go mod vendor \
 		&& go install
 
@@ -228,12 +227,16 @@ yash:
 
 # vim
 vim:
+
+			# --with-x \
 	cd sources/github.com/vim/vim && \
+		git clean -fdx && \
+		git checkout master && \
+		git pull && \
 		./configure \
 			--enable-fontset \
 			--disable-gpm \
 			--enable-multibyte \
-			--with-x \
 			--with-features=normal && \
 		make && \
 		sudo make install

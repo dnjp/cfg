@@ -1,5 +1,5 @@
 # set prompt
-export PS1='; '
+export PS1='$ '
 
 # make dash happy
 export ENV=$HOME/.profile;
@@ -9,38 +9,35 @@ export NO_COLOR=1
 
 # defaults
 export BROWSER="brave-browser"
-export EDITOR='editinacme'
+export EDITOR='vim'
 export VISUAL=$EDITOR
-export TERMCMD="9t"
-export SKIM_DEFAULT_OPTIONS='--color=bw'
-# export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
 # constants
 NEXTCLOUD=/home/daniel/Nextcloud/
-MARTIN=/home/daniel/src/work/martin-bidder
+MARTIN=/home/daniel/work/martin-bidder
+PERSONAL=/home/daniel/personal
+CFG=/home/daniel/cfg
+BIN_DIR=$HOME/bin
 PLAN9=/usr/local/plan9
 GOROOT=/usr/local/go
 GOPATH=$HOME/go
 NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
-# JAVA_HOME=/usr/lib/jvm/java-8-openjdk
-JAVA_HOME=/usr/lib/jvm/java-14-openjdk
-HARVEY=/home/daniel/src/personal/harvey
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+# JAVA_HOME=/usr/lib/jvm/java-14-openjdk
 NVM_DIR="$HOME/src/config/programs/nvm"
-SKIM_DIR=$HOME/.skim
+FZF_DIR=$HOME/.fzf
 
 # source external scipts
 . ~/Nextcloud/secrets/secrets.sh
 . $MARTIN/shell/aliases.sh
 . $MARTIN/shell/functions.sh
-# . $NVM_DIR/nvm.sh
 
 # Navigation
 alias vi="vim $*"
 alias h="cd ~"
-alias mar="cd ~/src/work/martin-bidder"
-alias per="cd ~/src/personal"
-alias cfg="cd ~/src/cfg"
-alias src="cd ~/src"
+alias mar="cd $MARTIN"
+alias per="cd $PERSONAL"
+alias cfg="cd $CFG"
 alias dow="cd ~/Downloads"
 alias notes="cd ~/notes"
 alias drop="cd ~/Dropbox"
@@ -55,27 +52,10 @@ alias sloc="scc $*"
 alias next="cd ~/Nextcloud"
 alias learn="cd $HOME/exercism"
 
-
-if [ "$INSIDE_ACME" ]; then
-	# handle man pages more cleanly
-	export PAGER=nobs
-	export MANPAGER=nobs
-
-	# set font
-	export font=$PLAN9/font/pelm/euro.8.font
-	export lfont=$PLAN9/font/lucsans/unicode.7.font
-
-	# Patch cd command for acme
-	_cd () {
-		\cd "$@" && awd
-	}
-	alias cd=_cd
-fi
-
 # unix defaults
 alias cp="cp -i"                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
-# alias free='free -m'                                            # Show sizes in MB
+alias free='free -m'                                            # Show sizes in MB
 
 # Git
 alias g="git $*"
@@ -92,10 +72,11 @@ alias ts="tmux ls"
 alias tk="tmux kill-session -t"
 
 # scripts
-export PATH=$PATH:/home/daniel/src/bin
+export PATH=$PATH:$BIN_DIR/rc
+export PATH=$PATH:$BIN_DIR/amd64
 
-# skim
-export PATH=$PATH:$SKIM_DIR/bin
+# fzf
+export PATH=$PATH:$FZF_DIR/bin
 
 # SSH
 alias "sshedge"="ssh daniel@192.168.1.1"
@@ -107,18 +88,9 @@ export PATH=$PATH:$PLAN9/bin
 # Google
 PATH=$PATH:$HOME/google-cloud-sdk/bin/:
 
-# my scripts
-PATH=$PATH:$HOME/bin/:
-
-# Snap
-export PATH=$PATH:/snap/bin
-export PATH=$PATH:/var/lib/snapd/snap/bin
-
 # Golang
-export GOROOT=/usr/local/go
-export PATH=$PATH:/usr/local/go/bin
-# export GOPATH="$HOME/go"
-PATH=$PATH:$GOPATH/bin:
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin:
 
 # Python
 export PATH=$PATH:$HOME/.local/bin
@@ -133,7 +105,7 @@ export VCPKG_FEATURE_FLAGS="manifests"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Java
-# export _JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
+export _JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
 
 # FZF
 export FZF_DEFAULT_OPTS='--no-color'
@@ -146,25 +118,20 @@ gcloudconfig() {
 	gcloud info | grep Project
 }
 
-##########################################################################
-#
-#                           Plan 9 Commands
-#
-##########################################################################
-alias awk="$PLAN9/bin/awk"
-alias bunzip2="$PLAN9/bin/bunzip2"
-alias bzip2="$PLAN9/bin/bzip2"
-alias cat="$PLAN9/bin/cat"
-alias dd="$PLAN9/bin/dd"
-alias echo="$PLAN9/bin/echo"
-alias ed="$PLAN9/bin/ed"
-alias fmt="$PLAN9/bin/fmt"
-alias lc="$PLAN9/bin/lc"
-alias ls="$PLAN9/bin/ls"
-alias mk="$PLAN9/bin/mk"
-alias mkdir="$PLAN9/bin/mkdir"
-alias nroff="$PLAN9/bin/nroff"
-alias ps="$PLAN9/bin/ps"
-alias rm="$PLAN9/bin/rm"
-alias sed="$PLAN9/bin/sed"
-alias zip="$PLAN9/bin/zip"
+# patch cd for acme
+if [ "$INSIDE_ACME" ]; then
+	# handle man pages more cleanly
+	export PAGER=nobs
+	export MANPAGER=nobs
+
+	# set font
+	export font=$PLAN9/font/pelm/euro.8.font
+	export lfont=$PLAN9/font/lucsans/unicode.7.font
+
+	# Patch cd command for acme
+	_cd () {
+		\cd "$@" && awd
+	}
+	alias cd=_cd
+fi
+
