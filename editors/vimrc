@@ -115,6 +115,12 @@ map  
 "             convenience
 """""""""""""""""""""""""""""""""""
 
+" quickly open vimrc
+map ve :sp:e ~/.vimrc
+
+" make ex commands much easier
+map ; :
+
 " quick make execution
 map  m :!make 
 map  M :!make >/tmp/makeout 2>&1:sp /tmp/makeout
@@ -138,9 +144,6 @@ map  :.!com -f %
 
 " space-ctrl-/ to un/comment current selection
 map   :'<,'>!com -f % 
-
-" plan9 plumber
-map 9p wb"zyy:sp /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   clipboard

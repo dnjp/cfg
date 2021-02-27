@@ -1,121 +1,36 @@
-[submodule "sources/git.sr.ht/danieljamespost/st"]
-	path = sources/github.com/dnjp/st
-	url = git@github.com:dnjp/st.git
-[submodule "sources/git.sr.ht/danieljamespost/plan9port"]
-	path = sources/github.com/dnjp/plan9port
-	url = git@github.com:dnjp/plan9port.git
-[submodule "sources/git.sr.ht/danieljamespost/nyne"]
-	path = sources/github.com/dnjp/nyne
-	url = git@github.com:dnjp/nyne.git
-[submodule "sources/git.sr.ht/danieljamespost/edwood"]
-	path = sources/github.com/dnjp/edwood
-	url = git@github.com:dnjp/edwood.git
-[submodule "sources/git.sr.ht/danieljamespost/dmenu"]
-	path = sources/github.com/dnjp/dmenu
-	url = git@github.com:dnjp/dmenu.git
-[submodule "sources/git.sr.ht/danieljamespost/dwm"]
-	path = sources/github.com/dnjp/dwm
-	url = git@github.com:dnjp/dwm.git
-[submodule "sources/git.sr.ht/danieljamespost/slstatus"]
-	path = sources/github.com/dnjp/slstatus
-	url = git@github.com:dnjp/slstatus.git
-[submodule "sources/git.sr.ht/danieljamespost/rc"]
-	path = sources/github.com/dnjp/rc
-	url = git@github.com:dnjp/rc.git
 [submodule "sources/github.com/vim/vim"]
 	path = sources/github.com/vim/vim
 	url = https://github.com/vim/vim.git
-[submodule "sources/github.com/hashicorp/terraform"]
-	path = sources/github.com/hashicorp/terraform
-	url = https://github.com/hashicorp/terraform.git
-[submodule "sources/github.com/fhs/acme-lsp"]
-	path = sources/github.com/fhs/acme-lsp
-	url = https://github.com/fhs/acme-lsp.git
-[submodule "sources/github.com/magicant/yash"]
-	path = sources/github.com/magicant/yash
-	url = https://github.com/magicant/yash.git
-[submodule "sources/git.sr.ht/~sircmpwn/aerc"]
-	path = sources/git.sr.ht/sircmpwn/aerc
-	url = https://git.sr.ht/~sircmpwn/aerc
-[submodule "sources/git.sr.ht/emersion/mrsh"]
-	path = sources/git.sr.ht/emersion/mrsh
-	url = https://git.sr.ht/~emersion/mrsh
-[submodule "sources/repo.or.cz/nvi"]
-	path = sources/repo.or.cz/nvi
-	url = https://repo.or.cz/nvi.git
 [submodule "sources/github.com/jarun/nnn"]
 	path = sources/github.com/jarun/nnn
 	url = https://github.com/jarun/nnn.git
-[submodule "sources/github.com/window-maker/wmaker"]
-	path = sources/github.com/window-maker/wmaker
-	url = https://github.com/window-maker/wmaker.git
 [submodule "sources/github.com/alacritty/alacritty"]
 	path = sources/github.com/alacritty/alacritty
 	url = https://github.com/alacritty/alacritty.git
-[submodule "sources/github.com/andreberg/Meslo-Font"]
-	path = sources/github.com/andreberg/Meslo-Font
-	url = https://github.com/andreberg/Meslo-Font.git
 [submodule "sources/github.com/jonls/redshift"]
 	path = sources/github.com/jonls/redshift
 	url = https://github.com/jonls/redshift.git
 [submodule "sources/github.com/BurntSushi/ripgrep"]
 	path = sources/github.com/BurntSushi/ripgrep
 	url = https://github.com/BurntSushi/ripgrep.git
-[submodule "sources/github.com/dinhvh/libetpan"]
-	path = sources/github.com/dinhvh/libetpan
-	url = https://github.com/dinhvh/libetpan.git
-[submodule "sources/git.claws-mail.org/claws"]
-	path = sources/git.claws-mail.org/claws
-	url = https://git.claws-mail.org/readonly/claws.git
 [submodule "sources/git.savannah.gnu.org/bash"]
 	path = sources/git.savannah.gnu.org/bash
 	url = https://git.savannah.gnu.org/git/bash.git
-[submodule "sources/github.com/9fans/go"]
-	path = sources/github.com/9fans/go
-	url = https://github.com/9fans/go.git
 [submodule "sources/github.com/tmux/tmux"]
 	path = sources/github.com/tmux/tmux
 	url = https://github.com/tmux/tmux.git
 [submodule "sources/github.com/universal-ctags/ctags"]
 	path = sources/github.com/universal-ctags/ctags
 	url = https://github.com/universal-ctags/ctags.git
-[submodule "sources/github.com/linkerd/linkerd2"]
-	path = sources/github.com/linkerd/linkerd2
-	url = https://github.com/linkerd/linkerd2.git
-[submodule "sources/git.sr.ht/sircmpwn/scdoc"]
-	path = sources/git.sr.ht/sircmpwn/scdoc
-	url = git@git.sr.ht:~sircmpwn/scdoc
 [submodule "sources/github.com/golang/lint"]
 	path = sources/github.com/golang/lint
 	url = https://github.com/golang/lint
 [submodule "sources/github.com/dominikh/go-tools"]
 	path = sources/github.com/dominikh/go-tools
 	url = https://github.com/dominikh/go-tools.git
-[submodule "sources/git.sr.ht/danieljamespost/noice"]
-	path = sources/github.com/dnjp/noice
-	url = git@github.com:dnjp/noice.git
-[submodule "sources/go.googlesource.com/image"]
-	path = sources/go.googlesource.com/image
-	url = https://go.googlesource.com/image
 [submodule "sources/github.com/exercism/cli"]
 	path = sources/github.com/exercism/cli
 	url = https://github.com/exercism/cli.git
-[submodule "sources/github.com/ThrowTheSwitch/Unity"]
-	path = sources/github.com/ThrowTheSwitch/Unity
-	url = https://github.com/ThrowTheSwitch/Unity.git
-[submodule "sources/git.savannah.gnu.org/emacs"]
-	path = sources/git.savannah.gnu.org/emacs
-	url = git://git.savannah.gnu.org/emacs.git
-	branch = feature/native-comp
-[submodule "sources/github.com/deadpixi/sam"]
-	path = sources/github.com/deadpixi/sam
-	url = https://github.com/deadpixi/sam.git
 [submodule "sources/github.com/golang/tools"]
 	path = sources/github.com/golang/tools
 	url = https://github.com/golang/tools.git
-[submodule "sources/git.sr.ht/ft/9pro"]
-	path = sources/git.sr.ht/ft/9pro
-	url = https://git.sr.ht/~ft/9pro
-[submodule "sources/github.com/dnjp/nvi"]
-	path = sources/github.com/dnjp/nvi
-	url = git@github.com:dnjp/nvi.git

@@ -1,7 +1,0 @@
-. ~/.profile
-
-# pkgsrc
-export PATH=/usr/pkg/sbin:/usr/pkg/bin:$PATH
-export MANPATH=/usr/pkg/man:$MANPATH
-
-set -o emacs

@@ -1,3 +1,11 @@
+# System Dependencies
+#
+# - intltool
+# - autotools
+# - curl 
+# - bash
+
+
 all: git \
 	bash \
 	go \
@@ -69,6 +77,7 @@ meslofonts:
 vim:
 	cd sources/github.com/vim/vim && \
 		git clean -fdx && \
+		git reset --hard && \
 		git checkout master && \
 		git pull && \
 		./configure \
@@ -93,18 +102,27 @@ alacritty: rust
 
 redshift:
 	cd sources/github.com/jonls/redshift && \
-		./bootstrap.sh && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
+		./bootstrap && \
 		./configure && \
 		make && \
 		sudo make install
 ripgrep:
 	cd sources/github.com/BurntSushi/ripgrep && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
 		cargo build --release && \
 		sudo cp ./target/release/rg /usr/local/bin/
 
 tmux:
 	cd sources/github.com/tmux/tmux && \
 		git clean -fdx && \
+		git reset --hard && \
 		git checkout master && \
 		git pull && \
 		sh ./autogen.sh && \
@@ -115,6 +133,10 @@ tmux:
 
 ctags:
 	cd sources/github.com/universal-ctags/ctags && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
 		sh ./autogen.sh && \
 		./configure && \
 		make && \
@@ -124,18 +146,39 @@ ctags:
 
 golint:
 	cd sources/github.com/golang/lint/golint && \
-		go install
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
+		go build -o golint && \
+		sudo mv ./golint /usr/local/bin/golint
 
 gotools:
 	cd sources/github.com/golang/tools && \
-		go install ./...
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
+		mkdir -p bin && \
+		go build -o ./bin/gocover cmd/cover/... && \
+		go build -o ./bin/godigraph cmd/digraph/digraph.go && \
+		go build -o ./bin/gostress cmd/stress/stress.go && \
+		sudo mv ./bin/* /usr/local/bin/
 
 staticcheck:
 	cd sources/github.com/dominikh/go-tools && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
 		go install cmd/staticcheck/staticcheck.go
 
 exercism:
 	cd sources/github.com/exercism/cli && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout main && \
+		git pull && \
 		go build -o exercism.bin exercism/main.go && \
 		sudo cp ./exercism.bin /usr/local/bin/exercism
 
@@ -145,6 +188,10 @@ exercism:
 bash:
 ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	cd sources/git.savannah.gnu.org/bash && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git pull && \
 		./configure --prefix=/usr \
 			--without-bash-malloc \
 			--enable-readline && \
