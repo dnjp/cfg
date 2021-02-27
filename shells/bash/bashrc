@@ -7,3 +7,4 @@ if [ -f '/home/daniel/google-cloud-sdk/path.bash.inc' ]; then . '/home/daniel/go
 if [ -f '/home/daniel/google-cloud-sdk/completion.bash.inc' ]; then . '/home/daniel/google-cloud-sdk/completion.bash.inc'; fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+

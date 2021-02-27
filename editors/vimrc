@@ -7,7 +7,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set shell=/usr/local/plan9/bin/rc
+set shell=/usr/bin/bash
 set path+=**
 set nocompatible				" don't try to be like traditional vi
 set cedit=					" ctrl-r to view command edit
@@ -32,20 +32,36 @@ set smartindent					" indentation based on syntax
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set nonumber 					" turn off line numbers
 
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+set background=dark                             " tell vim to have a background
+set t_Co=256                                    " set 256 colors
+" set t_Co=0					" turn off all colors
+syntax off					" turn off syntax highlighting
+
+set nonumber 					" turn off line numbers
 set showmode 					" show '-- INSERT --'
 set noruler					" turn off position information
 set report=0					" don't show messages like '4 lines yanked'
 set laststatus=0				" disable status line
 
-" syntax/color
-set t_Co=0					" turn off all colors
-syntax off					" turn off syntax highlighting
+" searching/completion
+set smartcase					" do the right thing when searching
 set showmatch 					" show matching delimiter
 set matchtime=2 				" delay for delimiter highlight
 set wildmenu					" better menu in command mode
 set wildmode=longest,list
+
+" Set split separator to Unicode box drawing character
+set encoding=utf8
+set fillchars+=vert:\ 
+highlight VertSplit cterm=NONE
+
+" set omni completion menu to more sensible color
+highlight Pmenu ctermbg=238 gui=bold
 
 """""""""""""""""""""""""""""""""""
 "        general settings
@@ -86,6 +102,7 @@ map  f :FZF!
 " fast quit
 map gg 1G
 map qq :bd!
+map QQ :q!
 map ss :w
 
 " easily switch buffers with space+l
@@ -97,8 +114,16 @@ map  
 """""""""""""""""""""""""""""""""""
 "             convenience
 """""""""""""""""""""""""""""""""""
+
+" quick make execution
 map  m :!make 
+map  M :!make >/tmp/makeout 2>&1:sp /tmp/makeout
+
+" execute command
 map ! :!
+
+" set starting mark 
+map M mm
 
 " generate tags
 map  t :!ctags -R .
@@ -131,7 +156,7 @@ map  y :sp /tmp/pastefilep:.,$!xclip -sel clip
 map g/ wb"zye::o:!git grep "zp
 
 " git status
-map gs :!git status >/tmp/statout >[2=1]:sp:e /tmp/statout
+map gs :!git status >/tmp/statout:sp:e /tmp/statout
 
 " git add
 map ga :!git add 
@@ -158,7 +183,7 @@ map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o
 map te :set expandtab
 
 " 8 space indentation
-map 8 :set tabstop=8^M:set sw=8^M
+map 8 :set tabstop=8:set sw=8
 
 " 4 space indentation
 map 4 :set tabstop=4:set shiftwidth=4
@@ -178,7 +203,7 @@ map  gr :%rustfmt
 " go
 map  go :%!gofmt
 map  gd :!go doc 
-map  gt :!cd `{dirname %} && go test 
+map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:sp /tmp/testout
 
 " prettier
 map  P :%!prettier --print-width 80 --prose-wrap always %

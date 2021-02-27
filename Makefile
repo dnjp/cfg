@@ -292,6 +292,9 @@ editinacme:
 
 tmux:
 	cd sources/github.com/tmux/tmux && \
+		git clean -fdx && \
+		git checkout master && \
+		git pull && \
 		sh ./autogen.sh && \
 		./configure && \
 		make && \

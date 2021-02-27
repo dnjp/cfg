@@ -8,7 +8,7 @@ export ENV=$HOME/.profile;
 export NO_COLOR=1
 
 # defaults
-export BROWSER="brave-browser"
+export BROWSER="brave"
 export EDITOR='vim'
 export VISUAL=$EDITOR
 
@@ -114,6 +114,11 @@ export FZF_DEFAULT_OPTS='--no-color'
 export PATH=$PATH:/home/daniel/.linkerd2/bin
 
 gcloudconfig() {
+	gcloud config configurations activate $1
+	gcloud info | grep Project
+}
+
+proj() {
 	gcloud config configurations activate $1
 	gcloud info | grep Project
 }
