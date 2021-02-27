@@ -20,7 +20,8 @@ all: git \
 	ripgrep \
 	exercism \
 	nvm \
-	prettier
+	prettier \
+	hdirs 
 
 ###########################
 #      Variables
@@ -43,7 +44,7 @@ GO_VERSION=1.15.6
 
 .PHONY: git
 git:
-	bin/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
+	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
 
 go:
 ifeq ($(wildcard /usr/local/go/.*),)
@@ -56,6 +57,17 @@ rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
+
+###########################
+#         bin/src
+###########################
+
+hdirs: go
+	bin/sh/sym $(shell pwd)/src $(HOME)/src
+	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
+	cd $(HOME)/src && \
+		make && \
+		make install
 
 ###########################
 #         Fonts
@@ -88,7 +100,7 @@ vim:
 			--with-features=normal && \
 		make && \
 		sudo make install
-	bin/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
+	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
 
 alacritty: rust
 	cd sources/github.com/alacritty/alacritty && \
@@ -99,7 +111,7 @@ alacritty: rust
 		sudo desktop-file-install extra/linux/Alacritty.desktop && \
 		sudo update-desktop-database
 	mkdir -p $(HOME)/.config/alacritty
-	bin/sym $(shell pwd)/term/alacritty/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
+	bin/sh/sym $(shell pwd)/term/alacritty/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 redshift:
 	cd sources/github.com/jonls/redshift && \
@@ -130,7 +142,7 @@ tmux:
 		./configure && \
 		make && \
 		sudo make install
-	bin/sym $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
+	bin/sh/sym $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
 
 ctags:
 	cd sources/github.com/universal-ctags/ctags && \
@@ -143,7 +155,7 @@ ctags:
 		make && \
 		sudo make install
 	mkdir -p $(HOME)/.config/ctags
-	bin/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
+	bin/sh/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
 
 golint:
 	cd sources/github.com/golang/lint/golint && \
@@ -213,8 +225,8 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	sudo cp ./shells/bash/system.bash_logout /etc/bash.bash_logout
 	chsh -s /usr/bin/bash $(USER)
 
-	bin/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
-	bin/sym $(shell pwd)/shells/profile ${HOME}/.profile
+	bin/sh/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
+	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
 endif
 
 
