@@ -5,7 +5,6 @@
 # - curl 
 # - bash
 
-
 all: git \
 	bash \
 	go \
@@ -19,7 +18,9 @@ all: git \
 	staticcheck \
 	redshift \
 	ripgrep \
-	exercism
+	exercism \
+	nvm \
+	prettier
 
 ###########################
 #      Variables
@@ -181,6 +182,15 @@ exercism:
 		git pull && \
 		go build -o exercism.bin exercism/main.go && \
 		sudo cp ./exercism.bin /usr/local/bin/exercism
+
+nvm: bash
+	cd sources/github.com/nvm-sh/nvm && \
+		./install.sh && \
+		. ~/.bashrc && \	
+		nvm install --lts
+
+prettier: nvm
+	npm install prettier -g
 
 ###########################
 #  git.savannah.gnu.org

@@ -34,3 +34,6 @@
 [submodule "sources/github.com/golang/tools"]
 	path = sources/github.com/golang/tools
 	url = https://github.com/golang/tools.git
+[submodule "sources/github.com/nvm-sh/nvm"]
+	path = sources/github.com/nvm-sh/nvm
+	url = https://github.com/nvm-sh/nvm.git
