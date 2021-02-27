@@ -1,4 +1,0 @@
-Replace accross buffers:
-
-Edit X/.*/ ,s,old,new,g
-

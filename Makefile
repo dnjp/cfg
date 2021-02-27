@@ -1,42 +1,32 @@
-all: plan9port \
-      go \
-      rc \
-      rust \
-      lucidafonts \
-      gofonts \
-      alacritty \
-      tmux \
-      nyne \
-      acmelsp \
-      aerc \
-      terraform \
-      gcloud \
-      ctags \
-      linkerd \
-      kubectl \
-      golint \
-      gotools \
-      staticcheck
+all: git \
+	bash \
+	go \
+	rust \
+	meslofonts \
+	alacritty \
+	tmux \
+	ctags \
+	golint \
+	gotools \
+	staticcheck \
+	redshift \
+	ripgrep \
+	exercism
 
 ###########################
 #      Variables
 ###########################
 
 SHELL := /bin/bash
-PROFILE := "~/.yashrc"
+export PATH := /bin:$(PATH):/usr/local/go/bin
 
-# pkgsrc
-BOOTSTRAP_TAR := bootstrap-el7-trunk-x86_64-20200724.tar.gz
-BOOTSTRAP_SHA := 478d2e30f150712a851f8f4bcff7f60026f65c9e
-PKGS := $(shell cat ./PKGS)
+USER=daniel
+HBIN=/home/daniel/bin
 
-# set path for plan9 and go
-export PATH := /bin:$(PATH):/usr/local/plan9/bin:/usr/local/go/bin:/usr/pkg/bin/:/usr/pkg/gcc10/bin
-
-user=daniel
-nbin=/home/daniel/bin
-goversion=1.15.6
-
+###########################
+#         Versions
+###########################
+GO_VERSION=1.15.6
 
 ###########################
 #         Deps
@@ -44,42 +34,13 @@ goversion=1.15.6
 
 .PHONY: git
 git:
-	ln -s $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
-
-pkgsrc:
-ifeq ($(wildcard /usr/pkg/.*),)
-	echo "installing pkgsrc..."
-	curl -o /tmp/${BOOTSTRAP_TAR} https://pkgsrc.joyent.com/packages/Linux/el7/bootstrap/${BOOTSTRAP_TAR}
-	sudo tar -zxpf /tmp/${BOOTSTRAP_TAR} -C /
-endif
-		sudo /usr/pkg/bin/pkgin -y update && \
-		sudo /usr/pkg/bin/pkgin -y upgrade && \
-		sudo /usr/pkg/bin/pkgin -y install ${PKGS}
+	bin/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
 
 go:
 ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
-		curl -OL https://golang.org/dl/go$(goversion).linux-amd64.tar.gz && \
+		curl -OL https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz && \
 		sudo tar -C /usr/local -xzf go*.tar.gz
-endif
-
-plan9port:
-ifeq ($(wildcard /usr/local/plan9/.*),)
-	cd sources/github.com/dnjp/plan9port && \
-		./PREINSTALL
-
-	ifeq ($(wildcard ${HOME}/lib/.*),)
-		ln -s $(shell pwd)/p9p/lib $(HOME)/lib
-	endif
-	ifeq ($(wildcard ${HOME}/bin/.*),)
-		ln -s $(shell pwd)/p9p/bin $(HOME)/bin
-	endif
-	ifeq ($(wildcard ${HOME}/mail/.*),)
-		ln -s $(shell pwd)/p9p/mail $(HOME)/mail
-	endif
-	ifeq ($(wildcard ${HOME}/.msmtprc/),)
-		ln -s $(shell pwd)/p9p/mail/msmtprc $(HOME)/.msmtprc
-	endif
 endif
 
 rust:
@@ -87,148 +48,25 @@ ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
 
-gcloud: bash
-ifeq ($(shell command -v gcloud 2> /dev/null),)
-	curl https://sdk.cloud.google.com | bash
-endif
-
 ###########################
-#        adhoc
+#         Fonts
 ###########################
 
-kubectl:
-	curl -Lo /tmp/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/linux/amd64/kubectl
-	chmod +x /tmp/kubectl
-	sudo mv /tmp/kubectl /usr/local/bin/kubectl
+meslofonts:
+	sudo mkdir -p /usr/share/fonts/meslo
+	sudo cp \
+		fonts/meslo/meslo_lg_1.2.1/*.ttf \
+		/usr/share/fonts/meslo
 
-lucidafonts:
-	sudo mkdir -p /usr/share/fonts/lucida
-	sudo cp fonts/lucida/* /usr/share/fonts/lucida/
-
-###########################
-#        Sourcehut
-###########################
-# emersion
-mrsh:
-	cd sources/git.sr.ht/emersion/mrsh && \
-		./configure && \
-		make && \
-		sudo make install
-
-# sircmpwn
-scdoc:
-	cd sources/git.sr.ht/sircmpwn/scdoc && \
-		make && \
-		sudo make install
-
-aerc: go scdoc
-	cd sources/git.sr.ht/sircmpwn/aerc && \
-		make && \
-		sudo make install
-	mkdir -p $(HOME)/.config/aerc
-	ln -s $(shell pwd)/email/aerc/aerc.conf $(HOME)/.config/aerc/aerc.conf
-	ln -s $(shell pwd)/email/aerc/binds.conf $(HOME)/.config/aerc/binds.conf
+	sudo cp \
+		fonts/meslo/meslo_lg_dz_1.2.1/*.ttf \
+		/usr/share/fonts/meslo
 
 ###########################
 #        Github
 ###########################
-# danieljamespost
-dmenu:
-	cd sources/github.com/dnjp/dmenu && \
-		make && \
-		sudo make install
 
-dwm:
-	cd sources/github.com/dnjp/dwm && \
-		make && \
-		sudo make install
-
-st:
-	cd sources/github.com/dnjp/st && \
-		make && \
-		sudo make install
-
-slstatus:
-	cd sources/github.com/dnjp/slstatus && \
-		make && \
-		sudo make install
-
-edwood: go
-	cd sources/github.com/dnjp/edwood && \
-		go install
-
-nyne: go plan9port
-ifeq ($(wildcard ${HOME}/.config/nyne),)
-	ln -s $(shell pwd)/p9p/nyne $(HOME)/.config/nyne
-endif
-	cd sources/github.com/dnjp/nyne && \
-		mk && \
-		installdir=$(nbin)/amd64 mk install
-
-rc:
-	cd sources/github.com/dnjp/rc && \
-		./bootstrap && \
-		./configure --with-edit=readline && \
-		make && \
-		sudo make install
-ifeq ($(wildcard $(HOME)/.rcrc/),)
-	ln -s $(shell pwd)/shells/rcrc $(HOME)/.rcrc
-endif
-	sudo sh -c "echo '/usr/local/bin/rc' >> /etc/shells"
-	chsh -s /usr/local/bin/rc $(user)
-
-noice:
-	cd sources/github.com/dnjp/noice && \
-		make && \
-		sudo make install
-
-sam:
-	cd sources/github.com/deadpixi/sam/ && \
-		make && \
-		sudo make install
-
-nvi:
-	cd sources/github.com/dnjp/nvi/dist && \
-		./distrib
-	cd sources/github.com/dnjp/nvi/build.unix && \
-		../dist/configure \
-			--enable-widechar && \
-		make && \
-		sudo make install
-	ln -s $(shell pwd)/editors/exrc $(HOME)/.exrc
-
-# fhs
-acmelsp: go
-	cd sources/github.com/fhs/acme-lsp/cmd/acme-lsp && \
-		go install 
-	cd sources/github.com/fhs/acme-lsp/cmd/L && \
-		go install 
-	ln -s $(shell pwd)/p9p/lsp $(HOME)/.config/acme-lsp
-
-# terraform
-terraform: go
-	cd sources/github.com/hashicorp/terraform \
-		&& git clean -fdx \
-		&& git reset --hard \
-		&& git checkout master \
-		&& git pull \
-		&& git checkout v0.14.6 \
-		&& go mod vendor \
-		&& go install
-
-# magicant
-yash:
-	cd sources/github.com/magicant/yash && \
-		./configure && \
-		make && \
-		sudo make install
-	sudo sh -c "echo '/usr/local/bin/yash' >> /etc/shells" && \
-	chsh -s /usr/local/bin/yash $(user)
-
-# vim
 vim:
-
-			# --with-x \
 	cd sources/github.com/vim/vim && \
 		git clean -fdx && \
 		git checkout master && \
@@ -240,20 +78,8 @@ vim:
 			--with-features=normal && \
 		make && \
 		sudo make install
-	ln -s $(shell pwd)/editors/vimrc $(HOME)/.vimrc
+	bin/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
 
-# window-maker
-wmaker:
-	cd sources/github.com/window-maker/wmaker && \
-		./autogen.sh && \
-		./configure && make && sudo make install
-	ln -s $(shell pwd)/wm/wmaker/WMGLOBAL $(HOME)/GNUstep/Defaults/WMGLOBAL
-	ln -s $(shell pwd)/wm/wmaker/WMRootMenu $(HOME)/GNUstep/Defaults/WMRootMenu
-	ln -s $(shell pwd)/wm/wmaker/WMWindowAttributes $(HOME)/GNUstep/Defaults/WMWindowAttributes
-	ln -s $(shell pwd)/wm/wmaker/WPrefs $(HOME)/GNUstep/Defaults/WPrefs
-	ln -s $(shell pwd)/wm/wmaker/WindowMaker $(HOME)/GNUstep/Defaults/WindowMaker
-
-# alacritty
 alacritty: rust
 	cd sources/github.com/alacritty/alacritty && \
 		cargo build --release && \
@@ -263,12 +89,7 @@ alacritty: rust
 		sudo desktop-file-install extra/linux/Alacritty.desktop && \
 		sudo update-desktop-database
 	mkdir -p $(HOME)/.config/alacritty
-	ln -s $(shell pwd)/term/alacritty/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
-
-meslofonts:
-	sudo mkdir -p /usr/share/fonts/meslo
-	cd sources/github.com/andreberg/Meslo-Font/dist/v1.2.1 && \
-		sudo unzip 'Meslo LG v1.2.1.zip' -d /usr/share/fonts/meslo
+	bin/sym $(shell pwd)/term/alacritty/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 redshift:
 	cd sources/github.com/jonls/redshift && \
@@ -281,15 +102,6 @@ ripgrep:
 		cargo build --release && \
 		sudo cp ./target/release/rg /usr/local/bin/
 
-libetpan:
-	cd sources/github.com/dinhvh/libetpan && \
-		./autogen.sh && \
-		make && \
-		sudo make install
-editinacme:
-	cd sources/github.com/9fans/go && \
-		go install acme/editinacme/main.go
-
 tmux:
 	cd sources/github.com/tmux/tmux && \
 		git clean -fdx && \
@@ -299,7 +111,7 @@ tmux:
 		./configure && \
 		make && \
 		sudo make install
-	ln -s $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
+	bin/sym $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
 
 ctags:
 	cd sources/github.com/universal-ctags/ctags && \
@@ -308,17 +120,7 @@ ctags:
 		make && \
 		sudo make install
 	mkdir -p $(HOME)/.config/ctags
-	ln -s $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
-
-linkerd:
-	cd sources/github.com/linkerd/linkerd2 && \
-		git clean -f -d && \
-		git reset --hard && \
-		git checkout main && \
-		git pull && \
-		git checkout stable-2.8.1 && \
-		go build -o linkerd cli/main.go && \
-		sudo cp ./linkerd /usr/local/bin/linkerd
+	bin/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
 
 golint:
 	cd sources/github.com/golang/lint/golint && \
@@ -333,20 +135,9 @@ staticcheck:
 		go install cmd/staticcheck/staticcheck.go
 
 exercism:
-	cd sources/github.com/exercism/cli&& \
+	cd sources/github.com/exercism/cli && \
 		go build -o exercism.bin exercism/main.go && \
 		sudo cp ./exercism.bin /usr/local/bin/exercism
-
-
-###########################
-#  git.claws-mail.org
-###########################
-claws: libetpan
-	cd sources/git.claws-mail.org/claws && \
-		./autogen.sh && \
-		make && \
-		sudo make install
-
 
 ###########################
 #  git.savannah.gnu.org
@@ -361,19 +152,12 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 		sudo make install
 
 	sudo sh -c "echo '/usr/bin/bash' >> /etc/shells" && \
-	chsh -s /usr/bin/bash $(user)
 	sudo cp ./shells/bash/system.bashrc /etc/bash.bashrc
 	sudo cp ./shells/bash/system.bash_logout /etc/bash.bash_logout
+	chsh -s /usr/bin/bash $(USER)
 
-	ln -s $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
-	ln -s $(shell pwd)/shells/profile ${HOME}/.profile
+	bin/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
+	bin/sym $(shell pwd)/shells/profile ${HOME}/.profile
 endif
 
-###########################
-#  go.googlesource.com
-###########################
-
-gofonts:
-	sudo mkdir -p /usr/share/fonts/go
-	sudo cp sources/go.googlesource.com/image/font/gofont/ttfs/* /usr/share/fonts/go/
 
