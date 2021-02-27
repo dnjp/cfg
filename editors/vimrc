@@ -33,13 +33,16 @@ set smartindent					" indentation based on syntax
 "                     visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+" fix colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 if (has("termguicolors"))
   set termguicolors
 endif
 
 set background=dark                             " tell vim to have a background
-set t_Co=256                                    " set 256 colors
-" set t_Co=0					" turn off all colors
+set t_Co=256                                    " set 256 colors, set to 0 for
+						" no colors
 syntax off					" turn off syntax highlighting
 
 set nonumber 					" turn off line numbers
@@ -148,8 +151,7 @@ map   :'<,'>!com -f %
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  p :read ! xclip -o -sel clip
-map  y :sp /tmp/pastefilep:.,$!xclip -sel clip 
+set clipboard=unnamedplus
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      git

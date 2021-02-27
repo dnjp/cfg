@@ -115,6 +115,7 @@ vim:
 			--enable-fontset \
 			--disable-gpm \
 			--enable-multibyte \
+			--with-x \
 			--with-features=big && \
 		make && \
 		sudo make install
