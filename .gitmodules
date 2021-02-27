@@ -37,3 +37,6 @@
 [submodule "sources/github.com/nvm-sh/nvm"]
 	path = sources/github.com/nvm-sh/nvm
 	url = https://github.com/nvm-sh/nvm.git
+[submodule "sources/github.com/curl/curl"]
+	path = sources/github.com/curl/curl
+	url = https://github.com/curl/curl.git

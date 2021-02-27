@@ -4,6 +4,7 @@
 # - autotools
 # - curl 
 # - bash
+# - cmake
 
 all: git \
 	bash \
@@ -46,7 +47,7 @@ GO_VERSION=1.15.6
 git:
 	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
 
-go:
+go: curl
 ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
 		curl -OL https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz && \
@@ -62,12 +63,29 @@ endif
 #         bin/src
 ###########################
 
-hdirs: go
+hdirs: go bash
 	bin/sh/sym $(shell pwd)/src $(HOME)/src
 	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
 	cd $(HOME)/src && \
 		make && \
 		make install
+
+	mkdir -p $(HOME)/personal
+	mkdir -p $(HOME)/work
+	mkdir -p $(HOME)/tmp
+
+ifeq ($(wildcard $(HOME)/work/wdeps/.*),)
+	cd $(HOME)/work && \
+		git clone git@github.com:dnjp/wdeps.git \
+		--recurse-submodules
+	cd $(HOME)/work/wdeps && make
+else
+	cd $(HOME)/work/wdeps && \
+		git clean -fdx && \
+		git reset --hard && \
+		git pull && \
+		make
+endif
 
 ###########################
 #         Fonts
@@ -203,6 +221,14 @@ nvm: bash
 
 prettier: nvm
 	npm install prettier -g
+
+curl:
+	cd sources/github.com/curl/curl/ && \
+		mkdir build && \
+		cd build && \
+		cmake .. && \
+		make && \
+		sudo make install
 
 ###########################
 #  git.savannah.gnu.org
