@@ -72,7 +72,7 @@ alias ts="tmux ls"
 alias tk="tmux kill-session -t"
 
 # scripts
-export PATH=$PATH:$BIN_DIR/rc
+export PATH=$PATH:$BIN_DIR/sh
 export PATH=$PATH:$BIN_DIR/amd64
 
 # fzf
