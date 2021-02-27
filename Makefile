@@ -97,7 +97,7 @@ vim:
 			--enable-fontset \
 			--disable-gpm \
 			--enable-multibyte \
-			--with-features=normal && \
+			--with-features=big && \
 		make && \
 		sudo make install
 	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
