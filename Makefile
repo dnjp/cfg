@@ -217,19 +217,21 @@ exercism:
 nvm: bash
 	cd sources/github.com/nvm-sh/nvm && \
 		./install.sh && \
-		. ~/.bashrc && \	
+		source ~/.bashrc && \	
 		nvm install --lts
 
 prettier: nvm
 	npm install prettier -g
 
 curl:
+ifeq ($(wildcard /usr/local/bin/curl),)
 	cd sources/github.com/curl/curl/ && \
-		mkdir build && \
+		mkdir -p build && \
 		cd build && \
 		cmake .. && \
 		make && \
 		sudo make install
+endif
 
 ###########################
 #  git.savannah.gnu.org
