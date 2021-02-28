@@ -25,8 +25,7 @@ type opt struct {
 }
 
 func (o opt) setop(lines []string) {
-	commented := 0
-	ncommented := 0
+	var commented, ncommented int
 	for _, line := range lines {
 		o.fch = firstchar(line)
 		if o.hascomment(line) {
@@ -91,11 +90,11 @@ func (o opt) singlecomment(line string) string {
 }
 
 func (o opt) com(lines []string) string {
+	var nlines []string
+	var nline, out string
 	o.setop(lines)
-	nlines := []string{}
 	for _, line := range lines {
 		o.fch = firstchar(line)
-		var nline string
 		if len(line) == 0 {
 			nline = line
 		} else {
@@ -103,7 +102,7 @@ func (o opt) com(lines []string) string {
 		}
 		nlines = append(nlines, nline)
 	}
-	out := strings.Join(nlines, "\n")
+	out = strings.Join(nlines, "\n")
 	if out[len(out)-1] == '\n' {
 		out = out[:len(out)-1]
 	}
@@ -111,7 +110,7 @@ func (o opt) com(lines []string) string {
 }
 
 func firstchar(line string) int {
-	fch := 0
+	var fch int
 	for _, ch := range line {
 		if ch == ' ' || ch == '\t' {
 			fch++
@@ -123,19 +122,21 @@ func firstchar(line string) int {
 }
 
 func main() {
-	filename := flags.Filename
+	var opt opt
+	var filename *string
+	var lines, parts []string
+	filename = flags.Filename
 	flag.Parse()
 	if len(*filename) == 0 {
 		panic("filename not provided with -f flag")
 	}
-	var opt opt
 	opt.ft = config.GetFT(*filename, config.SHELL)
 	in, err := pipe.In()
 	if err != nil {
 		panic(err)
 	}
-	lines := strings.Split(string(in), "\n")
-	parts := strings.Split(strings.TrimSuffix(opt.ft.Comment, " "), " ")
+	lines = strings.Split(string(in), "\n")
+	parts = strings.Split(strings.TrimSuffix(opt.ft.Comment, " "), " ")
 	opt.mp = len(parts) > 1
 	if opt.mp {
 		opt.scom = parts[0] + " "
