@@ -17,12 +17,11 @@ settings() {
 }
 
 usage() {
-	echo "Usage kb [ options ]"
+	echo "usage: kb [ flags ]"
 	cat <<'EOF'
-Flags:
+flags:
   -e
 	Re-map Caps Lock to Escape
-
   -c
 	Re-map Caps Lock to Escape when pressed and Ctrl when held
 EOF
@@ -30,16 +29,14 @@ EOF
 
 eflag=
 cflag=
-while getopts ec:h flag
+while getopts :ceh flag
 do
-	case "${flag}" in
+	case ${flag} in
 	e) 
-		echo "c2e"
 		eflag=1
 		capstoescape
 		;;	
 	c) 
-		echo "c2ec"
 		cflag=1
 		capstoescapectrl
 		;;
@@ -47,13 +44,14 @@ do
 		usage
 		exit 1
 		;;
+	*)
+		usage
+		exit 1
 	esac
 done
 
-echo "E: $eflag, C: $clag"
-
-if [ -z "$eflag" ] && [ -z "$cflag" ]; then
-	usage
-else
-	settings
-fi
+# if [ -z "$eflag" ] || [ -z "$cflag" ]; then
+# 	usage
+# else
+# fi
+settings
