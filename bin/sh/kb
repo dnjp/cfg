@@ -1,20 +1,59 @@
 #!/bin/sh
 
-#############################################
-# colemak with CapsLock as Escape
-#############################################
-# setxkbmap us -variant colemak -option caps:escape
+capstoescape() {
+	setxkbmap -option caps:escape
+}
 
-#############################################
-# colemak with CapsLock as Escape/Control
-#############################################
-# setxkbmap us -variant colemak 
-setxkbmap us
-setxkbmap -option ctrl:nocaps
-setxkbmap -option 'caps:ctrl_modifier'
-xcape -e 'Control_L=Escape' -t 200
+capstoescapectrl() {
+	setxkbmap us
+	setxkbmap -option ctrl:nocaps
+	setxkbmap -option 'caps:ctrl_modifier'
+	xcape -e 'Control_L=Escape' -t 200
+}
 
-#############################################
-# increase repeat rate
-#############################################
-xset r rate 200 100
+settings() {
+	# increase repeat rate
+	xset r rate 200 100
+}
+
+usage() {
+	echo "Usage kb [ options ]"
+	cat <<'EOF'
+Flags:
+  -e
+	Re-map Caps Lock to Escape
+
+  -c
+	Re-map Caps Lock to Escape when pressed and Ctrl when held
+EOF
+}
+
+eflag=
+cflag=
+while getopts ec:h flag
+do
+	case "${flag}" in
+	e) 
+		echo "c2e"
+		eflag=1
+		capstoescape
+		;;	
+	c) 
+		echo "c2ec"
+		cflag=1
+		capstoescapectrl
+		;;
+	h)
+		usage
+		exit 1
+		;;
+	esac
+done
+
+echo "E: $eflag, C: $clag"
+
+if [ -z "$eflag" ] && [ -z "$cflag" ]; then
+	usage
+else
+	settings
+fi

@@ -24,11 +24,12 @@ type opt struct {
 	op   op
 }
 
-func (o opt) setop(lines []string) {
+func (o *opt) setop(lines []string) {
 	var commented, ncommented int
 	for _, line := range lines {
 		o.fch = firstchar(line)
-		if o.hascomment(line) {
+		hc := o.hascomment(line) 
+		if hc {
 			commented++
 		} else {
 			ncommented++
@@ -41,7 +42,7 @@ func (o opt) setop(lines []string) {
 	o.op = UNCOMMENT
 }
 
-func (o opt) hascomment(line string) bool {
+func (o *opt) hascomment(line string) bool {
 	if o.mp {
 		hbegin := strings.Contains(line, o.scom)
 		hend := strings.Contains(line, o.ecom)
@@ -53,14 +54,14 @@ func (o opt) hascomment(line string) bool {
 	return line[o.fch:o.fch+len(o.ft.Comment)] == o.ft.Comment
 }
 
-func (o opt) comment(line string) string {
+func (o *opt) comment(line string) string {
 	if o.mp {
 		return o.multicomment(line)
 	}
 	return o.singlecomment(line)
 }
 
-func (o opt) multicomment(line string) string {
+func (o *opt) multicomment(line string) string {
 	switch o.op {
 	case COMMENT:
 		// multi comments generally cannot handle nesting,
@@ -78,7 +79,7 @@ func (o opt) multicomment(line string) string {
 	}
 }
 
-func (o opt) singlecomment(line string) string {
+func (o *opt) singlecomment(line string) string {
 	switch o.op {
 	case COMMENT:
 		return line[:o.fch] + o.ft.Comment + line[o.fch:]
@@ -89,14 +90,15 @@ func (o opt) singlecomment(line string) string {
 	}
 }
 
-func (o opt) com(lines []string) string {
+func (o *opt) com(lines []string) string {
 	var nlines []string
 	var nline, out string
 	o.setop(lines)
 	for _, line := range lines {
 		o.fch = firstchar(line)
 		if len(line) == 0 {
-			nline = line
+			// nline = line
+			continue
 		} else {
 			nline = o.comment(line)
 		}
@@ -122,7 +124,7 @@ func firstchar(line string) int {
 }
 
 func main() {
-	var opt opt
+	var opt *opt = &opt{}
 	var filename *string
 	var lines, parts []string
 	filename = flags.Filename
