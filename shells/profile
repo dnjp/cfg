@@ -13,19 +13,17 @@ export EDITOR='vim'
 export VISUAL=$EDITOR
 
 # constants
-NEXTCLOUD=/home/daniel/Nextcloud/
-MARTIN=/home/daniel/work/martin-bidder
-PERSONAL=/home/daniel/personal
-CFG=/home/daniel/cfg
-BIN_DIR=$HOME/bin
-PLAN9=/usr/local/plan9
-GOROOT=/usr/local/go
-GOPATH=$HOME/go
-NVM_VERSION=/home/daniel/src/config/programs/nvm/versions/node/v12.18.4
-JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+export NEXTCLOUD=/home/daniel/Nextcloud/
+export MARTIN=/home/daniel/work/martin-bidder
+export PERSONAL=/home/daniel/personal
+export CFG=/home/daniel/cfg
+export BIN_DIR=$HOME/bin
+export PLAN9=/usr/local/plan9
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 # JAVA_HOME=/usr/lib/jvm/java-14-openjdk
-NVM_DIR="$HOME/src/config/programs/nvm"
-FZF_DIR=$HOME/.fzf
+export FZF_DIR=$HOME/.fzf
 
 # source external scipts
 . ~/Nextcloud/secrets/secrets.sh

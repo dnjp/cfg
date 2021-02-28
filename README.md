@@ -21,6 +21,21 @@ following programs:
 - [nvm](https://github.com/nvm-sh/nvm)
 - [prettier](https://github.com/prettier/prettier)
 
+After installation is complete, this is the file tree that will be setup in your
+home directory:
+
+```
+├── bin            // shell scripts & executables
+│   ├── amd64
+│   └── sh
+├── cfg            // this repository
+├── go             // GOPATH
+├── personal       // directory for personal projects
+├── src            // code for utilities that end up in bin
+├── tmp            // directory for temporary files
+└── work           // directory for work related projects
+```
+
 ## Installation
 
 First install the following dependencies:
@@ -34,5 +49,3 @@ Clone the repo:
 ```
 $ git clone https://github.com/dnjp/cfg.git --recurse-submodules
 ```
-
-Then, simply run `make` in the root of this repository.
