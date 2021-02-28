@@ -1,28 +1,38 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 "	       	     NOTES
-" - 7c represents pipe character 
-" -  represents <space>
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
+"
+"             Special Characters
+"                7c - pipe 
+"                   - space
+"                   - ctrl+r
+"
+"                Mapping Rules
+"  map F        ... reserved for fzf
+"  map g        ... reserved for git, except for gg
+"  map <space>m ... reserved for make
+"  map <space>g ... reserved for go
+"  map <space>r ... reserved for rust
+"  map <space>f ... reserved for general formatting
+"
+"                   Marks
+"            'm' - starting mark
+"            'a' - ending mark
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set shell=/usr/bin/bash
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set tags=tags
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     indentation
+"                  indentation
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set tabstop=8
 set autoindent wrapmargin=8
 set shiftwidth=8
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     visuals
+"                    visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set nomesg
 set showmode
@@ -33,146 +43,130 @@ set noflash
 set ruler
 set verbose
 set leftright
-set searchincr		
-set wrapscan
 set report=1
-
 " ^V^V^V<tab>
 set filec=	
 set cedit=
 set terse
 set path=.
 set tildeop
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     searching
+"                   searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set ignorecase
-
+set searchincr		
+set wrapscan
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     navigation
+"                   navigation
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
-map gg 1G
-map Q :q!
-map ss :w
-map ; :
-
-" space-l : go to previous buffer
+" go to previous buffer
 map  l :e #
-
-" double space to bg vi
-map    :w:suspend
-
-" fuzzy find file in pwd tree
-map  f :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                      FZF
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" open file
+map FF :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
-" primitive completion
-map!  b"zywdw:o:r!cat % 7c nxt -w "zpkJA
-
-" execute command
-map ! :!
-
-" set starting mark 
-map M mm
-
-" make
-map  m :!make 
-map  M :!make >/tmp/makeout 2>&1:E /tmp/makeout
-
-" generate tags
+map gg 1G
+map Q :q!
+map S :w
+map X :! 
+map ; :
+map ve :E ~/.exrc
+map    :w:suspend
 map  t :!ctags -R .
-
-" replacement
-map rr :'m,'a s/
-
-" use comment command from nyne
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   text manipulation
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" replace between marks
+map R :'m,'a s/
 " ctrl-/ to un/comment current line
 map  :.!com -f %
-
 " space-ctrl-/ to un/comment current selection
 map   :'m,'a!com -f % 
-
+" primitive completion
+map!  b"zywdw:o:r!cat % 7c nxt -w "zpkJA
 " replace builtin >> command to use a+/a- commands from nyne
 " map >> :.!a+ -f % -t 8
 " map << :.!a- -f % -t 8
-
 " space-{>>/<<} to un/indent selection
-map  >> :'m,'a!a+ -f % -t 8
-map  << :'m,'a!a- -f % -t 8
-
-" plumber
-map 9p wb"zyy:E /tmp/plumbfile"zp:.!sed 's/"//g'"zyy:o"zpI:!plumb 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   clipboard
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-map  p :read ! xclip -o -sel clip
-map  y :E /tmp/pastefilep:.,$!xclip -sel clip 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                      git
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" git search for word under cursor
-map g/ wb"zye::o:!git grep "zp
-
-" git status
-map gs :!git status >/tmp/statout:sp:e /tmp/statout
-
-" git add
-map ga :!git add 
-
-" git add all
-map gA :!git add -A
-
-" git commit
-map gc :!git commit -am '
-
-" git diff
-map gd :!git diff
-
-" git push
-map gp :!git push
-
-" git blame on file
-map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
-
+" map  >> :'m,'a!a+ -f % -t 8
+" map  << :'m,'a!a- -f % -t 8
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   formatting
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
-" toggle tab expansion
-map te :set expandtab
-
-" 8 space indentation
-map 8 :set tabstop=8:set sw=8
-
-" 4 space indentation
-map 4 :set tabstop=4:set sw=4
-
-" 2 space indentation
-map 2 :set ts=2:set sw=2
-
+" expand tabs to spaces
+map  fe :set expandtab
 " format document using fmt
-map  gF :%!fmt -s
-
-" format paragraph using fmt
-map  gf !}fmt
-
-" rust
-map  gr :%rustfmt
-
-" go
-map  go :%!gofmt
-map  gd :!go doc 
-map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:sp /tmp/testout
-
+map  fF :%!fmt -s
 " prettier
-map  P :%!prettier --print-width 80 --prose-wrap always %
-
+map  fP :%!prettier --print-width 80 --prose-wrap always %
+" remove trailing spaces
+map  fs :%s/[[:space:]]\{1,\}/
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   indentation
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map 8 :set tabstop=8:set sw=8
+map 4 :set tabstop=4:set sw=4
+map 2 :set ts=2:set sw=2
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" display vi buffers
+map K :display buffers
+" cut current line to buffer '1'
+" map C  "1Y$dd
+" paste '1' after current position
+" map V  a"1p
+" mark current position as begin of new buffer
+" map # ma
+" mark current position as end of new buffer
+" map * mb
+" append new buffer to next line
+" map bi :'a,'b co .
+" delete marked buffer 
+" map be :'a,'b del .
+" move marked buffer to 'n' line
+" map bm :'a,'b mo .
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   clipboard
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" map rc +:r!xclip -o -sel clip^M 
+map  p :read ! xclip -o -sel clip
+map  y :E /tmp/pastefilep:.,$!xclip -sel clip 
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                      git
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" git search for word under cursor
+map g/ wb"zye::o:!git grep "zp
+" git status
+map gs :!git status >/tmp/statout:sp:e /tmp/statout
+" git add
+map ga :!git add 
+" git add  -a
+map gA :!git add -A
+" git commit
+map gc :!git commit -am '
+" git diff
+map gd :!git diff
+" git push
+map gp :!git push
+" git blame 
+map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   Rust
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  rr :%rustfmt
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                    Go
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  gf :%!gofmt
+map  gd :!go doc 
+map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:E /tmp/testout
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   Make
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  m :!make 
+map  M :!make >/tmp/makeout 2>&1:E /tmp/makeout

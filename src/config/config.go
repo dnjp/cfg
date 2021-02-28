@@ -101,6 +101,12 @@ var HTML = FT{
 	Comment:   "<!-- -->",
 }
 
+var VI = FT{
+	Indent:    8,
+	Tabexpand: false,
+	Comment:   "\" ",
+}
+
 var S = Settings{
 	Ftypes: map[string]FT{
 		".cc":      CPP,
@@ -122,5 +128,7 @@ var S = Settings{
 		"Makefile": SHELL,
 		".md":      MD,
 		".html":    HTML,
+		".exrc":    VI,
+		".vimrc":    VI,
 	},
 }
