@@ -3,7 +3,7 @@ all: git \
 	bash \
 	go \
 	rust \
-	meslofonts \
+	progfonts \
 	alacritty \
 	tmux \
 	ctags \
@@ -85,7 +85,8 @@ endif
 #         Fonts
 ###########################
 
-meslofonts:
+.PHONY:
+progfonts:
 	sudo mkdir -p /usr/share/fonts/meslo
 	sudo cp \
 		fonts/meslo/meslo_lg_1.2.1/*.ttf \
@@ -94,6 +95,11 @@ meslofonts:
 	sudo cp \
 		fonts/meslo/meslo_lg_dz_1.2.1/*.ttf \
 		/usr/share/fonts/meslo
+
+	sudo mkdir -p /usr/share/fonts/go
+	sudo cp fonts/go/*.ttf /usr/share/fonts/go
+	sudo mkdir -p /usr/share/fonts/lucida
+	sudo cp fonts/lucida/*.ttf /usr/share/fonts/lucida
 
 ###########################
 #        Github
