@@ -49,3 +49,5 @@ Clone the repo:
 ```
 $ git clone https://github.com/dnjp/cfg.git --recurse-submodules
 ```
+
+Then, simply run `make` to install everything
