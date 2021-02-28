@@ -1,8 +1,6 @@
 package config
 
-import (
-	"strings"
-)
+import "strings"
 
 type Settings struct {
 	Ftypes map[string]FT
@@ -11,7 +9,7 @@ type Settings struct {
 type FT struct {
 	Indent    int
 	Tabexpand bool
-	CmtStyle  string
+	Comment   string
 }
 
 func GetExt(in string) string {
@@ -46,61 +44,61 @@ func GetFilename(in string) string {
 var C = FT{
 	Indent:    8,
 	Tabexpand: false,
-	CmtStyle:  "/* */",
+	Comment:   "/* */",
 }
 
 var SHELL = FT{
 	Indent:    8,
 	Tabexpand: false,
-	CmtStyle:  "# ",
+	Comment:   "# ",
 }
 
 var CPP = FT{
 	Indent:    4,
 	Tabexpand: true,
-	CmtStyle:  "// ",
+	Comment:   "// ",
 }
 
 var GO = FT{
 	Indent:    8,
 	Tabexpand: false,
-	CmtStyle:  "// ",
+	Comment:   "// ",
 }
 
 var JAVA = FT{
 	Indent:    2,
 	Tabexpand: true,
-	CmtStyle:  "// ",
+	Comment:   "// ",
 }
 
 var JS = FT{
 	Indent:    2,
 	Tabexpand: true,
-	CmtStyle:  "// ",
+	Comment:   "// ",
 }
 
 var MD = FT{
 	Indent:    2,
 	Tabexpand: true,
-	CmtStyle:  "",
+	Comment:   "",
 }
 
 var TF = FT{
 	Indent:    2,
 	Tabexpand: true,
-	CmtStyle:  "# ",
+	Comment:   "# ",
 }
 
 var YAML = FT{
 	Indent:    2,
 	Tabexpand: true,
-	CmtStyle:  "# ",
+	Comment:   "# ",
 }
 
 var HTML = FT{
 	Indent:    2,
 	Tabexpand: true,
-	CmtStyle:  "<!-- -->",
+	Comment:   "<!-- -->",
 }
 
 var S = Settings{
