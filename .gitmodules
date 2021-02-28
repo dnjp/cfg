@@ -40,3 +40,6 @@
 [submodule "sources/github.com/curl/curl"]
 	path = sources/github.com/curl/curl
 	url = https://github.com/curl/curl.git
+[submodule "sources/github.com/junegunn/fzf"]
+	path = sources/github.com/junegunn/fzf
+	url = https://github.com/junegunn/fzf.git

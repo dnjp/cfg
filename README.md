@@ -20,6 +20,7 @@ following programs:
 - [exercism](https://github.com/exercism/cli)
 - [nvm](https://github.com/nvm-sh/nvm)
 - [prettier](https://github.com/prettier/prettier)
+- [fzf](https://github.com/junegunn/fzf)
 
 The following dependencies are required:
 

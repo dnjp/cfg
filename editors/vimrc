@@ -11,7 +11,7 @@ set shell=/usr/bin/bash
 set path+=**
 set nocompatible				" don't try to be like traditional vi
 set cedit=					" ctrl-r to view command edit
-set rtp+=/home/daniel/.fzf
+set rtp+=~/cfg/sources/github.com/junegunn/fzf
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags

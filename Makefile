@@ -15,7 +15,8 @@ all: git \
 	exercism \
 	nvm \
 	prettier \
-	hdirs 
+	hdirs \
+	fzf
 
 ###########################
 #      Variables
@@ -225,6 +226,10 @@ ifeq ($(wildcard /usr/local/bin/curl),)
 		make && \
 		sudo make install
 endif
+
+fzf:
+	cd sources/github.com/junegunn/fzf && \
+		./install
 
 ###########################
 #  git.savannah.gnu.org
