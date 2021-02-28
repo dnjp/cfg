@@ -43,3 +43,6 @@
 [submodule "sources/github.com/junegunn/fzf"]
 	path = sources/github.com/junegunn/fzf
 	url = https://github.com/junegunn/fzf.git
+[submodule "sources/github.com/alols/xcape"]
+	path = sources/github.com/alols/xcape
+	url = https://github.com/alols/xcape.git

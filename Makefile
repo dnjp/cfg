@@ -16,7 +16,8 @@ all: git \
 	nvm \
 	prettier \
 	hdirs \
-	fzf
+	fzf \
+	xcape
 
 ###########################
 #      Variables
@@ -236,6 +237,11 @@ endif
 fzf:
 	cd sources/github.com/junegunn/fzf && \
 		./install
+
+xcape:
+	cd sources/github.com/alols/xcape && \
+		make && \
+		sudo make install
 
 ###########################
 #  git.savannah.gnu.org

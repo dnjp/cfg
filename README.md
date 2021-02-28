@@ -28,6 +28,9 @@ The following dependencies are required:
 - [intltool](https://freedesktop.org/wiki/Software/intltool/)
 - [autotools](https://www.gnu.org/software/automake/faq/autotools-faq.html#How-do-I-install-the-Autotools-_0028as-user_0029_003f)
 - [cmake](https://cmake.org/)
+- [libx11](https://packages.debian.org/search?keywords=libx11-dev)
+- [libxtst](https://packages.debian.org/sid/libxtst-dev)
+- [libxi](https://packages.debian.org/search?keywords=libxi-dev)
 
 After installation is complete, this is the file tree that will be setup in your
 home directory:
