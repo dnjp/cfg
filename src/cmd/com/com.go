@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	// "fmt"
 	"src/config"
 	"src/flags"
 	"src/pipe"
@@ -16,7 +15,7 @@ const (
 	UNCOMMENT
 )
 
-type cmtopt struct {
+type opt struct {
 	cmt  string
 	scom string
 	ecom string
@@ -26,36 +25,7 @@ type cmtopt struct {
 	op   op
 }
 
-func main() {
-	filename := flags.Filename
-	flag.Parse()
-	if len(*filename) == 0 {
-		panic("filename not provided with -f flag")
-	}
-	ft := config.GetFT(*filename, config.SHELL)
-	in, err := pipe.In()
-	if err != nil {
-		panic(err)
-	}
-	lines := strings.Split(string(in), "\n")
-
-	opt := cmtopt{
-		cmt: ft.CmtStyle,
-		ml:  len(lines) > 1,
-	}
-
-	parts := strings.Split(strings.TrimSuffix(opt.cmt, " "), " ")
-	opt.mp = len(parts) > 1
-
-	if opt.mp {
-		if len(parts[0]) > 0 {
-			opt.scom = parts[0] + " "
-		}
-		if len(parts[1]) > 0 {
-			opt.ecom = " " + parts[1]
-		}
-	}
-
+func getop(lines []string, opt opt) op {
 	commented := 0
 	ncommented := 0
 	for _, line := range lines {
@@ -66,58 +36,33 @@ func main() {
 			ncommented++
 		}
 	}
-
-	opt.op = UNCOMMENT
 	if ncommented > commented {
-		opt.op = COMMENT
+		return COMMENT
 	}
-
-	nlines := []string{}
-	for _, line := range lines {
-		opt.fch = firstchar(line)
-		var nline string
-		if len(line) == 0 {
-			nline = line
-		} else {
-			nline = opt.comment(line)
-		}
-		nlines = append(nlines, nline)
-	}
-	out := strings.Join(nlines, "\n")
-	if out[len(out)-1] == '\n' {
-		out = out[:len(out)-1]
-	}
-	pipe.Out(out)
+	return UNCOMMENT
 }
 
-func (o cmtopt) hascomment(line string) bool {
+func (o opt) hascomment(line string) bool {
 	if o.mp {
 		return hasmulticomment(line, o)
 	}
 	return hassinglecomment(line, o)
 }
 
-func (o cmtopt) comment(line string) string {
+func (o opt) comment(line string) string {
 	if o.mp {
 		return multicomment(line, o)
 	}
 	return singlecomment(line, o)
 }
 
-func hasmulticomment(line string, opt cmtopt) bool {
+func hasmulticomment(line string, opt opt) bool {
 	hbegin := strings.Contains(line, opt.scom)
 	hend := strings.Contains(line, opt.ecom)
 	return hbegin && hend
 }
 
-func hassinglecomment(line string, opt cmtopt) bool {
-	if len(line) < opt.fch+len(opt.cmt) {
-		return false
-	}
-	return line[opt.fch:opt.fch+len(opt.cmt)] == opt.cmt
-}
-
-func multicomment(line string, opt cmtopt) string {
+func multicomment(line string, opt opt) string {
 	switch opt.op {
 	case COMMENT:
 		// multi comments generally cannot handle nesting,
@@ -135,7 +80,14 @@ func multicomment(line string, opt cmtopt) string {
 	}
 }
 
-func singlecomment(line string, opt cmtopt) string {
+func hassinglecomment(line string, opt opt) bool {
+	if len(line) < opt.fch+len(opt.cmt) {
+		return false
+	}
+	return line[opt.fch:opt.fch+len(opt.cmt)] == opt.cmt
+}
+
+func singlecomment(line string, opt opt) string {
 	switch opt.op {
 	case COMMENT:
 		return line[:opt.fch] + opt.cmt + line[opt.fch:]
@@ -157,3 +109,51 @@ func firstchar(line string) int {
 	}
 	return fch
 }
+
+func com(lines []string, opt opt) string {
+	nlines := []string{}
+	for _, line := range lines {
+		opt.fch = firstchar(line)
+		var nline string
+		if len(line) == 0 {
+			nline = line
+		} else {
+			nline = opt.comment(line)
+		}
+		nlines = append(nlines, nline)
+	}
+	out := strings.Join(nlines, "\n")
+	if out[len(out)-1] == '\n' {
+		out = out[:len(out)-1]
+	}
+	return out
+}
+
+func main() {
+	filename := flags.Filename
+	flag.Parse()
+	if len(*filename) == 0 {
+		panic("filename not provided with -f flag")
+	}
+	ft := config.GetFT(*filename, config.SHELL)
+	in, err := pipe.In()
+	if err != nil {
+		panic(err)
+	}
+	lines := strings.Split(string(in), "\n")
+
+	opt := opt{
+		cmt: ft.CmtStyle,
+		ml:  len(lines) > 1,
+	}
+
+	parts := strings.Split(strings.TrimSuffix(opt.cmt, " "), " ")
+	opt.mp = len(parts) > 1
+	if opt.mp {
+		opt.scom = parts[0] + " "
+		opt.ecom = " " + parts[1]
+	}
+	opt.op = getop(lines, opt)
+	pipe.Out(com(lines, opt))
+}
+
