@@ -46,3 +46,6 @@
 [submodule "sources/github.com/alols/xcape"]
 	path = sources/github.com/alols/xcape
 	url = https://github.com/alols/xcape.git
+[submodule "sources/github.com/dnjp/nvi"]
+	path = sources/github.com/dnjp/nvi
+	url = git@github.com:dnjp/nvi.git

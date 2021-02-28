@@ -12,6 +12,11 @@ com:
 tree:
 	go build cmd/tree/tree.go
 
+.PHONY: next
+next:
+	go build cmd/next/next.go
+
 install: all
 	cp com ${BINDIR}/com
 	cp tree ${BINDIR}/tree
+	cp next ${BINDIR}/nxt

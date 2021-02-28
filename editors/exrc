@@ -7,7 +7,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set shell=/usr/local/plan9/bin/rc
+set shell=/usr/bin/bash
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
@@ -54,8 +54,9 @@ set ignorecase
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
 map gg 1G
-map qq :q!
+map Q :q!
 map ss :w
+map ; :
 
 " space-l : go to previous buffer
 map  l :e #
@@ -64,31 +65,24 @@ map  l :e #
 map    :w:suspend
 
 " fuzzy find file in pwd tree
-map  f :vs /tmp/fzffile:r!echo `{pwd}^`{sk 7c sed 's/\.\//\//g'} "zy$:q!:Goedit "zp
-
-" fuzzy find file in git tree
-map  F :vs /tmp/fzffile:r!sk -c 'git ls-files `{git rev-parse --show-toplevel}'"zy$:q!:Goedit "zp
-
-" search for term
-map F :!f 
-
-" use `fe` command in $home/bin/rc to search for term 
-" and open single file if exists, otherwise display a 
-" list of matches which can be selected and opened 
-" with gd
-map  gf wb"zyw:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/bfile:o"zp"xPJI:r!fe "zyy:q!:o"zpI:
-map  gg "zyy:q!:vsplit:edit /tmp/defile:r!echo #"xyy:q!:E /tmp/defile:o'"zpkJxA'"xPJI:r!ffe "zyy:q!:o"zp
-
+map  f :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+" primitive completion
+map!  b"zywdw:o:r!cat % 7c nxt -w "zpkJA
+
 " execute command
 map ! :!
 
+" set starting mark 
+map M mm
+
 " make
 map  m :!make 
+map  M :!make >/tmp/makeout 2>&1:E /tmp/makeout
 
 " generate tags
 map  t :!ctags -R .
@@ -104,8 +98,8 @@ map  :.!com -f %
 map   :'m,'a!com -f % 
 
 " replace builtin >> command to use a+/a- commands from nyne
-map >> :.!a+ -f % -t 8
-map << :.!a- -f % -t 8
+" map >> :.!a+ -f % -t 8
+" map << :.!a- -f % -t 8
 
 " space-{>>/<<} to un/indent selection
 map  >> :'m,'a!a+ -f % -t 8
@@ -129,7 +123,7 @@ map  y :E /tmp/pastefilep:.,$!xclip -sel clip
 map g/ wb"zye::o:!git grep "zp
 
 " git status
-map gs :!git status >/tmp/statout >[2=1]:E /tmp/statout
+map gs :!git status >/tmp/statout:sp:e /tmp/statout
 
 " git add
 map ga :!git add 
@@ -147,7 +141,7 @@ map gd :!git diff
 map gp :!git push
 
 " git blame on file
-map gb :E"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
+map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   formatting
@@ -177,7 +171,7 @@ map  gr :%rustfmt
 " go
 map  go :%!gofmt
 map  gd :!go doc 
-map  gt :!cd `{dirname %} && go test -race -bench Benchmark* -count=1 >/tmp/testout >[2=1] :E /tmp/testout
+map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:sp /tmp/testout
 
 " prettier
 map  P :%!prettier --print-width 80 --prose-wrap always %

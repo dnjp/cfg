@@ -9,7 +9,7 @@ export NO_COLOR=1
 
 # defaults
 export BROWSER="brave"
-export EDITOR='vim'
+export EDITOR='vi'
 export VISUAL=$EDITOR
 
 # constants
@@ -23,7 +23,7 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 # JAVA_HOME=/usr/lib/jvm/java-14-openjdk
-export FZF_DIR=$HOME/.fzf
+export FZF_DIR=$HOME/cfg/sources/github.com/junegunn/fzf
 
 # source external scipts
 . ~/Nextcloud/secrets/secrets.sh
@@ -31,7 +31,7 @@ export FZF_DIR=$HOME/.fzf
 . $MARTIN/shell/functions.sh
 
 # Navigation
-alias vi="vim $*"
+alias v="vim $*"
 alias h="cd ~"
 alias mar="cd $MARTIN"
 alias per="cd $PERSONAL"

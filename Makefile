@@ -17,7 +17,9 @@ all: git \
 	prettier \
 	hdirs \
 	fzf \
-	xcape
+	xcape \
+	vim \
+	vi
 
 ###########################
 #      Variables
@@ -121,6 +123,16 @@ vim:
 		make && \
 		sudo make install
 	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
+
+vi:
+	cd sources/github.com/dnjp/nvi/dist && \
+		./distrib
+	cd sources/github.com/dnjp/nvi/build.unix && \
+		../dist/configure \
+			--enable-widechar && \
+		make && \
+		sudo make install
+	bin/sh/sym $(shell pwd)/editors/exrc $(HOME)/.exrc
 
 alacritty: rust
 	cd sources/github.com/alacritty/alacritty && \
