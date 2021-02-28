@@ -65,7 +65,7 @@ map  l :e #
 "                      FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " open file
-map FF :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
+map F :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -89,11 +89,11 @@ map   :'m,'a!com -f %
 " primitive completion
 map!  b"zywdw:o:r!cat % 7c nxt -w "zpkJA
 " replace builtin >> command to use a+/a- commands from nyne
-" map >> :.!a+ -f % -t 8
-" map << :.!a- -f % -t 8
+map >> :.!ind -f %
+map << :.!ind -f % -u true
 " space-{>>/<<} to un/indent selection
-" map  >> :'m,'a!a+ -f % -t 8
-" map  << :'m,'a!a- -f % -t 8
+map  >> :'m,'a!ind -f %
+map  << :'m,'a!ind -f % -u true
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   formatting
 """""""""""""""""""""""""""""""""""""""""""""""""""
