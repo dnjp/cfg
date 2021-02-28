@@ -7,6 +7,7 @@ following programs:
   - [gotools](https://github.com/golang/tools)
   - [golint](https://github.com/golang/lint/golint)
   - [staticcheck](https://github.com/dominikh/go-tools)
+  - [fonts](https://blog.golang.org/go-fonts)
 - [rust](https://github.com/rust-lang/rust)
 - [curl](https://github.com/curl/curl)
 - [bash](https://git.savannah.gnu.org/bash)
