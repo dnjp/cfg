@@ -21,6 +21,12 @@ following programs:
 - [nvm](https://github.com/nvm-sh/nvm)
 - [prettier](https://github.com/prettier/prettier)
 
+The following dependencies are required:
+
+- [intltool](https://freedesktop.org/wiki/Software/intltool/)
+- [autotools](https://www.gnu.org/software/automake/faq/autotools-faq.html#How-do-I-install-the-Autotools-_0028as-user_0029_003f)
+- [cmake](https://cmake.org/)
+
 After installation is complete, this is the file tree that will be setup in your
 home directory:
 
@@ -38,13 +44,7 @@ home directory:
 
 ## Installation
 
-First install the following dependencies:
-
-- intltool
-- autotools
-- cmake
-
-Clone the repo:
+First, clone the repo:
 
 ```
 $ git clone https://github.com/dnjp/cfg.git --recurse-submodules
