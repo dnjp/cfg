@@ -1,10 +1,3 @@
-# System Dependencies
-#
-# - intltool
-# - autotools
-# - curl 
-# - bash
-# - cmake
 
 all: git \
 	bash \
