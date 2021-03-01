@@ -65,7 +65,7 @@ map  l :e #
 "                      FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " open file
-map F :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
+map  f :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -87,7 +87,7 @@ map  :.!com -f %
 " space-ctrl-/ to un/comment current selection
 map   :'m,'a!com -f % 
 " primitive completion
-map!  b"zywdw:o:r!cat % 7c nxt -w "zpkJA
+map!  b"zyw:o:!cat % 7c nxt -w "zpA >> /tmp/compfile:E /tmp/compfileG"zye:q!e"zpwbea
 " replace builtin >> command to use a+/a- commands from nyne
 map >> :.!ind -f %
 map << :.!ind -f % -u true
@@ -142,7 +142,7 @@ map  y :E /tmp/pastefilep:.,$!xclip -sel clip
 " git search for word under cursor
 map g/ wb"zye::o:!git grep "zp
 " git status
-map gs :!git status >/tmp/statout:sp:e /tmp/statout
+map gs :!git status >/tmp/statout:E /tmp/statout
 " git add
 map ga :!git add 
 " git add  -a

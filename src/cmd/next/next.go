@@ -27,9 +27,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	lines = strings.Split(string(in), "\n")
-
 
 	// evaluate each line
 	eline:
@@ -60,7 +58,8 @@ func main() {
 		matches = append(matches, k)
 	}
 	sort.Strings(matches)
+	nmatch := strings.Replace(matches[0], *word, "", 1)
 	if len(matches) > 0 {
-		pipe.Out(matches[0])
+		pipe.Out(nmatch)
 	}
 }
