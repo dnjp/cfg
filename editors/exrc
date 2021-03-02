@@ -6,7 +6,7 @@
 "                   - ctrl+r
 "
 "                Mapping Rules
-"  map F        ... reserved for fzf
+"  map ctrl+p   ... reserved for fzf
 "  map g        ... reserved for git, except for gg
 "  map <space>m ... reserved for make
 "  map <space>g ... reserved for go
@@ -65,7 +65,7 @@ map  l :e #
 "                      FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " open file
-map  f :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
+map  :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   convenience
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -154,7 +154,9 @@ map gd :!git diff
 " git push
 map gp :!git push
 " git blame 
-map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
+map gb :E"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
+" git log
+map gl :!git log
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Rust
 """""""""""""""""""""""""""""""""""""""""""""""""""

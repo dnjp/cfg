@@ -1,13 +1,13 @@
 package main
 
 import (
-	"src/pipe"
 	"src/flags"
+	"src/pipe"
 
-	"strings"
-	"unicode"
 	"flag"
 	"sort"
+	"strings"
+	"unicode"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	if len(*word) == 0 {
 		panic("word not provided")
 	}
-	
+
 	in, err := pipe.In()
 	if err != nil {
 		panic(err)
@@ -30,18 +30,18 @@ func main() {
 	lines = strings.Split(string(in), "\n")
 
 	// evaluate each line
-	eline:
+eline:
 	for _, line := range lines {
 		if !strings.Contains(line, *word) {
 			continue
 		}
-		// evaluate each character of the line	
+		// evaluate each character of the line
 		for i := 0; i < len(line); i++ {
 			if i+len(*word) > len(line) {
 				// we have not found match
-				continue eline			
+				continue eline
 			}
-			pmatch := line[i:i+len(*word)]
+			pmatch := line[i : i+len(*word)]
 			if pmatch != *word {
 				continue
 			}

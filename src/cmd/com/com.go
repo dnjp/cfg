@@ -28,7 +28,7 @@ func (o *opt) setop(lines []string) {
 	var commented, ncommented int
 	for _, line := range lines {
 		o.fch = firstchar(line)
-		hc := o.hascomment(line) 
+		hc := o.hascomment(line)
 		if hc {
 			commented++
 		} else {

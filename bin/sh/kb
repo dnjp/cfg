@@ -50,8 +50,9 @@ do
 	esac
 done
 
-# if [ -z "$eflag" ] || [ -z "$cflag" ]; then
-# 	usage
-# else
-# fi
+if [ $OPTIND -eq 1 ]; then 
+	usage
+	exit 1
+fi
+
 settings

@@ -9,7 +9,8 @@ import (
 	"sort"
 )
 
-var depth = flag.Int("d", -1, "depth of tree to generate")
+var N = flag.Int("n", -1, "depth of tree to generate")
+var dirs = flag.Bool("d", false, "whether to only print directories")
 
 func getpath(args []string) (string, error) {
 	var base, pargs string
@@ -38,11 +39,11 @@ func getpath(args []string) (string, error) {
 	return pargs, nil
 }
 
-func tree(base string, prefix string, d int) {
+func tree(base string, prefix string, pd bool, n int) {
 	var file *os.File
 	var names []string
 	var err error
-	if d == *depth {
+	if n == *N {
 		return
 	}
 	file, err = os.Open(base)
@@ -55,6 +56,21 @@ func tree(base string, prefix string, d int) {
 	for i, name := range names {
 		var pre, sub string
 		sub = path.Join(base, name)
+		if pd {
+			file, err = os.Open(sub)
+			if err != nil {
+				panic(err)
+			}
+			info, err := file.Stat()
+			if err != nil {
+				panic(err)
+			}
+			file.Close()
+			if !info.IsDir() {
+				continue
+			}
+		}
+
 		if i == len(names)-1 {
 			fmt.Println(prefix+"└──", name)
 			pre = prefix + "    "
@@ -62,7 +78,7 @@ func tree(base string, prefix string, d int) {
 			fmt.Println(prefix+"├──", name)
 			pre = prefix + "│   "
 		}
-		tree(sub, pre, d+1)
+		tree(sub, pre, pd, n+1)
 	}
 }
 
@@ -72,5 +88,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	tree(p, "", 0)
+	tree(p, "", *dirs, 0)
 }

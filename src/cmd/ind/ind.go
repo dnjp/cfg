@@ -2,11 +2,11 @@ package main
 
 import (
 	"src/config"
-	"src/pipe"
 	"src/flags"
+	"src/pipe"
 
-	"strings"
 	"flag"
+	"strings"
 )
 
 func indent(line string, te bool, len int) string {
@@ -60,13 +60,13 @@ func main() {
 		}
 		if *ui {
 			nlines = append(nlines, unindent(
-				line, 
+				line,
 				ft.Tabexpand,
 				ft.Indent,
 			))
 		} else {
 			nlines = append(nlines, indent(
-				line, 
+				line,
 				ft.Tabexpand,
 				ft.Indent,
 			))

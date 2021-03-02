@@ -129,6 +129,6 @@ var S = Settings{
 		".md":      MD,
 		".html":    HTML,
 		".exrc":    VI,
-		".vimrc":    VI,
+		".vimrc":   VI,
 	},
 }
