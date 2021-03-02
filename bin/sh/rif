@@ -1,0 +1,18 @@
+#!/bin/sh
+
+search=$1
+replace=$2
+
+usage() {
+	echo "usage: rif <search> <replace>"
+}
+
+if [ -z "$search" ] || [ -z "$replace" ]; then
+	echo "search or replace terms not supplied"
+	echo
+	usage
+	exit 1
+fi
+
+grep -rl $search ./ | xargs sed -i s/$search/$replace/g
+
