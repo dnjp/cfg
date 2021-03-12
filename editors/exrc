@@ -11,6 +11,8 @@
 "  map <space>m ... reserved for make
 "  map <space>g ... reserved for go
 "  map <space>r ... reserved for rust
+"  map <space>c ... reserved for ctags
+"  map <space>t ... reserved for terraform
 "  map <space>f ... reserved for general formatting
 "
 "                   Marks
@@ -76,7 +78,7 @@ map X :!
 map ; :
 map ve :E ~/.exrc
 map    :w:suspend
-map  t :!ctags -R .
+map  ct :!ctags -R .
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   text manipulation
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -116,20 +118,6 @@ map 2 :set ts=2:set sw=2
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " display vi buffers
 map K :display buffers
-" cut current line to buffer '1'
-" map C  "1Y$dd
-" paste '1' after current position
-" map V  a"1p
-" mark current position as begin of new buffer
-" map # ma
-" mark current position as end of new buffer
-" map * mb
-" append new buffer to next line
-" map bi :'a,'b co .
-" delete marked buffer 
-" map be :'a,'b del .
-" move marked buffer to 'n' line
-" map bm :'a,'b mo .
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -172,3 +160,10 @@ map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/tes
 """""""""""""""""""""""""""""""""""""""""""""""""""
 map  m :!make 
 map  M :!make >/tmp/makeout 2>&1:E /tmp/makeout
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                 Terraform
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  tv :!terraform validate
+map  tp :!terraform plan
+map  ta :!terraform apply
+map  tf :w:!terraform fmt:e!

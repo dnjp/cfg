@@ -1,9 +1,38 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 "	       	     NOTES
-" - 7c represents pipe character 
-" -  represents <space>
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
+"
+"             Special Characters
+"                7c - pipe 
+"                   - space
+"                   - ctrl+r
+"
+"                Mapping Rules
+"  map ctrl+p   ... reserved for fzf
+"  map g        ... reserved for git, except for gg
+"  map <space>m ... reserved for make
+"  map <space>g ... reserved for go
+"  map <space>r ... reserved for rust
+"  map <space>c ... reserved for ctags
+"  map <space>t ... reserved for terraform
+"  map <space>f ... reserved for general formatting
+"
+"                   Marks
+"            'm' - starting mark
+"            'a' - ending mark
+"
+"                    Tags
+"   Use ^] to jump to tag under cursor
+"   Use g^] for ambiguous tags
+"   Use ^t to jump back up the tag sta
+"   ^x^n for JUST this file
+"   ^x^f for filenames (works with our path trick!)
+"   ^x^] for tags only
+"   ^n for anything specified by the 'complete' option
+"   Use ^n and ^p to go back and forth in the suggestion list
+"
+"                   TODO
+"   - check out fzf plugin - github.com/junegunn/fzf.vim
+"   - check out tmux plugin - github.com/christoomey/vim-tmux-navigator
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -12,12 +41,10 @@ set path+=**
 set nocompatible				" don't try to be like traditional vi
 set cedit=					" ctrl-r to view command edit
 set rtp+=~/cfg/sources/github.com/junegunn/fzf
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set tags=tags
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     indentation
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -28,44 +55,38 @@ set wrapmargin=8 				" set margin
 set backspace=indent,eol,start			" inteligent backspace behavior
 set autoindent					" auto indentation based on last line
 set smartindent					" indentation based on syntax
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
-" fix colors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-if (has("termguicolors"))
-  set termguicolors
-endif
-
-set background=dark                             " tell vim to have a background
-set t_Co=256                                    " set 256 colors, set to 0 for
-						" no colors
 syntax off					" turn off syntax highlighting
-
 set nonumber 					" turn off line numbers
 set showmode 					" show '-- INSERT --'
 set noruler					" turn off position information
 set report=0					" don't show messages like '4 lines yanked'
 set laststatus=0				" disable status line
+set background=dark                             " tell vim to have a background
 
-" searching/completion
+" fix colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set t_Co=256                                    " set 256 colors, set to 0 for
+						" no colors
+" Set split separator to Unicode box drawing character
+set encoding=utf8
+set fillchars+=vert:\ 
+highlight VertSplit cterm=NONE
+" set omni completion menu to more sensible color
+highlight Pmenu ctermbg=238 gui=bold
+highlight LineNr ctermfg=grey
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   searching
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 set smartcase					" do the right thing when searching
 set showmatch 					" show matching delimiter
 set matchtime=2 				" delay for delimiter highlight
 set wildmenu					" better menu in command mode
 set wildmode=longest,list
-
-" Set split separator to Unicode box drawing character
-set encoding=utf8
-set fillchars+=vert:\ 
-highlight VertSplit cterm=NONE
-
-" set omni completion menu to more sensible color
-highlight Pmenu ctermbg=238 gui=bold
-
 """""""""""""""""""""""""""""""""""
 "        general settings
 """""""""""""""""""""""""""""""""""
@@ -74,7 +95,6 @@ set noerrorbells				" turn off alerts
 set shortmess=I 				" turn off splash screen
 set autoread					" always refresh file
 set hidden					" hides buffers instead of closing them
-
 """""""""""""""""""""""""""""""""""
 "        searching
 """""""""""""""""""""""""""""""""""
@@ -82,134 +102,100 @@ set ignorecase					" ignore case when searching
 set incsearch					" start searching right away when typing
 set nohlsearch 					" don't highlight search terms
 set wildmenu					" display matching files when tab complete
-
-" search in files
-map F :!f 
-
-" finding files
-map  f :FZF!
-
 """""""""""""""""""""""""""""""""""
 "            navigation
 """""""""""""""""""""""""""""""""""
-
-" - Use ^] to jump to tag under cursor
-" - Use g^] for ambiguous tags
-" - Use ^t to jump back up the tag sta
-" - ^x^n for JUST this file
-" - ^x^f for filenames (works with our path trick!)
-" - ^x^] for tags only
-" - ^n for anything specified by the 'complete' option
-" - Use ^n and ^p to go back and forth in the suggestion list
-
-" fast quit
-map gg 1G
-map qq :bd!
-map QQ :q!
-map ss :w
-
 " easily switch buffers with space+l
 nnoremap  l :b #
-
 " make ctrl-w behave like nvi
 map  
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                      FZF
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  :FZF!
 """""""""""""""""""""""""""""""""""
 "             convenience
 """""""""""""""""""""""""""""""""""
-
-" quickly open vimrc
-map ve :sp:e ~/.vimrc
-
-" make ex commands much easier
+map gg 1G
+map Q :q!
+map S :w
+map X :!
 map ; :
-
-" quick make execution
-map  m :!make 
-map  M :!make >/tmp/makeout 2>&1:sp /tmp/makeout
-
-" execute command
-map ! :!
-
-" set starting mark 
-map M mm
-
-" generate tags
-map  t :!ctags -R .
-
-" tags
-map tn :tn
-map tp :tp
-map ts :ts
-
+map ve :sp:e ~/.vimrc
+map    :w:suspend
+map  ct :!ctags -R .
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   text manipulation
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" replace between marks
+map R :'m,'a s/
 " ctrl-/ to comment/uncomment lines
 map  :.!com -f %
-
 " space-ctrl-/ to un/comment current selection
 map   :'<,'>!com -f % 
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   formatting
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" detect filetypes 
+filetype on 
+" expand tabs to spaces
+map te :set expandtab
+" format document using fmt
+map  fF :%!fmt -s
+" prettier
+map  fP :%!prettier --print-width 80 --prose-wrap always %
+" remove trailing spaces
+map  fs :%s/[[:space:]]\{1,\}/
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   indentation
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map 8 :set tabstop=8:set sw=8
+map 4 :set tabstop=4:set shiftwidth=4
+map 2 :set ts=2:set sw=2
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" display vi buffers
+map K :display buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set clipboard=unnamedplus
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      git
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
 " git search for word under cursor
 map g/ wb"zye::o:!git grep "zp
-
-" git status
 map gs :!git status >/tmp/statout:sp:e /tmp/statout
-
-" git add
 map ga :!git add 
-
-" git add
 map gA :!git add -A
-
-" git commit
 map gc :!git commit -a 
-
-" git push
-map gp :!git push
-
-" git blame on file
-" TODO: this should print in prettier columns
+map gC :!git checkout -b 
+map gP :!git push
+map gp :!git pull
 map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
-
-
+map gB :!git checkout 
+map gl :!git log
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   formatting
+"                   Rust
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
-" toggle tab expansion
-map te :set expandtab
-
-" 8 space indentation
-map 8 :set tabstop=8:set sw=8
-
-" 4 space indentation
-map 4 :set tabstop=4:set shiftwidth=4
-
-" 2 space indentation
-map 2 :set ts=2:set sw=2
-
-" format document using fmt
-map gF :%!fmt -s
-
-" format paragraph using fmt
-map gf !}fmt
-
-" rust
 map  gr :%rustfmt
-
-" go
-map  go :%!gofmt
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                    Go
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  gf :%!gofmt
 map  gd :!go doc 
 map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:sp /tmp/testout
-
-" prettier
-map  P :%!prettier --print-width 80 --prose-wrap always %
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   Make
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  m :!make 
+map  M :!make >/tmp/makeout 2>&1:sp /tmp/makeout
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                 Terraform
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map  tv :!terraform validate
+map  tp :!terraform plan
+map  ta :!terraform apply
+map  tf :w:!terraform fmt:e!
 

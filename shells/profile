@@ -9,8 +9,11 @@ export NO_COLOR=1
 
 # defaults
 export BROWSER="brave"
-export EDITOR='vi'
+export EDITOR='vim'
 export VISUAL=$EDITOR
+export GIT_EDITOR=$EDITOR
+alias e="$EDITOR $*"
+alias vi="$EDITOR $*"
 
 # constants
 export NEXTCLOUD=/home/daniel/Nextcloud/
@@ -21,8 +24,8 @@ export BIN_DIR=$HOME/bin
 export PLAN9=/usr/local/plan9
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
-# JAVA_HOME=/usr/lib/jvm/java-14-openjdk
+
+export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
 export FZF_DIR=$HOME/cfg/sources/github.com/junegunn/fzf
 
 # source external scipts
@@ -44,7 +47,6 @@ alias l="ls"
 alias ".."="cd .."
 alias "~"="cd ~"
 alias n="noice $*"
-alias e="editinacme $*"
 # github.com/boyter/scc
 alias sloc="scc $*"
 alias next="cd ~/Nextcloud"
@@ -107,6 +109,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
 
 # FZF
 export FZF_DEFAULT_OPTS='--no-color'
+export FZF_DEFAULT_COMMAND='rg --files'
 
 # Linkerd
 export PATH=$PATH:/home/daniel/.linkerd2/bin
@@ -119,6 +122,13 @@ gcloudconfig() {
 proj() {
 	gcloud config configurations activate $1
 	gcloud info | grep Project
+}
+
+kgetnew() {
+
+	pattern=$1
+
+	watch "echo new: $(kubectl get po | grep $pattern | grep ' [0-9]m' | wc -l) total: $(kubectl get po | grep $pattern | wc -l)"
 }
 
 # patch cd for acme

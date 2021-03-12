@@ -3,8 +3,6 @@
 	email = danieljamespost@posteo.net
 [use]
 	name = Daniel Posthuma
-[core]
-	editor = vi
 [alias]
 	co = checkout
 	ctags = !.git/hooks/ctags
@@ -23,3 +21,13 @@
 	ui = false
 [init]
 	defaultBranch = master
+[core]
+	editor = code --wait
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED

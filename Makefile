@@ -35,6 +35,7 @@ HBIN=/home/daniel/bin
 #         Versions
 ###########################
 GO_VERSION=1.15.6
+# GO_VERSION=1.16
 
 ###########################
 #         Deps
@@ -44,12 +45,14 @@ GO_VERSION=1.15.6
 git:
 	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
 
-go: curl
-ifeq ($(wildcard /usr/local/go/.*),)
+# go: curl
+go: 
+# ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
 		curl -OL https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz && \
-		sudo tar -C /usr/local -xzf go*.tar.gz
-endif
+		sudo rm -rf /usr/local/go && \
+		sudo tar -C /usr/local -xzf go$(GO_VERSION).linux-amd64.tar.gz
+# endif
 
 rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
