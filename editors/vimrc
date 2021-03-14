@@ -34,6 +34,70 @@
 "   - check out tmux plugin - github.com/christoomey/vim-tmux-navigator
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"           install dependencies
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin('~/.vim/plugged')
+	Plug 'prabirshrestha/vim-lsp'
+	" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   lsp
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" golang
+augroup LspGo
+	au!
+	autocmd User lsp_setup call lsp#register_server({
+		\ 'name': 'go-lang',
+		\ 'cmd': {server_info->['gopls']},
+		\ 'whitelist': ['go'],
+		\ })
+	autocmd FileType go setlocal omnifunc=lsp#complete
+	autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
+	"autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
+	"autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
+augroup END
+
+" call s:on_lsp_buffer_enabled only for languages that has the server registered.
+" augroup lsp_install
+	" au!
+	" autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+" augroup END
+
+" disable highlight references to symbol under cursor
+let g:lsp_document_highlight_enabled = 0
+
+
+" disable support for document code action hints for |signs|.
+let g:lsp_document_code_action_signs_enabled = 0
+
+" let g:lsp_completion_documentation_enabled = 0
+
+" turn off diagnostic support
+let g:lsp_diagnostics_enabled = 0
+
+" C-Space for completion
+inoremap <C-Space> <C-x><C-o>
+imap <buffer> <Nul> <C-Space>
+smap <buffer> <Nul> <C-Space>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set shell=/usr/bin/bash
@@ -64,6 +128,7 @@ set showmode 					" show '-- INSERT --'
 set noruler					" turn off position information
 set report=0					" don't show messages like '4 lines yanked'
 set laststatus=0				" disable status line
+set pumheight=10                                " Completion window max size
 set background=dark                             " tell vim to have a background
 
 " fix colors
@@ -112,7 +177,27 @@ map  
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  :FZF!
+
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+" use ripgrep to search for pattern with preview
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+map  :Buffers
+map  :Files
+map  / :RG
+
 """""""""""""""""""""""""""""""""""
 "             convenience
 """""""""""""""""""""""""""""""""""

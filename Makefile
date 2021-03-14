@@ -1,3 +1,9 @@
+#########################################
+#
+# dependencies:
+# - python3-dev
+# - python2-dev
+#########################################
 
 all: git \
 	bash \
@@ -47,12 +53,12 @@ git:
 
 # go: curl
 go: 
-# ifeq ($(wildcard /usr/local/go/.*),)
+ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
 		curl -OL https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz && \
 		sudo rm -rf /usr/local/go && \
 		sudo tar -C /usr/local -xzf go$(GO_VERSION).linux-amd64.tar.gz
-# endif
+endif
 
 rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
@@ -118,9 +124,14 @@ vim:
 		git checkout master && \
 		git pull && \
 		./configure \
+			--enable-fail-if-missing \
 			--enable-fontset \
 			--disable-gpm \
 			--enable-multibyte \
+			--enable-pythoninterp=yes \
+			--with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu \
+			--enable-python3interp=yes \
+			--with-python-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
 			--with-x \
 			--with-features=big && \
 		make && \
@@ -236,7 +247,7 @@ nvm: bash
 		source ~/.bashrc && \	
 		nvm install --lts
 
-prettier: nvm
+prettier: 
 	npm install prettier -g
 
 curl:
@@ -282,5 +293,6 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	bin/sh/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
 	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
 endif
+
 
 
