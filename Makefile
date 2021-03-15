@@ -76,7 +76,11 @@ hdirs: go bash
 		make && \
 		make install
 
-	mkdir -p $(HOME)/personal
+
+ifeq ($(wildcard $(HOME)/personal/.*),)
+	git clone git@github.com:dnjp/personal.git $(HOME)/personal --recurse-submodules
+endif
+
 	mkdir -p $(HOME)/work
 	mkdir -p $(HOME)/tmp
 
@@ -97,7 +101,7 @@ endif
 #         Fonts
 ###########################
 
-.PHONY:
+.PHONY: progfonts
 progfonts:
 	sudo mkdir -p /usr/share/fonts/meslo
 	sudo cp \
@@ -291,6 +295,7 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	chsh -s /usr/bin/bash $(USER)
 
 	bin/sh/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
+	bin/sh/sym $(shell pwd)/shells/bash/bash_profile ${HOME}/.bash_profile
 	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
 endif
 
