@@ -55,3 +55,6 @@
 [submodule "sources/git.savannah.gnu.org/emacs"]
 	path = sources/git.savannah.gnu.org/emacs
 	url = git://git.savannah.gnu.org/emacs.git
+[submodule "sources/git.notmuchmail.org/notmuch"]
+	path = sources/git.notmuchmail.org/notmuch
+	url = git://git.notmuchmail.org/git/notmuch

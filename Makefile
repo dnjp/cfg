@@ -380,3 +380,11 @@ emacs:
 	bin/sh/sym $(shell pwd)/editors/emacs/emacs.d ${HOME}/.emacs.d
 
 
+###########################
+#  git.notmuchmail.org
+###########################
+
+notmuch-emacs:
+	cd sources/git.notmuchmail.org/notmuch/emacs/ && \
+		make && \
+		sudo make install
