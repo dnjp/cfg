@@ -33,11 +33,21 @@ MaildirStore personal-local
 Path ~/.mail/posteo/
 Inbox ~/.mail/posteo/inbox
 
+# Channel personal
+# Master :personal-remote:
+# Slave :personal-local:
+# Create Both
+# SyncState *
+
 Channel personal
 Master :personal-remote:
 Slave :personal-local:
-Create Both
+Patterns "Sent" "INBOX" "Trash" "Drafts" "Archiv"
+Create Slave
+Sync All
+Expunge Both
 SyncState *
+
 
 ###############################################
 #                  GMAIL
@@ -111,4 +121,3 @@ Group work
 Channel work-inbox
 Channel work-sent
 Channel work-trash
-

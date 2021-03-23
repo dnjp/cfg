@@ -58,7 +58,7 @@ git:
 	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
 
 # go: curl
-go: 
+go:
 ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
 		curl -OL https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz && \
@@ -125,7 +125,8 @@ endif
 	# mbsync
 	bin/sh/sym $(shell pwd)/mail/config/mbsyncrc $(HOME)/.mbsyncrc
 	# msmtp
-	bin/sh/sym $(shell pwd)/mail/config/msmtprc $(HOME)/.msmtprc
+	cp $(shell pwd)/mail/config/msmtprc $(HOME)/.msmtprc
+	chmod 600 $(HOME)/.msmtprc
 
 	# afew
 	mkdir -p ~/.config/afew
@@ -146,7 +147,7 @@ endif
 gpgimport:
 	gpg --import ~/Nextcloud/secrets/privkey.asc
 
-mailsecrets: 
+mailsecrets:
 ifeq (failed, $(shell bin/sh/check 'gpg --list-keys dnjp@posteo.org'))
 	gpg --full-generate-key
 endif
@@ -314,10 +315,10 @@ exercism:
 nvm: bash
 	cd sources/github.com/nvm-sh/nvm && \
 		./install.sh && \
-		source ~/.bashrc && \	
+		source ~/.bashrc && \
 		nvm install --lts
 
-prettier: 
+prettier:
 	npm install prettier -g
 
 curl:
