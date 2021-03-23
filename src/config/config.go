@@ -107,6 +107,12 @@ var VI = FT{
 	Comment:   "\" ",
 }
 
+var PROTO = FT{
+	Indent:    2,
+	Tabexpand: true,
+	Comment:   "// ",
+}
+
 var S = Settings{
 	Ftypes: map[string]FT{
 		".cc":      CPP,
@@ -121,6 +127,7 @@ var S = Settings{
 		".js":      JS,
 		".ts":      JS,
 		".json":    JS,
+		".proto":   PROTO,
 		".java":    JAVA,
 		".tf":      TF,
 		".sh":      SHELL,

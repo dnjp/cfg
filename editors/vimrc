@@ -53,35 +53,83 @@ call plug#begin('~/.vim/plugged')
 	Plug 'prabirshrestha/vim-lsp'
 	" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
+	Plug 'vim-latex/vim-latex'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
-" golang
-augroup LspGo
-	au!
-	autocmd User lsp_setup call lsp#register_server({
-		\ 'name': 'go-lang',
-		\ 'cmd': {server_info->['gopls']},
-		\ 'whitelist': ['go'],
-		\ })
-	autocmd FileType go setlocal omnifunc=lsp#complete
-	autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
-	"autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
-	"autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
-augroup END
+" if executable('gopls')
+	augroup LspGo
+		au!
+		autocmd User lsp_setup call lsp#register_server({
+			\ 'name': 'go-lang',
+			\ 'cmd': {server_info->['gopls']},
+			\ 'whitelist': ['go'],
+			\ })
+		" autocmd FileType go setlocal omnifunc=lsp#complete
+		" autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
+		"autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
+		"autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
+	augroup end
+" endif
 
-" call s:on_lsp_buffer_enabled only for languages that has the server registered.
-" augroup lsp_install
-	" au!
-	" autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-" augroup END
+" if executable('clangd')
+	augroup lsp_clangd
+		autocmd!
+		autocmd User lsp_setup call lsp#register_server({
+			\ 'name': 'clangd',
+			\ 'cmd': {server_info->['clangd']},
+			\ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+			\ })
+		" autocmd FileType c setlocal omnifunc=lsp#complete
+		" autocmd FileType cpp setlocal omnifunc=lsp#complete
+		" autocmd FileType objc setlocal omnifunc=lsp#complete
+		" autocmd FileType objcpp setlocal omnifunc=lsp#complete
+	augroup end
+" endif
+
+function! s:on_lsp_buffer_enabled() abort
+
+	setlocal omnifunc=lsp#complete
+	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+
+	nmap <buffer> gd <plug>(lsp-definition)
+
+	" TODO: fix git and lsp mapping conflicts
+	
+	" nmap <buffer> gs <plug>(lsp-document-symbol-search)
+	" nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+	" nmap <buffer> gr <plug>(lsp-references)
+	" nmap <buffer> gi <plug>(lsp-implementation)
+	" nmap <buffer> gt <plug>(lsp-type-definition)
+	" nmap <buffer> <leader>rn <plug>(lsp-rename)
+	" nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+	" nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+	
+	" scrolling in popup window
+	nmap <buffer> K <plug>(lsp-hover)
+	" autocmd User lsp_float_opened nnoremap <buffer> <expr><c-j> lsp#scroll(+20)
+	" autocmd User lsp_float_opened nnoremap <buffer> <expr><c-k> lsp#scroll(-20)
+	" autocmd User lsp_float_closed nunmap <buffer> <c-j>
+	" autocmd User lsp_float_closed nunmap <buffer> <c-k>
+
+	let g:lsp_format_sync_timeout = 1000
+
+	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+	
+	" refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+	au!
+	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
+	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 " disable highlight references to symbol under cursor
 let g:lsp_document_highlight_enabled = 0
-
 
 " disable support for document code action hints for |signs|.
 let g:lsp_document_code_action_signs_enabled = 0
@@ -91,12 +139,6 @@ let g:lsp_document_code_action_signs_enabled = 0
 " turn off diagnostic support
 let g:lsp_diagnostics_enabled = 0
 
-" C-Space for completion
-inoremap <C-Space> <C-x><C-o>
-imap <buffer> <Nul> <C-Space>
-smap <buffer> <Nul> <C-Space>
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -105,6 +147,7 @@ set path+=**
 set nocompatible				" don't try to be like traditional vi
 set cedit=					" ctrl-r to view command edit
 set rtp+=~/cfg/sources/github.com/junegunn/fzf
+set backupdir=~/.vim/.backup//
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -130,6 +173,9 @@ set report=0					" don't show messages like '4 lines yanked'
 set laststatus=0				" disable status line
 set pumheight=10                                " Completion window max size
 set background=dark                             " tell vim to have a background
+let loaded_matchparen = 1                       " don't highlight matching delims
+set showmatch 					" jump to matching delim when typing
+set matchtime=2 				" duration (1/10s) for showing matching delim
 
 " fix colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -148,8 +194,6 @@ highlight LineNr ctermfg=grey
 "                   searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set smartcase					" do the right thing when searching
-set showmatch 					" show matching delimiter
-set matchtime=2 				" delay for delimiter highlight
 set wildmenu					" better menu in command mode
 set wildmode=longest,list
 """""""""""""""""""""""""""""""""""
@@ -160,6 +204,7 @@ set noerrorbells				" turn off alerts
 set shortmess=I 				" turn off splash screen
 set autoread					" always refresh file
 set hidden					" hides buffers instead of closing them
+set autoread                                    " reload buffer in vim when file changes on disk
 """""""""""""""""""""""""""""""""""
 "        searching
 """""""""""""""""""""""""""""""""""
@@ -232,16 +277,10 @@ map  fP :%!prettier --print-width 80 --prose-wrap always %
 " remove trailing spaces
 map  fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   indentation
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map 8 :set tabstop=8:set sw=8
-map 4 :set tabstop=4:set shiftwidth=4
-map 2 :set ts=2:set sw=2
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                   buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " display vi buffers
-map K :display buffers
+" map K :display buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -254,7 +293,7 @@ map g/ wb"zye::o:!git grep "zp
 map gs :!git status >/tmp/statout:sp:e /tmp/statout
 map ga :!git add 
 map gA :!git add -A
-map gc :!git commit -a 
+map gc :!git commit -am '
 map gC :!git checkout -b 
 map gP :!git push
 map gp :!git pull
@@ -284,3 +323,43 @@ map  tp :!terraform plan
 map  ta :!terraform apply
 map  tf :w:!terraform fmt:e!
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"             Filetype Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufRead,BufNewFile *.py setlocal filetype=python
+au filetype python set shiftwidth=4 tabstop=4 expandtab
+
+autocmd BufRead,BufNewFile *.c,*.h setlocal filetype=c
+au filetype c set shiftwidth=8 tabstop=8 
+
+autocmd BufRead,BufNewFile *.cc,*.hh,*.cpp,*.hpp setlocal filetype=cpp
+au filetype cpp set shiftwidth=4 tabstop=4 expandtab
+
+autocmd BufRead,BufNewFile *.go setlocal filetype=go
+au filetype go set shiftwidth=8 tabstop=8 
+
+autocmd BufRead,BufNewFile *.js,*.ts setlocal filetype=javascript
+au filetype javascript set shiftwidth=2 tabstop=2 expandtab
+
+autocmd BufRead,BufNewFile *.java setlocal filetype=java
+au filetype java set shiftwidth=2 tabstop=2 expandtab
+
+autocmd BufRead,BufNewFile *.json setlocal filetype=json
+au filetype json set shiftwidth=2 tabstop=2 expandtab
+
+autocmd BufRead,BufNewFile *.yaml,*.yml setlocal filetype=yaml
+au filetype yaml set shiftwidth=2 tabstop=2 expandtab
+
+autocmd BufRead,BufNewFile *.md setlocal filetype=markdown
+au filetype markdown set shiftwidth=2 tabstop=2 expandtab
+
+autocmd BufRead,BufNewFile *.proto setlocal filetype=protobuf
+au filetype protobuf set shiftwidth=2 tabstop=2 expandtab
+
+autocmd BufRead,BufNewFile *.tf setlocal filetype=terraform
+au filetype terraform set shiftwidth=2 tabstop=2 expandtab
+
+let g:tex_flavor='latex'
+autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
+au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:

@@ -1,0 +1,114 @@
+# Gmail mailboxes:
+# "All Mail"
+# "Drafts"
+# "Important"
+# "Sent Mail"
+# "Spam"
+# "Starred"
+# "Trash"
+
+###############################################
+#                  GENERAL
+###############################################
+
+Create Both
+Expunge Both
+SyncState *
+
+###############################################
+#                  PERSONAL
+###############################################
+
+IMAPAccount personal
+Host posteo.de
+User danieljamespost@posteo.net
+PassCmd "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mail/secrets/posteo.gpg"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore personal-remote
+Account personal
+
+MaildirStore personal-local
+Path ~/.mail/posteo/
+Inbox ~/.mail/posteo/inbox
+
+Channel personal
+Master :personal-remote:
+Slave :personal-local:
+Create Both
+SyncState *
+
+###############################################
+#                  GMAIL
+###############################################
+
+IMAPAccount gmail
+Host imap.gmail.com
+User danieljamespost@gmail.com
+PassCmd "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mail/secrets/gmail.gpg"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/inbox
+
+Channel gmail-inbox
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns "INBOX"
+
+Channel gmail-sent
+Master :gmail-remote:"[Gmail]/Sent Mail"
+Slave :gmail-local:sent
+
+Channel gmail-trash
+Master :gmail-remote:"[Gmail]/Trash"
+Slave :gmail-local:trash
+
+Group gmail
+Channel gmail-inbox
+Channel gmail-sent
+Channel gmail-trash
+
+
+###############################################
+#                  WORK
+###############################################
+
+IMAPAccount work
+Host imap.gmail.com
+User daniel@martin.ai
+PassCmd "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mail/secrets/martin.gpg"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore work-remote
+Account work
+
+MaildirStore work-local
+Path ~/.mail/martin/
+Inbox ~/.mail/martin/inbox
+
+Channel work-inbox
+Master :work-remote:
+Slave :work-local:
+Patterns "INBOX"
+
+Channel work-sent
+Master :work-remote:"[Gmail]/Sent Mail"
+Slave :work-local:sent
+
+Channel work-trash
+Master :work-remote:"[Gmail]/Trash"
+Slave :work-local:trash
+
+Group work
+Channel work-inbox
+Channel work-sent
+Channel work-trash
+

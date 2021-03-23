@@ -6,6 +6,8 @@
 #########################################
 
 all: git \
+	hdirs \
+	mail \
 	bash \
 	go \
 	rust \
@@ -21,11 +23,11 @@ all: git \
 	exercism \
 	nvm \
 	prettier \
-	hdirs \
 	fzf \
 	xcape \
 	vim \
-	vi
+	vi \
+	delve
 
 ###########################
 #      Variables
@@ -36,6 +38,10 @@ export PATH := /bin:$(PATH):/usr/local/go/bin
 
 USER=daniel
 HBIN=/home/daniel/bin
+
+POSTEOPASS ?= $(shell stty -echo; read -p "Posteo Password: " pwd; stty echo; echo $$pwd)
+MARTINPASS ?= $(shell stty -echo; read -p "Martin Password: " pwd; stty echo; echo $$pwd)
+GMAILPASS ?= $(shell stty -echo; read -p "Gmail Password: " pwd; stty echo; echo $$pwd)
 
 ###########################
 #         Versions
@@ -96,6 +102,61 @@ else
 		git pull && \
 		make
 endif
+
+###########################
+#         Mail
+###########################
+.PHONY: mail
+mail:
+	# dependencies
+ifeq (, $(shell which afew))
+	pip install afew
+endif
+ifeq (, $(shell which notmuch))
+	$(error "notmuch not in $$PATH: apt install notmuch")
+endif
+ifeq (, $(shell which mbsync))
+	$(error "mbsync not in $$PATH: apt install mbsync")
+endif
+ifeq (, $(shell which msmtp))
+	$(error "msmtp not in $$PATH: apt install msmtp")
+endif
+
+	# notmuch
+	bin/sh/sym $(shell pwd)/mail/config/notmuch-config $(HOME)/.notmuch-config
+	# mbsync
+	bin/sh/sym $(shell pwd)/mail/config/mbsyncrc $(HOME)/.mbsyncrc
+	# msmtp
+	bin/sh/sym $(shell pwd)/mail/config/msmtprc $(HOME)/.msmtprc
+
+	# afew
+	mkdir -p ~/.config/afew
+	bin/sh/sym $(shell pwd)/mail/config/afew-config $(HOME)/.config/afew/config
+
+	mkdir -p ~/.config/systemd/user
+	bin/sh/sym \
+		$(shell pwd)/mail/services/checkmail.service \
+		$(HOME)/.config/systemd/user/checkmail.service
+	bin/sh/sym \
+		$(shell pwd)/mail/services/checkmail.timer \
+		$(HOME)/.config/systemd/user/checkmail.timer
+	bin/sh/sym $(shell pwd)/mail $(HOME)/.mail
+
+ifeq (failed, $(shell bin/sh/check 'gpg --list-keys dnjp@posteo.org'))
+	gpg --full-generate-key
+endif
+	# create secrets
+	echo $(POSTEOPASS) > mail/secrets/posteo
+	$(info '')
+	echo $(GMAILPASS)  > mail/secrets/gmail
+	$(info '')
+	echo $(MARTINPASS) > mail/secrets/martin
+	gpg -r dnjp@posteo.org -e mail/secrets/posteo
+	gpg -r dnjp@posteo.org -e mail/secrets/gmail
+	gpg -r dnjp@posteo.org -e mail/secrets/martin
+
+	systemctl --user enable checkmail.timer
+	systemctl --user start checkmail.timer
 
 ###########################
 #         Fonts
@@ -236,6 +297,9 @@ staticcheck:
 		git pull && \
 		go install cmd/staticcheck/staticcheck.go
 
+delve:
+	cd sources/github.com/go-delve/delve && \
+		go install ./...
 exercism:
 	cd sources/github.com/exercism/cli && \
 		git clean -fdx && \

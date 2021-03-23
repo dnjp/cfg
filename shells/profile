@@ -1,4 +1,3 @@
-
 # set prompt
 export PS1='$ '
 
@@ -10,11 +9,11 @@ export NO_COLOR=1
 
 # defaults
 export BROWSER="brave"
-export EDITOR='vim'
+export EDITOR='emacsclient'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
-alias vi="$EDITOR $*"
+alias vi="nvim $*"
 
 # constants
 export NEXTCLOUD=/home/daniel/Nextcloud/

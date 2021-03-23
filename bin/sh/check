@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cmd=$1
+eval $cmd
+if [ $? -eq 0 ]; then
+	echo -n passed
+else 
+	echo -n failed
+fi

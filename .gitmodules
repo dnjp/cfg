@@ -49,3 +49,6 @@
 [submodule "sources/github.com/dnjp/nvi"]
 	path = sources/github.com/dnjp/nvi
 	url = git@github.com:dnjp/nvi.git
+[submodule "sources/github.com/go-delve/delve"]
+	path = sources/github.com/go-delve/delve
+	url = https://github.com/go-delve/delve

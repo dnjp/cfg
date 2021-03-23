@@ -1,26 +1,22 @@
-#!/usr/bin/env rc
+#!/bin/sh
 
 device=''
-kind=`{xinput --list | grep TrackPoint | awk '{print $4}' | awk '{print tolower($0)}'}
+kind=$(xinput --list | grep TrackPoint | awk '{print $4}' | awk '{print tolower($0)}')
 
-switch($kind){ 
-case 'ibm'
+case "$kind" in
+ibm)
 	device='TPPS/2 IBM TrackPoint'
-case 'elan'
+	;;
+elan)
 	device='TPPS/2 Elan TrackPoint'
-}
-
-if(test -z $device){
+	;;
+*)
 	echo 'device not found'
 	status=-1
 	exit
-}
+esac
 
-xinput --set-prop $device 'libinput Accel Speed' 1.0
-xinput --set-prop $device 'libinput Accel Profile Enabled' 0, 1
-xinput --set-prop $device 'Coordinate Transformation Matrix' 1.0 0 0 0 1.0 0 0 0 1
-
-# disable middle click scroll
-# xinput --set-prop $device 'libinput Scroll Method Enabled' 0, 0, 0
-
+xinput --set-prop "$device" 'libinput Accel Speed' 0.9
+xinput --set-prop "$device" 'libinput Accel Profile Enabled' 1, 1
+xinput --set-prop "$device" 'Coordinate Transformation Matrix' 	1.0 0 0 0 1.0 0 0 0 1.0
 
