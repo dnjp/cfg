@@ -52,3 +52,6 @@
 [submodule "sources/github.com/go-delve/delve"]
 	path = sources/github.com/go-delve/delve
 	url = https://github.com/go-delve/delve
+[submodule "sources/git.savannah.gnu.org/emacs"]
+	path = sources/git.savannah.gnu.org/emacs
+	url = git://git.savannah.gnu.org/emacs.git

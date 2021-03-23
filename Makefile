@@ -363,5 +363,18 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
 endif
 
+emacs:
+	cd sources/git.savannah.gnu.org/emacs && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git checkout feature/native-comp && \
+		git pull && \
+		./autogen.sh && \
+		./configure && \
+		make && \
+		sudo make install
+	bin/sh/sym $(shell pwd)/editors/emacs/config ${HOME}/.emacs
+	bin/sh/sym $(shell pwd)/editors/emacs/emacs.d ${HOME}/.emacs.d
 
 
