@@ -106,7 +106,6 @@ endif
 ###########################
 #         Mail
 ###########################
-.PHONY: mail
 mail:
 	# dependencies
 ifeq (, $(shell which afew))
@@ -121,7 +120,6 @@ endif
 ifeq (, $(shell which msmtp))
 	$(error "msmtp not in $$PATH: apt install msmtp")
 endif
-
 	# notmuch
 	bin/sh/sym $(shell pwd)/mail/config/notmuch-config $(HOME)/.notmuch-config
 	# mbsync
@@ -142,6 +140,13 @@ endif
 		$(HOME)/.config/systemd/user/checkmail.timer
 	bin/sh/sym $(shell pwd)/mail $(HOME)/.mail
 
+	systemctl --user enable checkmail.timer
+	systemctl --user start checkmail.timer
+
+gpgimport:
+	gpg --import ~/Nextcloud/secrets/privkey.asc
+
+mailsecrets: 
 ifeq (failed, $(shell bin/sh/check 'gpg --list-keys dnjp@posteo.org'))
 	gpg --full-generate-key
 endif
@@ -154,9 +159,6 @@ endif
 	gpg -r dnjp@posteo.org -e mail/secrets/posteo
 	gpg -r dnjp@posteo.org -e mail/secrets/gmail
 	gpg -r dnjp@posteo.org -e mail/secrets/martin
-
-	systemctl --user enable checkmail.timer
-	systemctl --user start checkmail.timer
 
 ###########################
 #         Fonts
