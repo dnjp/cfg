@@ -67,8 +67,9 @@
 (menu-bar-mode 1)                                      ;; turn on menu bar
 (toggle-scroll-bar -1)                                 ;; turn off scrollbar
 (tool-bar-mode -1)                                     ;; turn off tool bar
-(set-face-font 'default "Meslo LG S-14")               ;; set font
-;; (set-face-font 'default "Meslo LG S-9")               ;; set font
+;; (set-face-font 'default "Meslo LG S-14")               ;; set font
+(set-face-font 'default "Meslo LG S-9")               ;; set font
+(set-face-font 'variable-pitch "Lucida Sans-9")
 (set-face-attribute 'fringe nil :background nil)       ;; fringe color
 (use-package minimal-theme
   :ensure t
@@ -85,7 +86,6 @@
 (setq initial-scratch-message "")                      ;; Don't use messages that you don't read
 (setq inhibit-startup-message t)                       ;; don't show startup message
 (setq inhibit-startup-screen t)                        ;; don't open to startup screen
-(setq-default show-trailing-whitespace 't)             ;; show trailing whitespace
 (setq-default require-final-newline 't)
 (setq column-number-mode t)                            ;; show column # in modeline
 (setq size-indication-mode t)                          ;; show current file size
@@ -137,11 +137,36 @@
   :config
   (global-set-key (kbd "M-g") 'magit))
 ;; ----------------------------------------------------------------------------
+;;                                  SEARCHING
+;; ----------------------------------------------------------------------------
+(use-package rg :ensure t)                               ;; ripgrep
+(use-package ido-vertical-mode :ensure t)                ;; vertical ido
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+;; ----------------------------------------------------------------------------
 ;;                                   TAGS
 ;; ----------------------------------------------------------------------------
-(setq tags-table-list '("~/work/martin-bidder/go/TAGS"
-			"~/work/martin-bidder/jvm/TAGS"
-			"~/work/martin-bidder/infra/TAGS"))
+(setq tags-table-list '("~/work/martin-bidder/TAGS"))
+
+(defun ido-select-tags-file ()
+  "selects the active tags file"
+  (interactive)
+  (visit-tags-table
+   (ido-completing-read "Select from list: " tags-table-list)))
+
+(defun ido-find-file-in-tag-files ()
+  "find files in active tags file"
+  (interactive)
+  (save-excursion
+    (let ((enable-recursive-minibuffers t))
+      (visit-tags-table-buffer tags-file-name))
+    (find-file
+     (expand-file-name
+      (ido-completing-read
+       "Project file: " (tags-table-files) nil t)))))
 
 (setq path-to-ctags "/usr/bin/ctags")
 (defun create-tags (dir-name)
@@ -169,20 +194,6 @@
 		  (save-buffer))
 	     (er-refresh-etags extension)
 	     ad-do-it))))
-;; ----------------------------------------------------------------------------
-;;                                  SEARCHING
-;; ----------------------------------------------------------------------------
-(use-package rg :ensure t)                               ;; ripgrep
-(defun ido-find-file-in-tag-files ()                     ;; use TAGS tables for project search
-  (interactive)
-  (save-excursion
-    (let ((enable-recursive-minibuffers t))
-      (visit-tags-table-buffer))
-    (find-file
-     (expand-file-name
-      (ido-completing-read
-       "Project file: " (tags-table-files) nil t)))))
-(global-set-key (kbd "C-S-f") 'imenu) ;; use iMenu
 ;; ----------------------------------------------------------------------------
 ;;                                   VI
 ;; ----------------------------------------------------------------------------
@@ -247,7 +258,18 @@
 	    (function (lambda ()
 			(setq evil-shift-width c-basic-offset))))
 
-  (evil-mode))                                         ;; start evil
+  (evil-mode) ;; start evil
+)
+
+
+;; ----------------------------------------------------------------------------
+
+;;                                 KEYBOARD
+
+;; ----------------------------------------------------------------------------
+(global-set-key (kbd "C-S-f") 'ido-find-file-in-tag-files) ;; tag based search
+(global-set-key (kbd "C-S-p") 'ido-select-tags-file) ;; tag based search
+(global-set-key (kbd "C-c C-b") 'ibuffer) ;; buffer management
 ;; ----------------------------------------------------------------------------
 
 ;;                             LANGUAGE SETTINGS
@@ -261,43 +283,17 @@
 ;; ----------------------------------------------------------------------------
 ;;                                 PROTOBUF
 ;; ----------------------------------------------------------------------------
-(define-derived-mode protobuf-mode
-  c-mode "Protobuf"
-  "A major mode to edit Protobuf files"
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
-  (setq indent-tabs-mode nil))
-
-(defun protosettings ()
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
-  (setq indent-tabs-mode f))
-(add-hook 'protobuf-mode-hook 'protosettings)
-
-(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
-(provide 'protobuf-mode)
+(use-package protobuf-mode :ensure t)
 ;; ----------------------------------------------------------------------------
 ;;                                 TERRAFORM
 ;; ----------------------------------------------------------------------------
-(define-derived-mode terraform-mode
-  c-mode "Terraform"
-  "A major mode to edit Terraform files"
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
-  (setq indent-tabs-mode nil))
-(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
-(provide 'terraform-mode)
+(use-package terraform-mode
+  :init
+  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 ;; ----------------------------------------------------------------------------
 ;;                                   YAML
 ;; ----------------------------------------------------------------------------
-(define-derived-mode yaml-mode
-  c-mode "Yaml"
-  "A major mode to edit Yaml files"
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
-  (setq indent-tabs-mode nil))
-(add-to-list 'auto-mode-alist '("\\.tf\\'" . yaml-mode))
-(provide 'yaml-mode)
+(use-package yaml-mode :ensure t)
 ;; ----------------------------------------------------------------------------
 ;;                                   MARKDOWN
 ;; ----------------------------------------------------------------------------
@@ -388,8 +384,7 @@
 ;; ----------------------------------------------------------------------------
 ;;                                   NOTMUCH
 ;; ----------------------------------------------------------------------------
-(add-to-list                                            ;; ensure notmuch emacs packages are loaded
- 'load-path "/usr/share/emacs/site-lisp/elpa-src/notmuch-0.28.4")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 (autoload 'notmuch "notmuch" "notmuch mail" t)
 
 ;; mail viewing and composing
@@ -398,13 +393,14 @@
 ;; support multiple email accounts
 (use-package gnus-alias :ensure t)
 (require 'gnus-alias)
+(autoload 'gnus-alias-determine-identity "gnus-alias" "" t)
 
 ; C-c m opens up Notmuch from any buffer
 (global-set-key (kbd "C-c m") `notmuch)
 
 (setq
  ;; ordering / searching
- notmuch-always-prompt-for-sender t
+ ;; notmuch-always-prompt-for-sender t
  notmuch-search-oldest-first nil
  ;; sending / composition
  mail-user-agent 'message-user-agent
@@ -427,7 +423,7 @@
     "Martin AI" ;; No organization header
     nil ;; No extra headers
     nil ;; No extra body text
-    ;; "~/Maildir/personal.signature" ;; signature
+    "~/.mail/gmail/signature"
     )
    ("work"
     nil ;; Does not refer to any other identity
@@ -435,7 +431,7 @@
     nil ;; No organization header
     nil ;; No extra headers
     nil ;; No extra body
-    ;; "~/Maildir/work.signature" ;; signature
+    "~/.mail/martin/signature"
     )
    ("posteo"
     nil ;; Does not refer to any other identity
@@ -443,10 +439,10 @@
     nil ;; No organization header
     nil ;; No extra headers
     nil ;; No extra body
-    ;; "~/Maildir/work.signature" ;; signature
+    "~/.mail/posteo/signature"
     ))
  ;; Use "posteo" identity by default
- gnus-alias-default-identity "posteo"
+ ;; gnus-alias-default-identity "posteo"
  ;; identify identity
  gnus-alias-identity-rules
  '(
@@ -469,6 +465,7 @@
  )
 
 (add-hook 'message-setup-hook 'gnus-alias-determine-identity)
+(add-hook 'message-setup-hook 'gnus-alias-select-identity)
 
 ;; (define-key notmuch-show-mode-map "r" 'notmuch-show-reply)
 ;; (define-key notmuch-show-mode-map "R" 'notmuch-show-reply-sender)
@@ -491,6 +488,9 @@
   (define-key global-map "\C-ca" 'org-agenda)
   (add-hook 'text-mode-hook #'auto-fill-mode)
   (setq org-log-done t))
+
+ '(org-level-2 ((t (:extend nil :foreground "grey20" :height 1.1)))))
+
 ;; ----------------------------------------------------------------------------
 ;;                                     END
 ;; ----------------------------------------------------------------------------
@@ -501,10 +501,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(minimal-theme gnus-alias auctex markdown-mode go-mode rg evil undo-tree magit auto-package-update use-package)))
+   '(yaml-mode terraform-mode protobuf-mode minimal-theme gnus-alias auctex markdown-mode go-mode rg evil undo-tree magit auto-package-update use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-level-2 ((t (:extend nil :foreground "grey20" :height 1.1)))))

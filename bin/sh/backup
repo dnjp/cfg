@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cp ~/.msmtprc ~/cfg/mail/config/msmtprc
