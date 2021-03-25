@@ -61,3 +61,9 @@
 [submodule "x330/brightness"]
 	path = x330/brightness
 	url = https://github.com/xy-tech/agan_brightness_X230_X330.git
+[submodule "sources/gitlab.com/interception/linux/tools"]
+	path = sources/gitlab.com/interception/linux/tools
+	url = https://gitlab.com/interception/linux/tools.git
+[submodule "sources/gitlab.com/interception/linux/plugins/caps2esc"]
+	path = sources/gitlab.com/interception/linux/plugins/caps2esc
+	url = https://gitlab.com/interception/linux/plugins/caps2esc.git

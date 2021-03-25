@@ -27,7 +27,8 @@ all: git \
 	xcape \
 	vim \
 	vi \
-	delve
+	delve \
+	caps2esc
 
 ###########################
 #      Variables
@@ -394,9 +395,19 @@ notmuch-emacs:
 #  gitlab.com
 ###########################
 interception:
-	cd sources/gitlab.com/interception && \
+	cd sources/gitlab.com/interception/linux/tools && \
 		mkdir -p build && \
 		cmake -B build -DCMAKE_BUILD_TYPE=Release && \
 		cmake --build build && \
 		cd build && \
 		sudo make install
+
+caps2esc: interception
+	cd sources/gitlab.com/interception/linux/plugins/caps2esc && \
+		mkdir -p build && \
+		cmake -B build -DCMAKE_BUILD_TYPE=Release && \
+		cmake --build build && \
+		cd build && \
+		sudo make install
+
+	sudo cp x330/caps2esc.udev.yaml /etc/interception/udevmon.d/udev.yaml
