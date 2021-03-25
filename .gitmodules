@@ -67,3 +67,12 @@
 [submodule "sources/gitlab.com/interception/linux/plugins/caps2esc"]
 	path = sources/gitlab.com/interception/linux/plugins/caps2esc
 	url = https://gitlab.com/interception/linux/plugins/caps2esc.git
+[submodule "sources/github.com/dnjp/dwm"]
+	path = sources/github.com/dnjp/dwm
+	url = https://github.com/dnjp/dwm
+[submodule "sources/github.com/dnjp/dmenu"]
+	path = sources/github.com/dnjp/dmenu
+	url = https://github.com/dnjp/dmenu
+[submodule "sources/github.com/dnjp/slstatus"]
+	path = sources/github.com/dnjp/slstatus
+	url = https://github.com/dnjp/slstatus

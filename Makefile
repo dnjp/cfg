@@ -337,6 +337,17 @@ xcape:
 		make && \
 		sudo make install
 
+suckless:
+	cd sources/github.com/dnjp/dwm && \
+		make && \
+		sudo make install
+	cd sources/github.com/dnjp/dmenu && \
+		make && \
+		sudo make install
+	cd sources/github.com/dnjp/slstatus && \
+		make && \
+		sudo make install
+
 ###########################
 #  git.savannah.gnu.org
 ###########################
