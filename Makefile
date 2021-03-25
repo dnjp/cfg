@@ -389,3 +389,14 @@ notmuch-emacs:
 	cd sources/git.notmuchmail.org/notmuch/emacs/ && \
 		make && \
 		sudo make install
+
+###########################
+#  gitlab.com
+###########################
+interception:
+	cd sources/gitlab.com/interception && \
+		mkdir -p build && \
+		cmake -B build -DCMAKE_BUILD_TYPE=Release && \
+		cmake --build build && \
+		cd build && \
+		sudo make install

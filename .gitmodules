@@ -58,3 +58,9 @@
 [submodule "sources/git.notmuchmail.org/notmuch"]
 	path = sources/git.notmuchmail.org/notmuch
 	url = git://git.notmuchmail.org/git/notmuch
+[submodule "x330/brightness"]
+	path = x330/brightness
+	url = https://github.com/xy-tech/agan_brightness_X230_X330.git
+[submodule "sources/gitlab.com/interception"]
+	path = sources/gitlab.com/interception/linux/tools
+	url = https://gitlab.com/interception/linux/tools.git

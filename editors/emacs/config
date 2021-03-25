@@ -49,6 +49,7 @@
 (set-keyboard-coding-system 'utf-8)
 (fset 'yes-or-no-p 'y-or-n-p)                          ;; y/n instead of yes/no
 (add-hook 'before-save-hook 'whitespace-cleanup)       ;; always cleanup whitespace
+(setq vc-follow-symlinks nil)                          ;; always follow symlinks
 ;; ----------------------------------------------------------------------------
 ;;                                     SHELL
 ;; ----------------------------------------------------------------------------
@@ -89,6 +90,43 @@
 (setq-default require-final-newline 't)
 (setq column-number-mode t)                            ;; show column # in modeline
 (setq size-indication-mode t)                          ;; show current file size
+(setq vc-follow-symlinks nil)                          ;; always follow symlinks
+;; ----------------------------------------------------------------------------
+;;                                 LINE WRAPPING
+;; ----------------------------------------------------------------------------
+;; In text mode, I don't want it auto-indenting for the first
+;; line in the file, or lines following blank lines.
+;; Everywhere else is okay.
+(defun newline-and-text-indent ()
+  "Insert a newline, then indent the next line sensibly for text"
+  (interactive)
+  (cond
+   ;; Beginning of buffer, or beginning of an existing line, don't indent:
+   ((or (bobp) (bolp)) (newline))
+
+   ;; If we're on a whitespace-only line,
+   ((and (eolp)
+	 (save-excursion (re-search-backward "^\\(\\s \\)*$"
+					     (line-beginning-position) t)))
+    ;; ... delete the whitespace, then add another newline:
+    (kill-line 0)
+    (newline))
+
+   ;; Else (not on whitespace-only) insert a newline,
+   ;; then add the appropriate indent:
+   (t (insert "\n")
+      (indent-according-to-mode))
+   ))
+(defun text-indent-hook ()
+  (local-set-key "\C-m" 'newline-and-text-indent)
+  )
+(setq text-mode-hook 'text-indent-hook)
+
+(use-package visual-fill-column
+  :ensure t)
+(setq-default fill-column 80)
+(add-hook 'text-mode-hook 'visual-line-mode)
+(add-hook 'text-mode-hook 'visual-fill-column-mode)
 ;; ----------------------------------------------------------------------------
 ;;                                 MODELINE
 ;; ----------------------------------------------------------------------------
@@ -387,6 +425,9 @@
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 (autoload 'notmuch "notmuch" "notmuch mail" t)
 
+(setq notmuch-message-mode-hook 'text-indent-hook)
+(setq message-mode-hook 'text-indent-hook)
+
 ;; mail viewing and composing
 ;; fix for possible weirdness with notmuch-show-mode and emacs 24.x
 (require 'gnus-art)
@@ -478,7 +519,6 @@
 ;;                                     ORG
 
 ;; ----------------------------------------------------------------------------
-(setq-default fill-column 80)
 (use-package org
   :ensure t
   :config
@@ -488,8 +528,6 @@
   (define-key global-map "\C-ca" 'org-agenda)
   (add-hook 'text-mode-hook #'auto-fill-mode)
   (setq org-log-done t))
-
- '(org-level-2 ((t (:extend nil :foreground "grey20" :height 1.1)))))
 
 ;; ----------------------------------------------------------------------------
 ;;                                     END
