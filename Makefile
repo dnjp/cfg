@@ -1,10 +1,3 @@
-#########################################
-#
-# dependencies:
-# - python3-dev
-# - python2-dev
-#########################################
-
 all: git \
 	hdirs \
 	mail \
@@ -18,6 +11,7 @@ all: git \
 	golint \
 	gotools \
 	staticcheck \
+	delve \
 	redshift \
 	ripgrep \
 	exercism \
@@ -27,8 +21,10 @@ all: git \
 	xcape \
 	vim \
 	vi \
-	delve \
-	caps2esc
+	emacs \
+	notmuch-emacs \
+	caps2esc \
+	x330brightness
 
 ###########################
 #      Variables
@@ -411,3 +407,8 @@ caps2esc: interception
 		sudo make install
 
 	sudo cp x330/caps2esc.udev.yaml /etc/interception/udevmon.d/udev.yaml
+
+x330brightness:
+	cd x330/brightness && \
+		make && \
+		sudo mv script /usr/local/bin/brightness
