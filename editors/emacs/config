@@ -65,17 +65,12 @@
 ;;                                 VISUAL SETTINGS
 
 ;; ----------------------------------------------------------------------------
-(menu-bar-mode 1)                                      ;; turn on menu bar
-(toggle-scroll-bar -1)                                 ;; turn off scrollbar
-(tool-bar-mode -1)                                     ;; turn off tool bar
-;; (set-face-font 'default "Meslo LG S-14")               ;; set font
-(set-face-font 'default "Meslo LG S-9")               ;; set font
+(set-face-font 'default "Meslo LG S-10")               ;; set font
+;; (set-face-font 'default "Meslo LG S-9")               ;; set font
 (set-face-font 'variable-pitch "Lucida Sans-9")
 (set-face-attribute 'fringe nil :background nil)       ;; fringe color
-(use-package minimal-theme
-  :ensure t
-  :config
-  (load-theme 'minimal-light 't))
+(use-package minimal-theme :ensure t)
+
 (show-paren-mode)                                      ;; highlight matching parenthesis
 (fringe-mode '(0 . 0))                                 ;; no fringe
 (setq visible-bell t)                                  ;; no sound
@@ -91,6 +86,15 @@
 (setq column-number-mode t)                            ;; show column # in modeline
 (setq size-indication-mode t)                          ;; show current file size
 (setq vc-follow-symlinks nil)                          ;; always follow symlinks
+(toggle-scroll-bar -1)                                 ;; turn off scrollbar
+(tool-bar-mode -1)                                     ;; turn off tool bar
+(load-theme 'minimal-light 't)
+
+(when (display-graphic-p)
+  (menu-bar-mode 1))                                    ;; turn on menu bar for gui
+
+(when (eq window-system nil)                            ;; enable mouse in terminal
+  (xterm-mouse-mode t))
 ;; ----------------------------------------------------------------------------
 ;;                                 LINE WRAPPING
 ;; ----------------------------------------------------------------------------
@@ -538,6 +542,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" default))
  '(package-selected-packages
    '(yaml-mode terraform-mode protobuf-mode minimal-theme gnus-alias auctex markdown-mode go-mode rg evil undo-tree magit auto-package-update use-package)))
 (custom-set-faces

@@ -34,16 +34,16 @@ Path ~/.mail/posteo/
 Inbox ~/.mail/posteo/inbox
 
 # Channel personal
-# Master :personal-remote:
-# Slave :personal-local:
+# Far :personal-remote:
+# Near :personal-local:
 # Create Both
 # SyncState *
 
 Channel personal
-Master :personal-remote:
-Slave :personal-local:
+Far :personal-remote:
+Near :personal-local:
 Patterns "Sent" "INBOX" "Trash" "Drafts" "Archiv"
-Create Slave
+Create Near
 Sync All
 Expunge Both
 SyncState *
@@ -68,17 +68,17 @@ Path ~/.mail/gmail/
 Inbox ~/.mail/gmail/inbox
 
 Channel gmail-inbox
-Master :gmail-remote:
-Slave :gmail-local:
+Far :gmail-remote:
+Near :gmail-local:
 Patterns "INBOX"
 
 Channel gmail-sent
-Master :gmail-remote:"[Gmail]/Sent Mail"
-Slave :gmail-local:sent
+Far :gmail-remote:"[Gmail]/Sent Mail"
+Near :gmail-local:sent
 
 Channel gmail-trash
-Master :gmail-remote:"[Gmail]/Trash"
-Slave :gmail-local:trash
+Far :gmail-remote:"[Gmail]/Trash"
+Near :gmail-local:trash
 
 Group gmail
 Channel gmail-inbox
@@ -105,17 +105,17 @@ Path ~/.mail/martin/
 Inbox ~/.mail/martin/inbox
 
 Channel work-inbox
-Master :work-remote:
-Slave :work-local:
+Far :work-remote:
+Near :work-local:
 Patterns "INBOX"
 
 Channel work-sent
-Master :work-remote:"[Gmail]/Sent Mail"
-Slave :work-local:sent
+Far :work-remote:"[Gmail]/Sent Mail"
+Near :work-local:sent
 
 Channel work-trash
-Master :work-remote:"[Gmail]/Trash"
-Slave :work-local:trash
+Far :work-remote:"[Gmail]/Trash"
+Near :work-local:trash
 
 Group work
 Channel work-inbox

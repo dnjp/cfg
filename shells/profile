@@ -8,12 +8,12 @@ export ENV=$HOME/.profile;
 export NO_COLOR=1
 
 # defaults
-export BROWSER="brave"
+# export BROWSER="brave"
+export BROWSER="firefox"
 export EDITOR='emacsclient'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
-alias vi="nvim $*"
 
 # constants
 export NEXTCLOUD=/home/daniel/Nextcloud/

@@ -76,3 +76,9 @@
 [submodule "sources/github.com/dnjp/slstatus"]
 	path = sources/github.com/dnjp/slstatus
 	url = https://github.com/dnjp/slstatus
+[submodule "sources/github.com/Jguer/yay"]
+	path = sources/github.com/Jguer/yay
+	url = https://github.com/Jguer/yay.git
+[submodule "sources/git.sr.ht/sircmpwn/aerc"]
+	path = sources/git.sr.ht/sircmpwn/aerc
+	url = https://git.sr.ht/~sircmpwn/aerc

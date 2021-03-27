@@ -26,6 +26,3 @@
 --regex-terraform=/^module "(.+)"/\1/m,modules/
 --regex-terraform=/^output "(.+)"/\1/o,outputs/
 --regex-terraform=/^([a-z0-9_]+) =/\1/f,tfvars/
---langdef=markdown
---langmap=markdown:.md
---regex-markdown=/^#[ \t](.*$)/\1/h,heading,headings/

@@ -1,6 +1,5 @@
 all: git \
 	hdirs \
-	mail \
 	bash \
 	go \
 	rust \
@@ -23,8 +22,11 @@ all: git \
 	vi \
 	emacs \
 	notmuch-emacs \
+	mail \
 	caps2esc \
-	x330brightness
+	x330brightness \
+	suckless \
+	yay
 
 ###########################
 #      Variables
@@ -53,6 +55,9 @@ GO_VERSION=1.15.6
 .PHONY: git
 git:
 	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
+	sudo cp git/ssh-agent.service \
+		/etc/systemd/system/ssh-agent.service
+	sudo systemctl enable ssh-agent
 
 # go: curl
 go:
@@ -103,20 +108,21 @@ endif
 ###########################
 #         Mail
 ###########################
+.PHONY: mail
 mail:
 	# dependencies
-ifeq (, $(shell which afew))
-	pip install afew
-endif
-ifeq (, $(shell which notmuch))
-	$(error "notmuch not in $$PATH: apt install notmuch")
-endif
-ifeq (, $(shell which mbsync))
-	$(error "mbsync not in $$PATH: apt install mbsync")
-endif
-ifeq (, $(shell which msmtp))
-	$(error "msmtp not in $$PATH: apt install msmtp")
-endif
+# ifeq (, $(shell which afew))
+#	pip install afew
+# # endif
+# ifeq (, $(shell which notmuch))
+#	$(error "notmuch not in $$PATH: apt install notmuch")
+# endif
+# ifeq (, $(shell which mbsync))
+#	$(error "mbsync not in $$PATH: apt install mbsync")
+# endif
+# ifeq (, $(shell which msmtp))
+#	$(error "msmtp not in $$PATH: apt install msmtp")
+# endif
 	# notmuch
 	bin/sh/sym $(shell pwd)/mail/config/notmuch-config $(HOME)/.notmuch-config
 	# mbsync
@@ -124,6 +130,7 @@ endif
 	# msmtp
 	cp $(shell pwd)/mail/config/msmtprc $(HOME)/.msmtprc
 	chmod 600 $(HOME)/.msmtprc
+	mkdir -p ~/.msmtpqueue:
 
 	# afew
 	mkdir -p ~/.config/afew
@@ -265,8 +272,9 @@ ctags:
 		./configure && \
 		make && \
 		sudo make install
-	mkdir -p $(HOME)/.config/ctags
-	bin/sh/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
+	mkdir -p $(HOME)/.config/ctags.d
+	bin/sh/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags.d/default.ctags
+	sudo ln -s /usr/local/bin/ctags /usr/bin/ctags
 
 golint:
 	cd sources/github.com/golang/lint/golint && \
@@ -348,11 +356,16 @@ suckless:
 		make && \
 		sudo make install
 
+yay:
+	cd sources/github.com/Jguer/yay && \
+		make && \
+		sudo make install
+
 ###########################
 #  git.savannah.gnu.org
 ###########################
 bash:
-ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
+# ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	cd sources/git.savannah.gnu.org/bash && \
 		git clean -fdx && \
 		git reset --hard && \
@@ -372,7 +385,7 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	bin/sh/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
 	bin/sh/sym $(shell pwd)/shells/bash/bash_profile ${HOME}/.bash_profile
 	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
-endif
+# endif
 
 emacs:
 	cd sources/git.savannah.gnu.org/emacs && \
@@ -408,6 +421,10 @@ interception:
 		cmake --build build && \
 		cd build && \
 		sudo make install
+	sudo cp sources/gitlab.com/interception/linux/tools/udevmon.service \
+		/etc/systemd/system/
+	sudo ln -s /usr/local/bin/udevmon /usr/bin/udevmon
+	sudo systemctl enable udevmon
 
 caps2esc: interception
 	cd sources/gitlab.com/interception/linux/plugins/caps2esc && \
@@ -417,9 +434,59 @@ caps2esc: interception
 		cd build && \
 		sudo make install
 
+	sudo mkdir -p /etc/interception/udevmon.d
 	sudo cp x330/caps2esc.udev.yaml /etc/interception/udevmon.d/udev.yaml
+
+###########################
+#  git.sr.ht
+###########################
+
+aerc:
+	cd sources/git.sr.ht/sircmpwn/aerc && \
+		git clean -fdx && \
+		git checkout master && \
+		git pull && \
+		GOFLAGS=-tags=notmuch make && \
+		sudo make install
+	bin/sh/sym $(shell pwd)/mail/config/aerc $(HOME)/.config/aerc
+
+###########################
+#  Other
+###########################
 
 x330brightness:
 	cd x330/brightness && \
 		make && \
-		sudo mv script /usr/local/bin/brightness
+		sudo mv script /usr/local/bin/backlight
+	sudo cp x330/50-display.rules /etc/udev/rules.d/
+
+pacman-deps:
+	sudo pacman -S \
+		xapian-core \
+		gmime3 \
+		talloc \
+		zlib \
+		python3 \
+		pip \
+		nextcoud-client \
+		cmake \
+		boost \
+		yaml-cpp \
+		gnome-keyring \
+		seahorse \
+		pulseaudio \
+		pulseaudio-bluetooth \
+		pavucontrol \
+		docker \
+		okular \
+		unzip \
+		htop \
+		dunst \
+		acpi \
+		alot \
+		w3m \
+		scdoc
+yay-deps:
+	yay -S \
+		brave-bin \
+		slack-desktop

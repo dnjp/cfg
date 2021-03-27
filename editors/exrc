@@ -36,7 +36,7 @@ set shiftwidth=8
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set nomesg
+" set nomesg
 set showmode
 set showmatch
 set matchtime=3
@@ -55,7 +55,7 @@ set tildeop
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set ignorecase
+" set ignorecase
 set searchincr		
 set wrapscan
 """""""""""""""""""""""""""""""""""""""""""""""""""
