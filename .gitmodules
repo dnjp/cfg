@@ -82,3 +82,9 @@
 [submodule "sources/git.sr.ht/sircmpwn/aerc"]
 	path = sources/git.sr.ht/sircmpwn/aerc
 	url = https://git.sr.ht/~sircmpwn/aerc
+[submodule "editors/vis/plugins/vis-ctags"]
+	path = editors/vis/vis-ctags
+	url = https://github.com/kupospelov/vis-ctags.git
+[submodule "sources/github.com/dnjp/vis"]
+	path = sources/github.com/dnjp/vis
+	url = git@github.com:dnjp/vis.git

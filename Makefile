@@ -361,6 +361,13 @@ yay:
 		make && \
 		sudo make install
 
+vis:
+	bin/sh/sym $(shell pwd)/editors/vis ~/.config/vis
+	cd sources/github.com/dnjp/vis && \
+		./configure && \
+		make && \
+		sudo make install
+
 ###########################
 #  git.savannah.gnu.org
 ###########################
@@ -490,7 +497,13 @@ pacman-deps:
 		acpi \
 		alot \
 		w3m \
-		scdoc
+		scdoc \
+		libtermkey \
+		lua \
+		lua-lpeg \
+		gdb \
+		valgrind
+
 yay-deps:
 	yay -S \
 		brave-bin \

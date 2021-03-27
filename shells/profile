@@ -11,10 +11,11 @@ export NO_COLOR=1
 # export BROWSER="brave"
 export BROWSER="firefox"
 # export EDITOR='emacsclient'
-export EDITOR='vi'
+export EDITOR='vis'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
+alias vi="vis $*"
 
 # constants
 export NEXTCLOUD=/home/daniel/Nextcloud/
