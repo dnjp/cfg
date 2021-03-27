@@ -10,7 +10,8 @@ export NO_COLOR=1
 # defaults
 # export BROWSER="brave"
 export BROWSER="firefox"
-export EDITOR='emacsclient'
+# export EDITOR='emacsclient'
+export EDITOR='vi'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
