@@ -448,7 +448,12 @@ aerc:
 		git pull && \
 		GOFLAGS=-tags=notmuch make && \
 		sudo make install
+
 	bin/sh/sym $(shell pwd)/mail/config/aerc $(HOME)/.config/aerc
+
+	sudo cp $(shell pwd)/mail/config/aerc/aerc.desktop \
+		/usr/share/applications/
+	xdg-mime default aerc.desktop 'x-scheme-handler/mailto'
 
 ###########################
 #  Other
