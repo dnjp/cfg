@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = com.c
+SRC = com.c array.c
 OBJ = ${SRC:.c=.o}
 
 all: options com
@@ -14,7 +14,7 @@ options:
 .c.o:
 	${CC} -c ${CFLAGS} $<
 
-${OBJ}: config.h ft.h config.mk
+${OBJ}: config.h ft.h array.h config.mk
 
 config.h:
 	cp config.def.h $@
