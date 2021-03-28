@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = com.c array.c
+SRC = com.c array.c ft.c
 OBJ = ${SRC:.c=.o}
 
 all: options com

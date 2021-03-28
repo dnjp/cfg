@@ -81,6 +81,4 @@ void array_destroy(Array *arr) {
 			arr->items[i] = NULL;
 		}
 	}
-	/* free(arr); */
-	/* arr = NULL; */
 }
