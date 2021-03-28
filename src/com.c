@@ -73,17 +73,17 @@ int main(int argc, char **argv)
 		}
 	}
 	for(int i = 0; i < arr.index; i++) {
-		char *t = (char*)malloc(MAXBUF*sizeof(char));
-		if(array_at(&arr, t, i) != 0) {
+		Line *line = (Line*)malloc(sizeof(Line));
+		if(array_at(&arr, line, i) != 0) {
 			fprintf(stderr, "could not retreive item from array");
 			exit(-1);
 		}
-		if(t == NULL) {
+		if(line == NULL) {
 			fprintf(stderr, "item not popped from array");
 			exit(-1);
 		}
-		printf("%s\n", t);
-		free(t);
+		printf("%s\n", line->content);
+		free(line);
 	}
 	array_destroy(&arr);
 	exit(0);

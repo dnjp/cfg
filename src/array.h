@@ -19,8 +19,7 @@ typedef struct {
 
 int array_create(Array* arr);
 int array_push(Array* arr, const char* item, int len);
-int array_pop(Array* arr, char* target);
-int array_at(Array* arr, char* target, int index);
+int array_at(Array* arr, Line* target, int index);
 void array_destroy(Array*);
 
 #endif
