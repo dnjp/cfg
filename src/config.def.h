@@ -1,5 +1,6 @@
 #include "ft.h"
 
-static struct FileType FileTypes[] = {
-	{ "// ", {".go", NULL} }, /* Go */
+static struct filetype filetypes[] = {
+	{ "//", NULL, {".go", NULL} },      /* Go */
+	{ "/*", "*/", {".c", ".h", NULL} }, /* C */
 };

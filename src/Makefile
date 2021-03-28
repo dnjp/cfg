@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = com.c array.c ft.c
+SRC = com.c array.c ft.c line.c
 OBJ = ${SRC:.c=.o}
 CFLAGS = "-g"
 

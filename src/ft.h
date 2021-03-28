@@ -5,12 +5,13 @@
 
 #define EXT_MAX 50
 
-typedef struct {
-	char *comment;
+struct filetype {
+	char *comstart;
+	char *comend;
 	char *extensions[EXT_MAX];
-} FileType;
+};
 
 char * ft_ext(char *filename);
-int ft_parse(char *filename, FileType filetypes[], int len);
+int ft_parse(char *filename, struct filetype filetypes[], int len);
 
 #endif
