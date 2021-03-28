@@ -1,0 +1,13 @@
+[Unit]
+Description=Backup notmuch every hour
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+OnBootSec= 5min
+OnUnitActiveSec= 60min
+Unit=nm-backup.service
+
+[Install]
+WantedBy=default.target

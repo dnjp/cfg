@@ -130,7 +130,7 @@ mail:
 	# msmtp
 	cp $(shell pwd)/mail/config/msmtprc $(HOME)/.msmtprc
 	chmod 600 $(HOME)/.msmtprc
-	mkdir -p ~/.msmtpqueue:
+	mkdir -p ~/.msmtpqueue
 
 	# afew
 	mkdir -p ~/.config/afew
@@ -143,10 +143,19 @@ mail:
 	bin/sh/sym \
 		$(shell pwd)/mail/services/checkmail.timer \
 		$(HOME)/.config/systemd/user/checkmail.timer
+	bin/sh/sym \
+		$(shell pwd)/mail/services/nm-backup.service \
+		$(HOME)/.config/systemd/user/nm-backup.service
+	bin/sh/sym \
+		$(shell pwd)/mail/services/nm-backup.timer \
+		$(HOME)/.config/systemd/user/nm-backup.timer
+
 	bin/sh/sym $(shell pwd)/mail $(HOME)/.mail
 
 	systemctl --user enable checkmail.timer
 	systemctl --user start checkmail.timer
+	systemctl --user enable nm-backup.timer
+	systemctl --user start nm-backup.timer
 
 gpgimport:
 	gpg --import ~/Nextcloud/secrets/privkey.asc
@@ -368,6 +377,12 @@ vis:
 		make && \
 		sudo make install
 
+plan9port:
+ifeq ($(wildcard /usr/local/plan9/.*),)
+	cd sources/github.com/dnjp/plan9port && \
+		./PREINSTALL 
+endif
+
 ###########################
 #  git.savannah.gnu.org
 ###########################
@@ -507,4 +522,5 @@ pacman-deps:
 yay-deps:
 	yay -S \
 		brave-bin \
-		slack-desktop
+		slack-desktop \
+		xlayoutdisplay

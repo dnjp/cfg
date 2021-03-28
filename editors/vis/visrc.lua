@@ -66,28 +66,27 @@ vis:command_register("gitblame", function(argv, force, win, selection, range)
 end)
 
 vis.events.subscribe(vis.events.INIT, function()
-
 	-- global configuration
 	vis:command('set theme dark-16') -- use terminal theme
 	vis:command('set escdelay 10')   -- interpret escape properly
 	vis:command('set shell /usr/bin/bash')   -- interpret escape properly
-
-
-	vis:map(vis.modes.NORMAL, '<C-c>', '<Escape>')
-
+	-- editing
+	vis:command('set autoindent on')
+	vis:command('set ignorecase on')
+	vis:command('set syntax off')
 	-- keyboard shortcuts
+	---- convenience
 	vis:command('map! normal <C-p> :fzf<Enter>')
 	vis:command('map! normal S :w!<Enter>')
 	vis:command('map! normal X :!')
 	vis:command('map! normal ; :')
 	vis:command('map normal Q :q!<Enter>')
-
-	-- shell interaction
+	---- general formatting
+	vis:map(vis.modes.NORMAL, ' ff', ':0,$|fmt<Enter>')
 	---- quickly edit visrc
 	vis:map(vis.modes.NORMAL, 've', ':sp ~/.config/vis/visrc.lua<Enter>')
 	---- generate tags
 	vis:map(vis.modes.NORMAL, ' ct', ':!ctags -R .<Enter>')
-
 	---- git
 	vis:map(vis.modes.NORMAL, 'ga', ':!git add ')
 	vis:map(vis.modes.NORMAL, 'gA', ':!git add -A<Enter>')
@@ -99,15 +98,22 @@ vis.events.subscribe(vis.events.INIT, function()
 	vis:map(vis.modes.NORMAL, 'gP', ':!git push<Enter>')
 	vis:map(vis.modes.NORMAL, 
 		'gs', 
-		':!git status >/tmp/statout<Enter>:sp /tmp/statout<Enter>')
-
-	-- clipboard interaction
+		':!git status >/tmp/statout<Enter>:sp /tmp/statout<Enter>'
+	)
+	---- clipboard 
 	vis:map(vis.modes.VISUAL, ' y', '"+y')
 	vis:map(vis.modes.NORMAL, ' p', '"+p')
+	---- make
+	vis:map(vis.modes.NORMAL, ' m', ':!make ')
+	---- terraform
+	vis:map(vis.modes.NORMAL, ' tv', ':!terraform validate<Enter>')
+	vis:map(vis.modes.NORMAL, ' tp', ':!terraform plan<Enter>')
+	vis:map(vis.modes.NORMAL, ' ta', ':!terraform apply<Enter>')
+	vis:map(vis.modes.NORMAL, ' tf', ':w<Enter>:!terraform fmt<Enter>:e!<Enter>')
+
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
-
 	-- process filetype settings (requires syntax to be on)
 	if settings == nil then return end
 	local window_settings = settings[win.syntax]
@@ -121,53 +127,48 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 		vis:command('set expandtab off')
 		vis:command('set tabwidth 8')
 	end
-
-	-- general editing
-	vis:command('set autoindent on')
-
-	-- searching / replacement
-	vis:command('set ignorecase on')
-
-	-- visual settings
-	vis:command('set syntax off')
-
-
+	-- keyboard shortcuts
 	---- comment lines
+	vis:map(vis.modes.NORMAL, ' ;', 
+		string.format(
+			":-0,+0|com -f %s<Enter>", 
+			win.file.name
+		)
+	)
 	vis:map(vis.modes.VISUAL_LINE, ' ;', 
-		string.format(":|com -f %s<Enter>", win.file.name))
-
-	---- prettier
+		string.format(
+			":|com -f %s<Enter>", 
+			win.file.name
+		)
+	)
+	---- markdown
 	vis:map(vis.modes.NORMAL, ' fP', 
 		string.format(
 			":0,$|prettier --print-width 80 --prose-wrap always %s<Enter>", 
-			win.file.name))
-
+			win.file.name
+		)
+	)
 	---- go
 	------ formatting
 	vis:map(vis.modes.NORMAL, ' gf', 
 		string.format(
 			":0,$|gofmt %s<Enter>", 
-			win.file.name))
+			win.file.name
+		)
+	)
 	------ testing
 	vis:map(vis.modes.NORMAL, ' gt', 
 		string.format('%s && %s<Enter>%s<Enter>',
  			-- change to containing directory
-			string.format(':!cd $(dirname %s)', win.file.path),
+			string.format(
+				':!cd $(dirname %s)', 
+				win.file.path
+			),
 			-- run all tests
 			'go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1',
 			-- preview the output
 			':split /tmp/testout'
 		)
 	)
-
-	-- make
-	vis:map(vis.modes.NORMAL, ' m', ':!make ')
-
-	-- terraform
-	vis:map(vis.modes.NORMAL, ' tv', ':!terraform validate<Enter>')
-	vis:map(vis.modes.NORMAL, ' tp', ':!terraform plan<Enter>')
-	vis:map(vis.modes.NORMAL, ' ta', ':!terraform apply<Enter>')
-	vis:map(vis.modes.NORMAL, ' tf', ':w<Enter>:!terraform fmt<Enter>:e!<Enter>')
-
 end)
 
