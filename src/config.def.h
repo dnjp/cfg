@@ -1,1 +1,5 @@
-#define C_COM "/* */"
+#include "ft.h"
+
+static struct FileType FileTypes[] = {
+	{ "// ", {".go", NULL} }, /* Go */
+};
