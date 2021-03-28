@@ -5,8 +5,9 @@
  * initializes all properties.
  */
 int array_create(Array *arr) {
-	arr->items = (char**)calloc(ARRAY_MAX, sizeof(arr->items));
-	if(arr->items == NULL)
+	/* arr->items = (char**)calloc(ARRAY_MAX, sizeof(arr->items)); */
+	arr->lines = (Line**)calloc(ARRAY_MAX, sizeof(arr->lines));
+	if(arr->lines == NULL)
 		return -1;
 	arr->maxsize = ARRAY_MAX;
 	arr->index = 0;
@@ -26,10 +27,12 @@ int array_push(Array *arr, const char* item, int len) {
 		return -1;
 	if(arr->index == arr->maxsize) {
 		arr->maxsize = arr->maxsize*2;
-		arr->items = (char**)realloc(arr->items, arr->maxsize*sizeof(arr->items));
+		/* arr->items = (char**)realloc(arr->items, arr->maxsize*sizeof(arr->items)); */		arr->lines = (Line**)realloc(arr->lines, arr->maxsize*sizeof(arr->lines));
 	}
-	arr->items[arr->index] = (char*)malloc(len*sizeof(char));
-	strcpy(arr->items[arr->index], item);
+	Line *line = (Line*)malloc(sizeof(Line));
+	line->content = (char*)malloc(len*sizeof(char));
+	strcpy(line->content, item);
+	arr->lines[arr->index] = line;
 	arr->index++;
 	return 0;
 }
@@ -48,11 +51,12 @@ int array_pop(Array *arr, char* target) {
 	int index = arr->index-1;
 	if(index < 0)
 		index = 0;
-	if(arr->items[index] == NULL)
+	if(arr->lines[index] == NULL)
 		return -1;
-	strcpy(target, arr->items[index]);
-	free(arr->items[index]);
-	arr->items[index] = NULL;
+	Line *line = arr->lines[index];
+	strcpy(target, line->content);
+	free(arr->lines[index]);
+	arr->lines[index] = NULL;
 	return 0;
 }
 
@@ -67,7 +71,10 @@ int array_at(Array *arr, char* target, int index) {
 		return -1;
 	if(arr->index < index)
 		return -1;
-	strcpy(target, arr->items[index]);
+	Line *line = arr->lines[index];
+	if(line == NULL)
+		return -1;
+	strcpy(target, line->content);
 	return 0;
 }
 
@@ -76,9 +83,9 @@ void array_destroy(Array *arr) {
 	if(arr == NULL)
 		return;
 	for(int i = 0; i < arr->index; i++) {
-		if(arr->items[i] != NULL) {
-			free(arr->items[i]);
-			arr->items[i] = NULL;
+		if(arr->lines[i] != NULL) {
+			free(arr->lines[i]);
+			arr->lines[i] = NULL;
 		}
 	}
 }

@@ -7,7 +7,12 @@
 #define ARRAY_MAX 10
 
 typedef struct {
-	char **items;
+	char *content;
+	int fch;
+} Line;
+
+typedef struct {
+	Line **lines;
 	int index;
 	int maxsize;
 } Array;

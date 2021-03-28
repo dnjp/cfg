@@ -2,6 +2,7 @@ include config.mk
 
 SRC = com.c array.c ft.c
 OBJ = ${SRC:.c=.o}
+CFLAGS = "-g"
 
 all: options com
 
