@@ -84,7 +84,7 @@ vis.events.subscribe(vis.events.INIT, function()
 	---- general formatting
 	vis:map(vis.modes.NORMAL, ' ff', ':0,$|fmt<Enter>')
 	---- quickly edit visrc
-	vis:map(vis.modes.NORMAL, 've', ':sp ~/.config/vis/visrc.lua<Enter>')
+	vis:map(vis.modes.NORMAL, ' ve', ':sp ~/.config/vis/visrc.lua<Enter>')
 	---- generate tags
 	vis:map(vis.modes.NORMAL, ' ct', ':!ctags -R .<Enter>')
 	---- git
@@ -110,7 +110,6 @@ vis.events.subscribe(vis.events.INIT, function()
 	vis:map(vis.modes.NORMAL, ' tp', ':!terraform plan<Enter>')
 	vis:map(vis.modes.NORMAL, ' ta', ':!terraform apply<Enter>')
 	vis:map(vis.modes.NORMAL, ' tf', ':w<Enter>:!terraform fmt<Enter>:e!<Enter>')
-
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
@@ -131,7 +130,7 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 	---- comment lines
 	vis:map(vis.modes.NORMAL, ' ;', 
 		string.format(
-			":-0,+0|com -f %s<Enter>", 
+			":.-0|com -f %s<Enter>", 
 			win.file.name
 		)
 	)
@@ -157,6 +156,20 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 		)
 	)
 	------ testing
+	vis:map(vis.modes.NORMAL, ' gt', 
+		string.format('%s && %s<Enter>%s<Enter>',
+ 			-- change to containing directory
+			string.format(
+				':!cd $(dirname %s)', 
+				win.file.path
+			),
+			-- run all tests
+			'go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1',
+			-- preview the output
+			':split /tmp/testout'
+		)
+	)
+	---- searching
 	vis:map(vis.modes.NORMAL, ' gt', 
 		string.format('%s && %s<Enter>%s<Enter>',
  			-- change to containing directory
