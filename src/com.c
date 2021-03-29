@@ -71,7 +71,6 @@ int main(int argc, char **argv)
 	} else {
 		act = UNCOMMENT;
 	}
-	printf("action: %d, touch %d\n", act, touch);
 	for(int i = 0; i < arr.index; i++) {
 		line *l = (line*)malloc(sizeof(line));
 		if(array_at(&arr, l, i) != 0) {
@@ -86,8 +85,8 @@ int main(int argc, char **argv)
 			switch(act) {
 			case COMMENT:
 				line_comment(l, ft);
-			case UNCOMMENT:
-				line_uncomment(l, ft);
+			/* case UNCOMMENT: */
+				/* line_uncomment(l, ft); */
 			}
 		}
 		printf("%s\n", l->content);

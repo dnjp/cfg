@@ -11,6 +11,7 @@ int array_create(array *arr) {
 		return -1;
 	arr->maxsize = array_MAX;
 	arr->index = 0;
+	arr->comlines = 0;
 	return 0;
 }
 

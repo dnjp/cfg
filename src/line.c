@@ -57,19 +57,30 @@ int line_annotate(line *line, struct filetype *ft)
 
 int line_comment(line* l, struct filetype *ft)
 {
+	int start;
+	int end;
 	char *first;
-	substring(l->content, first, 0, l->fch);
-	char *second; 
-	substring(l->content, second, l->fch, l->len);
-	if(l->scom > 0 && l->ecom > 0) {
-		sprintf(l->content, "%s%s%s%s",
+	char *second;
+
+	start = 0;
+	end = l->fch;
+	first = (char*)malloc((end-start)+1*sizeof(char));
+	substring(l->content, first, start, end);
+
+	start = l->fch+1;
+	end = l->len;
+	second = (char*)malloc((end-start)+1*sizeof(char));
+	substring(l->content, second, start, end);
+
+	if(ft->comstart != NULL && ft->comend != NULL) {
+		sprintf(l->content, "%s%s %s %s",
 			first,
 			ft->comstart,
 			second,
 			ft->comend
 		);
-	} else if(l->scom > 0) {
-		sprintf(l->content, "%s%s%s",
+	} else if(ft->comstart != NULL) {
+		sprintf(l->content, "%s%s %s",
 			first,
 			ft->comstart,
 			second
@@ -86,9 +97,9 @@ int line_uncomment(line* line, struct filetype *ft)
 
 int substring(const char* from, char* to, int start, int end)
 {
-	to = (char*)malloc((end-start)*sizeof(char));
 	int j = 0;
-	for(int i = start; i < end; i++, j++) 
+	for(int i = start; i <= end; i++, j++) 
 		to[j] = from[i];
+	to[j] = '\0';
 	return 0;
 }

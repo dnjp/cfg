@@ -523,4 +523,5 @@ yay-deps:
 	yay -S \
 		brave-bin \
 		slack-desktop \
-		xlayoutdisplay
+		xlayoutdisplay \
+		spotify
