@@ -66,10 +66,10 @@ int main(int argc, char **argv)
 			t = strtok(NULL, "\n");
 		}
 	}
-	if(arr.comlines < (arr.index - arr.comlines)) {
-		act = COMMENT;
-	} else {
+	if(arr.comlines > (arr.index - arr.comlines)) {
 		act = UNCOMMENT;
+	} else {
+		act = COMMENT;
 	}
 	for(int i = 0; i < arr.index; i++) {
 		line *l = (line*)malloc(sizeof(line));
@@ -85,8 +85,10 @@ int main(int argc, char **argv)
 			switch(act) {
 			case COMMENT:
 				line_comment(l, ft);
-			/* case UNCOMMENT: */
-				/* line_uncomment(l, ft); */
+				break;
+			case UNCOMMENT:
+				line_uncomment(l, ft);
+				break;
 			}
 		}
 		printf("%s\n", l->content);

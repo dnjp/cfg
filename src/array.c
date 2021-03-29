@@ -36,7 +36,7 @@ int array_push(array *arr, struct filetype *ft, const char* item, int len) {
 	l->len = len;
 	if(line_annotate(l, ft) < 0)
 		return -1;
-	if(l->scom > 0)
+	if(l->scom >= 0)
 		arr->comlines++;
 	arr->lines[arr->index] = l;
 	arr->index++;

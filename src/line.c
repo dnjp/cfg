@@ -3,10 +3,14 @@
 /* line_annotate fills in details about the underlying string */
 int line_annotate(line *line, struct filetype *ft)
 {
+	char *str = line->content;
 	int scomlen = 0;
 	int ecomlen = 0;
+
 	int scom = -1;
 	int ecom = -1;
+	int fch = -1;
+	int idx = -1;
 
 	if(ft == NULL)
 		return 0;
@@ -20,43 +24,27 @@ int line_annotate(line *line, struct filetype *ft)
 		ecomlen = strlen(ft->comend);
 	}
 
-	int fch = 0;
-	char *str = line->content;
 	for(int i = 0; i < line->len; i++) {
-		if(str[fch] == ' ' || str[fch] == '\t') {
-			continue;
-		}
-		if(fch == 0)
+		if(isalpha(str[i]) != 0 && fch < 0)
 			fch = i;
-		if(scomlen > 0 && i+(scomlen-1) != line->len) {
-			int s = 0;
-			for(int j = i; j < scomlen; j++) {
-				if(str[j] == ft->comstart[j-i]) {
-					s++;	
-				}
-			}
-			if(s == scomlen)
-				scom = i;
-		}
-		if(ecomlen > 0 && i+(ecomlen-1) != line->len) {
-			int s = 0;
-			for(int j = i; j < ecomlen; j++) {
-				if(str[j] == ft->comend[j-i]) {
-					s++;
-				}
-			}
-			if(s == ecomlen)
-				ecom = i;
-		}
+		if((idx = str_find(str, ft->comstart, i, scomlen)) >= 0)
+			scom = idx;
+		if((idx = str_find(str, ft->comend, i, ecomlen)) >= 0)
+			ecom = idx;
 	}
+
 	line->scom = scom;
-	line->ecom = scom;
+	line->ecom = ecom;
 	line->fch = fch;
+	printf("scom: %d '%c'\n", line->scom, str[line->scom]);
+	printf("ecom: %d '%c'\n", line->ecom, str[line->ecom]);
+	printf("fch: %d '%c'\n", line->fch, str[line->fch]);
 	return 0;
 }
 
 int line_comment(line* l, struct filetype *ft)
 {
+	printf("COMMENT\n");
 	int start;
 	int end;
 	char *first;
@@ -65,22 +53,22 @@ int line_comment(line* l, struct filetype *ft)
 	start = 0;
 	end = l->fch;
 	first = (char*)malloc((end-start)+1*sizeof(char));
-	substring(l->content, first, start, end);
+	str_sub(l->content, first, start, end);
 
-	start = l->fch+1;
+	start = l->fch;
 	end = l->len;
 	second = (char*)malloc((end-start)+1*sizeof(char));
-	substring(l->content, second, start, end);
+	str_sub(l->content, second, start, end);
 
 	if(ft->comstart != NULL && ft->comend != NULL) {
-		sprintf(l->content, "%s%s %s %s",
+		sprintf(l->content, "%s%s%s%s",
 			first,
 			ft->comstart,
 			second,
 			ft->comend
 		);
 	} else if(ft->comstart != NULL) {
-		sprintf(l->content, "%s%s %s",
+		sprintf(l->content, "%s%s%s",
 			first,
 			ft->comstart,
 			second
@@ -89,17 +77,76 @@ int line_comment(line* l, struct filetype *ft)
 	return 0;
 }
 
-int line_uncomment(line* line, struct filetype *ft)
+int line_uncomment(line* l, struct filetype *ft)
 {
+	printf("UNCOMMENT\n");
+	int start;
+	int end;
+	char *first;
+	char *second;
+
+	if(ft->comstart != NULL) {
+		/* before the comment */
+		int scomlen = strlen(ft->comstart);
+		start = 0;
+		end = l->scom;
+		first = (char*)malloc((end-start)+1*sizeof(char));
+		str_sub(l->content, first, start, end);
+
+		/* after the comment */
+		int start = l->scom + scomlen;
+		int end = l->len;
+		second = (char*)malloc((end-start)+1*sizeof(char));
+		str_sub(l->content, second, start, end);
+
+		/* put string together */
+		sprintf(l->content, "%s%s", first, second);
+	}
+	if(ft->comend != NULL) {
+		/* before the comment */
+		int ecomlen = strlen(ft->comend);
+		start = 0;
+		end = l->ecom;
+		first = (char*)malloc((end-start)+1*sizeof(char));
+		str_sub(l->content, first, start, end);
+		
+		/* after the comment */
+		int start = l->ecom + ecomlen;
+		int end = l->len;
+		second = (char*)malloc((end-start)+1*sizeof(char));
+		str_sub(l->content, second, start, end);
+
+		/* put string together */
+		sprintf(l->content, "%s%s", first, second);
+	}
 	return 0;
 }
 
+int str_find(const char* str, const char* sub, int start, int len)
+{
+	printf("FINDING: str: %s, sub: %s, start: %c, len: %d\n",
+		str, sub, str[start], len);
+	int idx = -1;
+	int found = 0;
+	for(int i = start; i < start+len; i++) {
+		if(str[i] == sub[i-start]) {
+			found++;
+			idx = i;
+		}
+	}
+	if(idx > 0 && found == len) {
+		printf("SUB: %s, found: %d, IDX: %d, len: %d\n", sub, found, idx, len);
+		return idx-(len-1);
+	}
+	return -1;
+}
 
-int substring(const char* from, char* to, int start, int end)
+int str_sub(const char* from, char* to, int start, int end)
 {
 	int j = 0;
-	for(int i = start; i <= end; i++, j++) 
+	for(int i = start; i < end; i++, j++) 
 		to[j] = from[i];
 	to[j] = '\0';
 	return 0;
 }
+
