@@ -36,15 +36,11 @@ int line_annotate(line *line, struct filetype *ft)
 	line->scom = scom;
 	line->ecom = ecom;
 	line->fch = fch;
-	printf("scom: %d '%c'\n", line->scom, str[line->scom]);
-	printf("ecom: %d '%c'\n", line->ecom, str[line->ecom]);
-	printf("fch: %d '%c'\n", line->fch, str[line->fch]);
 	return 0;
 }
 
 int line_comment(line* l, struct filetype *ft)
 {
-	printf("COMMENT\n");
 	int start;
 	int end;
 	char *first;
@@ -79,15 +75,16 @@ int line_comment(line* l, struct filetype *ft)
 
 int line_uncomment(line* l, struct filetype *ft)
 {
-	printf("UNCOMMENT\n");
 	int start;
 	int end;
 	char *first;
 	char *second;
+	int scomlen = 0;
+	int ecomlen = 0;
 
 	if(ft->comstart != NULL) {
 		/* before the comment */
-		int scomlen = strlen(ft->comstart);
+		scomlen = strlen(ft->comstart);
 		start = 0;
 		end = l->scom;
 		first = (char*)malloc((end-start)+1*sizeof(char));
@@ -104,9 +101,9 @@ int line_uncomment(line* l, struct filetype *ft)
 	}
 	if(ft->comend != NULL) {
 		/* before the comment */
-		int ecomlen = strlen(ft->comend);
+		ecomlen = strlen(ft->comend);
 		start = 0;
-		end = l->ecom;
+		end = l->ecom - scomlen;
 		first = (char*)malloc((end-start)+1*sizeof(char));
 		str_sub(l->content, first, start, end);
 		
@@ -124,8 +121,6 @@ int line_uncomment(line* l, struct filetype *ft)
 
 int str_find(const char* str, const char* sub, int start, int len)
 {
-	printf("FINDING: str: %s, sub: %s, start: %c, len: %d\n",
-		str, sub, str[start], len);
 	int idx = -1;
 	int found = 0;
 	for(int i = start; i < start+len; i++) {
@@ -134,10 +129,8 @@ int str_find(const char* str, const char* sub, int start, int len)
 			idx = i;
 		}
 	}
-	if(idx > 0 && found == len) {
-		printf("SUB: %s, found: %d, IDX: %d, len: %d\n", sub, found, idx, len);
+	if(idx > 0 && found == len)
 		return idx-(len-1);
-	}
 	return -1;
 }
 
