@@ -8,8 +8,8 @@ export ENV=$HOME/.profile;
 export NO_COLOR=1
 
 # defaults
-# export BROWSER="brave"
-export BROWSER="firefox"
+export BROWSER="brave"
+# export BROWSER="firefox"
 # export EDITOR='emacsclient'
 export EDITOR='vis'
 export VISUAL=$EDITOR
@@ -27,7 +27,7 @@ export PLAN9=/usr/local/plan9
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 
-export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 export FZF_DIR=$HOME/cfg/sources/github.com/junegunn/fzf
 
 # source external scipts

@@ -517,11 +517,21 @@ pacman-deps:
 		lua \
 		lua-lpeg \
 		gdb \
-		valgrind
+		valgrind \
+		scrot \
+		postgresql \
+		jre8-openjdk \
+		jdk8-openjdk \
+		maven \
+		docker-compose \
+		chromium \
+		pgadmin4 \
+		libbsd
 
 yay-deps:
 	yay -S \
 		brave-bin \
 		slack-desktop \
 		xlayoutdisplay \
-		spotify
+		spotify \
+		cqlsh

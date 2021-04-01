@@ -25,7 +25,7 @@ int line_annotate(line *line, struct filetype *ft)
 	}
 
 	for(int i = 0; i < line->len; i++) {
-		if(isalpha(str[i]) != 0 && fch < 0)
+		if((isalpha(str[i]) != 0 || (str[i] != ' ' && str[i] != '\t')) && fch < 0)
 			fch = i;
 		if((idx = str_find(str, ft->comstart, i, scomlen)) >= 0)
 			scom = idx;

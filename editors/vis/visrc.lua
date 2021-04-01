@@ -18,21 +18,8 @@ settings = {
 	terraform  = { 'set expandtab on', 'set tabwidth 2' };
 };
 
--- open files with fzf. fixed from git.sr.ht/~mcepl/vis-fzf-open
-vis:command_register("fzf", function(argv, force, win, selection, range)
-	local command = string.gsub([[
-		$fzf_path \
-			--header="Enter:edit,^s:split,^v:vsplit" \
-			--expect="ctrl-s,ctrl-v" \
-			$fzf_args $args
-		]],
-		'%$([%w_]+)', {
-			fzf_path="fzf",
-			fzf_args="",
-			args=table.concat(argv, " ")
-		}
-	)
-	local file = io.popen(command)
+vis:command_register("find", function(argv, force, win, selection, range)
+	local file = io.popen("du -a ./ | awk '{print $2}' | vis-menu")
 	local output = {}
 	for line in file:lines() do
 		table.insert(output, line)
@@ -40,17 +27,11 @@ vis:command_register("fzf", function(argv, force, win, selection, range)
 	local success, msg, status = file:close()
 	if status == 0 then
 		local action = ':e'
-
-		if	 output[1] == 'ctrl-s' then action = ':split'
-		elseif output[1] == 'ctrl-v' then action = ':vsplit'
-		end
-
-		vis:feedkeys(string.format("%s '%s'<Enter>", action, output[2]))
+		vis:feedkeys(string.format("%s '%s'<Enter>", action, output[1]))
 	end
 	vis:feedkeys("<vis-redraw>")
 	return true;
-end, "Select file to open with fzf")
-
+end, "Select file to open with vis-menu")
 
 vis:command_register("gitblame", function(argv, force, win, selection, range)
 	local curline = win.selection.line
@@ -76,11 +57,13 @@ vis.events.subscribe(vis.events.INIT, function()
 	vis:command('set syntax off')
 	-- keyboard shortcuts
 	---- convenience
-	vis:command('map! normal <C-p> :fzf<Enter>')
+	vis:command('map! normal <C-p> :find<Enter>')
 	vis:command('map! normal S :w!<Enter>')
 	vis:command('map! normal X :!')
 	vis:command('map! normal ; :')
 	vis:command('map normal Q :q!<Enter>')
+	vis:command('map! normal n <vis-motion-search-repeat>')
+	vis:command('map! normal N <vis-motion-search-repeat-reverse>')
 	---- general formatting
 	vis:map(vis.modes.NORMAL, ' ff', ':0,$|fmt<Enter>')
 	---- quickly edit visrc
@@ -110,6 +93,8 @@ vis.events.subscribe(vis.events.INIT, function()
 	vis:map(vis.modes.NORMAL, ' tp', ':!terraform plan<Enter>')
 	vis:map(vis.modes.NORMAL, ' ta', ':!terraform apply<Enter>')
 	vis:map(vis.modes.NORMAL, ' tf', ':w<Enter>:!terraform fmt<Enter>:e!<Enter>')
+	---- previous file
+	vis:map(vis.modes.NORMAL, ' l', ':e #<Enter>')
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
@@ -157,30 +142,9 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 	)
 	------ testing
 	vis:map(vis.modes.NORMAL, ' gt', 
-		string.format('%s && %s<Enter>%s<Enter>',
- 			-- change to containing directory
-			string.format(
-				':!cd $(dirname %s)', 
-				win.file.path
-			),
-			-- run all tests
-			'go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1',
-			-- preview the output
-			':split /tmp/testout'
-		)
-	)
-	---- searching
-	vis:map(vis.modes.NORMAL, ' gt', 
-		string.format('%s && %s<Enter>%s<Enter>',
- 			-- change to containing directory
-			string.format(
-				':!cd $(dirname %s)', 
-				win.file.path
-			),
-			-- run all tests
-			'go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1',
-			-- preview the output
-			':split /tmp/testout'
+		string.format('%s && %s<Enter>',
+			string.format(':!cd $(dirname %s)', win.file.path),
+			'go test -race -bench Benchmark* -count=1 | less'
 		)
 	)
 end)
