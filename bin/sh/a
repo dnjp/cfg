@@ -1,11 +1,11 @@
 #!/bin/sh
 
-
 fontsrv &
 plumber &
 
 export font=/mnt/font/MesloLGS-Regular/18a/font
 export INSIDE_ACME=1
 export tabstop=8
+export acmeshell=$(which bash)
 
 exec $PLAN9/bin/acme -a -f $font -F $font

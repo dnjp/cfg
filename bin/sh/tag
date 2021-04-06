@@ -1,12 +1,30 @@
 #!/usr/bin/env bash
 
+# set address to selection
+echo addr=dot | 9p write acme/$winid/ctl
+# read in selection
+in=$(9p read acme/$winid/xdata)
+
 old="$PWD"
+new=
 
 while [[ ! -f tags && "$PWD" != "/" ]]; do
-    cd ..
+	cd ..
 done
-
-if [[ -f tags ]]; then
-    new="$PWD"
-    readtags -t tags $1 | awk -F "\t" -v prefix="${new#$old}" '{$2 = prefix"/"$2; print $2":"$3}'
+if [[ ! -f tags ]]; then
+	exit
 fi
+new="$PWD"
+
+
+readtags -e -t tags $in | \
+	awk -F "\t" -v prefix="${new#$old}" \
+		'{$2 = prefix"/"$2; print $2":"$3}' | \
+while read i; do
+    echo $i | \
+	sed 's/(/\\(/g'  | \
+	sed 's/)/\\)/g'  | \
+	sed 's/\*/\\*/g' | \
+	sed 's/\$//g'    | \
+	sed 's/\/;"//g'
+done 
