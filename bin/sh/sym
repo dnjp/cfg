@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 create() {
 	sudo_cmd=""
@@ -9,7 +9,7 @@ create() {
 	fi
 
 	# if the file already exists
-	if [[ -f "$output_file" || -d "$output_file" ]]; then
+	if [ -f "$output_file" ] || [ -d "$output_file" ]; then
 
 		# check if we've already symlinked the file
 		if [ -L "$output_file" ]; then

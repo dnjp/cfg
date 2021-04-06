@@ -24,7 +24,8 @@ all: yay \
 	mail \
 	caps2esc \
 	x330brightness \
-	suckless
+	suckless \
+	9fans
 
 ###########################
 #      Variables
@@ -113,7 +114,8 @@ pacman-deps:
 		curl \
 		meson \
 		net-tools \
-		inetutils
+		inetutils \
+		dash
 
 yay-deps:
 	yay -S \
@@ -121,7 +123,8 @@ yay-deps:
 		slack-desktop \
 		xlayoutdisplay \
 		spotify \
-		cqlsh
+		cqlsh \
+		dashbinsh
 
 ###########################
 #         bin/src
@@ -436,6 +439,10 @@ caps2esc: interception
 
 	sudo mkdir -p /etc/interception/udevmon.d
 	sudo cp x330/caps2esc.udev.yaml /etc/interception/udevmon.d/udev.yaml
+
+9fans:
+	cd sources/github.com/9fans/go/acme/editinacme && \
+		go install
 
 ###########################
 #  git.sr.ht

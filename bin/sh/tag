@@ -1,17 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# set address to selection
-echo addr=dot | 9p write acme/$winid/ctl
-# read in selection
-in=$(9p read acme/$winid/xdata)
+. $HOME/bin/sh/lib/acme.sh
+
+setsel
+in=$(readsel)
 
 old="$PWD"
 new=
 
-while [[ ! -f tags && "$PWD" != "/" ]]; do
+while [ ! -f tags ] && [ "$PWD" != "/" ]; do
 	cd ..
 done
-if [[ ! -f tags ]]; then
+if [ ! -f tags ]; then
 	exit
 fi
 new="$PWD"

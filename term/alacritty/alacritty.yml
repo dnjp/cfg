@@ -1,5 +1,8 @@
 env:
   TERM: xterm-256color
+  # ENV: /home/daniel/.profile
+shell: 
+  program: /bin/dash
 window:
   dimensions:
     columns: 80

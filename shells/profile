@@ -1,8 +1,8 @@
+# set mode
+set -o emacs
+
 # set prompt
 export PS1='$ '
-
-# make dash happy
-export ENV=$HOME/.profile;
 
 # No color
 export NO_COLOR=1
@@ -42,9 +42,6 @@ alias cfg="cd $CFG"
 alias dow="cd ~/Downloads"
 alias notes="cd ~/notes"
 alias drop="cd ~/Dropbox"
-function c() {
-	cd $(fd)
-}
 alias cl="clear"
 alias l="ls"
 alias ".."="cd .."
@@ -54,19 +51,6 @@ alias n="noice $*"
 alias sloc="scc $*"
 alias next="cd ~/Nextcloud"
 alias learn="cd $HOME/exercism"
-
-if [ "$INSIDE_ACME" ]; then
-
-	# handle man pages more cleanly
-	export PAGER=nobs
-	export MANPAGER=nobs
-
-	# Patch cd command for acme
-	_cd () {
-		\cd "$@" && awd
-	}
-	alias cd=_cd
-fi
 
 # unix defaults
 alias cp="cp -i"                                                # Confirm before overwriting something
@@ -127,6 +111,9 @@ export FZF_DEFAULT_COMMAND='rg --files'
 # Linkerd
 export PATH=$PATH:/home/daniel/.linkerd2/bin
 
+# set environment for dash
+# export ENV=$HOME/.shinit
+
 gcloudconfig() {
 	gcloud config configurations activate $1
 	gcloud info | grep Project
@@ -144,15 +131,11 @@ kgetnew() {
 	watch "echo new: $(kubectl get po | grep $pattern | grep ' [0-9]m' | wc -l) total: $(kubectl get po | grep $pattern | wc -l)"
 }
 
-# patch cd for acme
 if [ "$INSIDE_ACME" ]; then
+
 	# handle man pages more cleanly
 	export PAGER=nobs
 	export MANPAGER=nobs
-
-	# set font
-	export font=$PLAN9/font/pelm/euro.8.font
-	export lfont=$PLAN9/font/lucsans/unicode.7.font
 
 	# Patch cd command for acme
 	_cd () {

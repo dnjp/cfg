@@ -73,3 +73,6 @@
 [submodule "sources/github.com/dnjp/plan9port"]
 	path = sources/github.com/dnjp/plan9port
 	url = git@github.com:dnjp/plan9port.git
+[submodule "sources/github.com/9fans/go"]
+	path = sources/github.com/9fans/go
+	url = https://github.com/9fans/go.git

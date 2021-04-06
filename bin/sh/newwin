@@ -1,5 +1,0 @@
-#!/bin/sh
-
-winctl=$(9p read acme/new/ctl)
-winid=$($winctl | awk '{print $1}')
-
