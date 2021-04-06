@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ $PLAN9/bin/9term -s -f /mnt/font/MesloLGS-Regular/18a/font

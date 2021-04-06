@@ -9,9 +9,7 @@ export NO_COLOR=1
 
 # defaults
 export BROWSER="brave"
-# export BROWSER="firefox"
-# export EDITOR='emacsclient'
-export EDITOR='vi'
+export EDITOR='editinacme'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
@@ -81,6 +79,7 @@ alias "sshacpro"="ssh ubnt@192.168.1.2"
 
 # Plan9
 export PATH=$PATH:$PLAN9/bin
+# export PATH=$PLAN9/bin:$PATH
 
 # Google
 PATH=$PATH:$HOME/google-cloud-sdk/bin/:
