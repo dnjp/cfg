@@ -1,140 +1,162 @@
 env:
   TERM: xterm-256color
-
 window:
+  dimensions:
+    columns: 80
+    lines: 24
   padding:
-    x: 4
-    y: 4
-  decorations: full # none
-
+    x: 2
+    y: 2
+  decorations: none
+scrolling:
+  history: 10000
+  multiplier: 3
+draw_bold_text_with_bright_colors: true
 font:
   normal:
     family: Meslo LG S
-    style: Regular
   bold:
     family: Meslo LG S
-    style: Bold
   italic:
     family: Meslo LG S
-    style: Italic
-  size: 9
+
+  size: 9.0
   offset:
     x: 0
-    y: 4
-
-custom_cursor_colors: true
-
-# plan 9
-# colors:
-  # primary:
-    # background: '0xffffea'
-    # foreground: '#000000'
-  # selection:
-    # text: '#000000'
-    # background: '#EEEE9E'
-  # cursor:
-    # text: '#000000'
-    # cursor: '#000000'
-
-# base16 default dark
+    y: 0
+  glyph_offset:
+    x: 0
+    y: 0
 colors:
   primary:
-    background: '0x181818'
-    foreground: '0xd8d8d8'
+    background: '0xfdffea'
+    foreground: '0x020400'
   cursor:
-    # text: '0xd8d8d8'
-    text: '0x181818'
-    cursor: '0xd8d8d8'
+    text: '0x000000'
+    cursor: '0x424440'
   normal:
-    black:   '0x181818'
-    red:     '0xab4642'
-    green:   '0xa1b56c'
-    yellow:  '0xf7ca88'
-    blue:    '0x7cafc2'
-    magenta: '0xba8baf'
-    cyan:    '0x86c1b9'
-    white:   '0xd8d8d8'
+    black:   '0x0b141a'
+    red:     '0xff4053'
+    green:   '0x11ab00'
+    yellow:  '0xbf8c00'
+    blue:    '0x0099ff'
+    magenta: '0x9854ff'
+    cyan:    '0x00a5ab'
+    white:   '0xffffff'
   bright:
-    black:   '0x585858'
-    red:     '0xab4642'
-    green:   '0xa1b56c'
-    yellow:  '0xf7ca88'
-    blue:    '0x7cafc2'
-    magenta: '0xba8baf'
-    cyan:    '0x86c1b9'
-    white:   '0xf8f8f8'
+    black:   '0x0b141a'
+    red:     '0xff4053'
+    green:   '0x11ab00'
+    yellow:  '0xbf8c00'
+    blue:    '0x0099ff'
+    magenta: '0x9854ff'
+    cyan:    '0x00a5ab'
+    white:   '0xffffff'
 
-# # Terminal.app
-# colors:
-  # primary:
-    # background: '#FFFFFF'
-    # foreground: '#000000'
-  # normal:
-    # black:      '#000000'
-    # red:        '#990000'
-    # green:      '#00A600'
-    # yellow:     '#999900'
-    # blue:       '#0000B2'
-    # magenta:    '#B200B2'
-    # cyan:       '#00A6B2'
-    # white:      '#BFBFBF'
-  # bright:
-    # black:      '#666666'
-    # red:        '#E50000'
-    # green:      '#00D900'
-    # yellow:     '#E5E500'
-    # blue:       '#0000FF'
-    # magenta:    '#E500E5'
-    # cyan:       '#00E5E5'
-    # white:      '#E5E5E5'
+key_bindings:
+  - { key: V,        mods: Control|Shift,    action: Paste               }
+  - { key: C,        mods: Control|Shift,    action: Copy                }
+  - { key: Paste,                   action: Paste                        }
+  - { key: Copy,                    action: Copy                         }
+  - { key: Q,        mods: Command, action: Quit                         }
+  - { key: W,        mods: Command, action: Quit                         }
+  - { key: Insert,   mods: Shift,   action: PasteSelection               }
+  - { key: Key0,     mods: Control, action: ResetFontSize                }
+  - { key: Equals,   mods: Control, action: IncreaseFontSize             }
+  - { key: Minus, mods: Control, action: DecreaseFontSize             }
+  - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
+  - { key: Home,                    chars: "\x1b[H",   mode: ~AppCursor  }
+  - { key: End,                     chars: "\x1bOF",   mode: AppCursor   }
+  - { key: End,                     chars: "\x1b[F",   mode: ~AppCursor  }
+  - { key: PageUp,   mods: Shift,   chars: "\x1b[5;2~"                   }
+  - { key: PageUp,   mods: Control, chars: "\x1b[5;5~"                   }
+  - { key: PageUp,                  chars: "\x1b[5~"                     }
+  - { key: PageDown, mods: Shift,   chars: "\x1b[6;2~"                   }
+  - { key: PageDown, mods: Control, chars: "\x1b[6;5~"                   }
+  - { key: PageDown,                chars: "\x1b[6~"                     }
+  - { key: Tab,      mods: Shift,   chars: "\x1b[Z"                      }
+  - { key: Back,                    chars: "\x7f"                        }
+  - { key: Back,     mods: Alt,     chars: "\x1b\x7f"                    }
+  - { key: Insert,                  chars: "\x1b[2~"                     }
+  - { key: Delete,                  chars: "\x1b[3~"                     }
+  - { key: Left,     mods: Shift,   chars: "\x1b[1;2D"                   }
+  - { key: Left,     mods: Control, chars: "\x1b[1;5D"                   }
+  - { key: Left,     mods: Alt,     chars: "\x1b[1;3D"                   }
+  - { key: Left,                    chars: "\x1b[D",   mode: ~AppCursor  }
+  - { key: Left,                    chars: "\x1bOD",   mode: AppCursor   }
+  - { key: Right,    mods: Shift,   chars: "\x1b[1;2C"                   }
+  - { key: Right,    mods: Control, chars: "\x1b[1;5C"                   }
+  - { key: Right,    mods: Alt,     chars: "\x1b[1;3C"                   }
+  - { key: Right,                   chars: "\x1b[C",   mode: ~AppCursor  }
+  - { key: Right,                   chars: "\x1bOC",   mode: AppCursor   }
+  - { key: Up,       mods: Shift,   chars: "\x1b[1;2A"                   }
+  - { key: Up,       mods: Control, chars: "\x1b[1;5A"                   }
+  - { key: Up,       mods: Alt,     chars: "\x1b[1;3A"                   }
+  - { key: Up,                      chars: "\x1b[A",   mode: ~AppCursor  }
+  - { key: Up,                      chars: "\x1bOA",   mode: AppCursor   }
+  - { key: Down,     mods: Shift,   chars: "\x1b[1;2B"                   }
+  - { key: Down,     mods: Control, chars: "\x1b[1;5B"                   }
+  - { key: Down,     mods: Alt,     chars: "\x1b[1;3B"                   }
+  - { key: Down,                    chars: "\x1b[B",   mode: ~AppCursor  }
+  - { key: Down,                    chars: "\x1bOB",   mode: AppCursor   }
+  - { key: F1,                      chars: "\x1bOP"                      }
+  - { key: F2,                      chars: "\x1bOQ"                      }
+  - { key: F3,                      chars: "\x1bOR"                      }
+  - { key: F4,                      chars: "\x1bOS"                      }
+  - { key: F5,                      chars: "\x1b[15~"                    }
+  - { key: F6,                      chars: "\x1b[17~"                    }
+  - { key: F7,                      chars: "\x1b[18~"                    }
+  - { key: F8,                      chars: "\x1b[19~"                    }
+  - { key: F9,                      chars: "\x1b[20~"                    }
+  - { key: F10,                     chars: "\x1b[21~"                    }
+  - { key: F11,                     chars: "\x1b[23~"                    }
+  - { key: F12,                     chars: "\x1b[24~"                    }
+  - { key: F1,       mods: Shift,   chars: "\x1b[1;2P"                   }
+  - { key: F2,       mods: Shift,   chars: "\x1b[1;2Q"                   }
+  - { key: F3,       mods: Shift,   chars: "\x1b[1;2R"                   }
+  - { key: F4,       mods: Shift,   chars: "\x1b[1;2S"                   }
+  - { key: F5,       mods: Shift,   chars: "\x1b[15;2~"                  }
+  - { key: F6,       mods: Shift,   chars: "\x1b[17;2~"                  }
+  - { key: F7,       mods: Shift,   chars: "\x1b[18;2~"                  }
+  - { key: F8,       mods: Shift,   chars: "\x1b[19;2~"                  }
+  - { key: F9,       mods: Shift,   chars: "\x1b[20;2~"                  }
+  - { key: F10,      mods: Shift,   chars: "\x1b[21;2~"                  }
+  - { key: F11,      mods: Shift,   chars: "\x1b[23;2~"                  }
+  - { key: F12,      mods: Shift,   chars: "\x1b[24;2~"                  }
+  - { key: F1,       mods: Control, chars: "\x1b[1;5P"                   }
+  - { key: F2,       mods: Control, chars: "\x1b[1;5Q"                   }
+  - { key: F3,       mods: Control, chars: "\x1b[1;5R"                   }
+  - { key: F4,       mods: Control, chars: "\x1b[1;5S"                   }
+  - { key: F5,       mods: Control, chars: "\x1b[15;5~"                  }
+  - { key: F6,       mods: Control, chars: "\x1b[17;5~"                  }
+  - { key: F7,       mods: Control, chars: "\x1b[18;5~"                  }
+  - { key: F8,       mods: Control, chars: "\x1b[19;5~"                  }
+  - { key: F9,       mods: Control, chars: "\x1b[20;5~"                  }
+  - { key: F10,      mods: Control, chars: "\x1b[21;5~"                  }
+  - { key: F11,      mods: Control, chars: "\x1b[23;5~"                  }
+  - { key: F12,      mods: Control, chars: "\x1b[24;5~"                  }
+  - { key: F1,       mods: Alt,     chars: "\x1b[1;6P"                   }
+  - { key: F2,       mods: Alt,     chars: "\x1b[1;6Q"                   }
+  - { key: F3,       mods: Alt,     chars: "\x1b[1;6R"                   }
+  - { key: F4,       mods: Alt,     chars: "\x1b[1;6S"                   }
+  - { key: F5,       mods: Alt,     chars: "\x1b[15;6~"                  }
+  - { key: F6,       mods: Alt,     chars: "\x1b[17;6~"                  }
+  - { key: F7,       mods: Alt,     chars: "\x1b[18;6~"                  }
+  - { key: F8,       mods: Alt,     chars: "\x1b[19;6~"                  }
+  - { key: F9,       mods: Alt,     chars: "\x1b[20;6~"                  }
+  - { key: F10,      mods: Alt,     chars: "\x1b[21;6~"                  }
+  - { key: F11,      mods: Alt,     chars: "\x1b[23;6~"                  }
+  - { key: F12,      mods: Alt,     chars: "\x1b[24;6~"                  }
+  - { key: F1,       mods: Super,   chars: "\x1b[1;3P"                   }
+  - { key: F2,       mods: Super,   chars: "\x1b[1;3Q"                   }
+  - { key: F3,       mods: Super,   chars: "\x1b[1;3R"                   }
+  - { key: F4,       mods: Super,   chars: "\x1b[1;3S"                   }
+  - { key: F5,       mods: Super,   chars: "\x1b[15;3~"                  }
+  - { key: F6,       mods: Super,   chars: "\x1b[17;3~"                  }
+  - { key: F7,       mods: Super,   chars: "\x1b[18;3~"                  }
+  - { key: F8,       mods: Super,   chars: "\x1b[19;3~"                  }
+  - { key: F9,       mods: Super,   chars: "\x1b[20;3~"                  }
+  - { key: F10,      mods: Super,   chars: "\x1b[21;3~"                  }
+  - { key: F11,      mods: Super,   chars: "\x1b[23;3~"                  }
+  - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                  }
 
-# iTerm
-# colors:
-  # primary:
-    # background: '0x101421'
-    # foreground: '0xfffbf6'
-  # normal:
-    # black:   '0x2e2e2e'
-    # red:     '0xeb4129'
-    # green:   '0xabe047'
-    # yellow:  '0xf6c744'
-    # blue:    '0x47a0f3'
-    # magenta: '0x7b5cb0'
-    # cyan:    '0x64dbed'
-    # white:   '0xe5e9f0'
-  # bright:
-    # black:   '0x565656'
-    # red:     '0xec5357'
-    # green:   '0xc0e17d'
-    # yellow:  '0xf9da6a'
-    # blue:    '0x49a4f8'
-    # magenta: '0xa47de9'
-    # cyan:    '0x99faf2'
-    # white:   '0xffffff'
-
-# Papercolor - light
-# colors:
-  # primary:
-    # background: '0xeeeeee'
-    # foreground: '0x424242'
-  # cursor:
-    # text: '0xeeeeee'
-    # cursor: '0x878787'
-  # normal:
-    # black:   '0xeeeeee'
-    # red:     '0xaf0000'
-    # green:   '0x008700'
-    # yellow:  '0x5f8700'
-    # blue:    '0x0087af'
-    # magenta: '0x878787'
-    # cyan:    '0x005f87'
-    # white:   '0x444444'
-  # bright:
-    # black:   '0xbcbcbc'
-    # red:     '0xd70000'
-    # green:   '0xd70087'
-    # yellow:  '0x8700af'
-    # blue:    '0xd75f00'
-    # magenta: '0xd75f00'
-    # cyan:    '0x005faf'
-    # white:   '0x005f87'

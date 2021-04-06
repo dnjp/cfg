@@ -11,11 +11,10 @@ export NO_COLOR=1
 export BROWSER="brave"
 # export BROWSER="firefox"
 # export EDITOR='emacsclient'
-export EDITOR='vis'
+export EDITOR='vi'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
-alias vi="vis $*"
 
 # constants
 export NEXTCLOUD=/home/daniel/Nextcloud/
@@ -28,7 +27,6 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
-export FZF_DIR=$HOME/cfg/sources/github.com/junegunn/fzf
 
 # source external scipts
 . ~/Nextcloud/secrets/secrets.sh
@@ -44,7 +42,10 @@ alias cfg="cd $CFG"
 alias dow="cd ~/Downloads"
 alias notes="cd ~/notes"
 alias drop="cd ~/Dropbox"
-alias c="clear"
+function c() {
+	cd $(fd)
+}
+alias cl="clear"
 alias l="ls"
 alias ".."="cd .."
 alias "~"="cd ~"
@@ -53,6 +54,19 @@ alias n="noice $*"
 alias sloc="scc $*"
 alias next="cd ~/Nextcloud"
 alias learn="cd $HOME/exercism"
+
+if [ "$INSIDE_ACME" ]; then
+
+	# handle man pages more cleanly
+	export PAGER=nobs
+	export MANPAGER=nobs
+
+	# Patch cd command for acme
+	_cd () {
+		\cd "$@" && awd
+	}
+	alias cd=_cd
+fi
 
 # unix defaults
 alias cp="cp -i"                                                # Confirm before overwriting something
@@ -76,9 +90,6 @@ alias tk="tmux kill-session -t"
 # scripts
 export PATH=$PATH:$BIN_DIR/sh
 export PATH=$PATH:$BIN_DIR/amd64
-
-# fzf
-export PATH=$PATH:$FZF_DIR/bin
 
 # SSH
 alias "sshedge"="ssh daniel@192.168.1.1"

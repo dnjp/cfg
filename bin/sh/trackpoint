@@ -17,6 +17,6 @@ elan)
 esac
 
 xinput --set-prop "$device" 'libinput Accel Speed' 1.0
-# xinput --set-prop "$device" 'libinput Accel Profile Enabled' 1,1
+xinput --set-prop "$device" 'libinput Accel Profile Enabled' 1,0
 xinput --set-prop "$device" 'Coordinate Transformation Matrix' 	1.0 0 0 0 1.0 0 0 0 1.0
 

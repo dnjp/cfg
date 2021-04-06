@@ -48,7 +48,8 @@ end)
 
 vis.events.subscribe(vis.events.INIT, function()
 	-- global configuration
-	vis:command('set theme dark-16') -- use terminal theme
+	-- vis:command('set theme dark-16') -- use terminal theme
+	vis:command('set theme light-16') -- use terminal theme
 	vis:command('set escdelay 10')   -- interpret escape properly
 	vis:command('set shell /usr/bin/bash')   -- interpret escape properly
 	-- editing

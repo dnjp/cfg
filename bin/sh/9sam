@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# font=$PLAN9/font/lucsans/unicode.9x24.font 
+
+plumber &
+
+font=/mnt/font/MesloLGS-Regular/18a/font $PLAN9/bin/sam $*

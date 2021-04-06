@@ -1,4 +1,7 @@
-all: git \
+all: yay \
+	pacman-deps \
+	yay-deps \
+	git \
 	hdirs \
 	bash \
 	go \
@@ -7,26 +10,21 @@ all: git \
 	alacritty \
 	tmux \
 	ctags \
+	vi \
+	vis \
+	aerc \
 	golint \
 	gotools \
 	staticcheck \
 	delve \
 	redshift \
 	ripgrep \
-	exercism \
 	nvm \
 	prettier \
-	fzf \
-	xcape \
-	vim \
-	vi \
-	emacs \
-	notmuch-emacs \
 	mail \
 	caps2esc \
 	x330brightness \
-	suckless \
-	yay
+	suckless
 
 ###########################
 #      Variables
@@ -59,7 +57,6 @@ git:
 		/etc/systemd/system/ssh-agent.service
 	sudo systemctl enable ssh-agent
 
-# go: curl
 go:
 ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
@@ -72,6 +69,59 @@ rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
+
+pacman-deps:
+	sudo pacman -S \
+		xapian-core \
+		gmime3 \
+		talloc \
+		zlib \
+		python3 \
+		pip \
+		nextcoud-client \
+		cmake \
+		boost \
+		yaml-cpp \
+		gnome-keyring \
+		seahorse \
+		pulseaudio \
+		pulseaudio-bluetooth \
+		pavucontrol \
+		docker \
+		okular \
+		unzip \
+		htop \
+		dunst \
+		acpi \
+		alot \
+		w3m \
+		scdoc \
+		libtermkey \
+		lua \
+		lua-lpeg \
+		gdb \
+		valgrind \
+		scrot \
+		postgresql \
+		jre8-openjdk \
+		jdk8-openjdk \
+		maven \
+		docker-compose \
+		chromium \
+		pgadmin4 \
+		libbsd \
+		curl \
+		meson \
+		net-tools \
+		inetutils
+
+yay-deps:
+	yay -S \
+		brave-bin \
+		slack-desktop \
+		xlayoutdisplay \
+		spotify \
+		cqlsh
 
 ###########################
 #         bin/src
@@ -198,26 +248,22 @@ progfonts:
 #        Github
 ###########################
 
-vim:
-	cd sources/github.com/vim/vim && \
-		git clean -fdx && \
-		git reset --hard && \
-		git checkout master && \
-		git pull && \
-		./configure \
-			--enable-fail-if-missing \
-			--enable-fontset \
-			--disable-gpm \
-			--enable-multibyte \
-			--enable-pythoninterp=yes \
-			--with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu \
-			--enable-python3interp=yes \
-			--with-python-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
-			--with-x \
-			--with-features=big && \
+suckless:
+	cd sources/github.com/dnjp/dwm && \
 		make && \
 		sudo make install
-	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
+	cd sources/github.com/dnjp/dmenu && \
+		make && \
+		sudo make install
+	cd sources/github.com/dnjp/slstatus && \
+		make && \
+		sudo make install
+
+plan9port:
+ifeq ($(wildcard /usr/local/plan9/.*),)
+	cd sources/github.com/dnjp/plan9port && \
+		./PREINSTALL 
+endif
 
 vi:
 	cd sources/github.com/dnjp/nvi/dist && \
@@ -228,6 +274,13 @@ vi:
 		make && \
 		sudo make install
 	bin/sh/sym $(shell pwd)/editors/exrc $(HOME)/.exrc
+
+vis:
+	bin/sh/sym $(shell pwd)/editors/vis ~/.config/vis
+	cd sources/github.com/dnjp/vis && \
+		./configure && \
+		make && \
+		sudo make install
 
 alacritty: rust
 	cd sources/github.com/alacritty/alacritty && \
@@ -250,6 +303,7 @@ redshift:
 		./configure && \
 		make && \
 		sudo make install
+
 ripgrep:
 	cd sources/github.com/BurntSushi/ripgrep && \
 		git clean -fdx && \
@@ -317,15 +371,6 @@ staticcheck:
 delve:
 	cd sources/github.com/go-delve/delve && \
 		go install ./...
-exercism:
-	cd sources/github.com/exercism/cli && \
-		git clean -fdx && \
-		git reset --hard && \
-		git checkout main && \
-		git pull && \
-		go build -o exercism.bin exercism/main.go && \
-		sudo cp ./exercism.bin /usr/local/bin/exercism
-
 nvm: bash
 	cd sources/github.com/nvm-sh/nvm && \
 		./install.sh && \
@@ -335,53 +380,10 @@ nvm: bash
 prettier:
 	npm install prettier -g
 
-curl:
-ifeq ($(wildcard /usr/local/bin/curl),)
-	cd sources/github.com/curl/curl/ && \
-		mkdir -p build && \
-		cd build && \
-		cmake .. && \
-		make && \
-		sudo make install
-endif
-
-fzf:
-	cd sources/github.com/junegunn/fzf && \
-		./install
-
-xcape:
-	cd sources/github.com/alols/xcape && \
-		make && \
-		sudo make install
-
-suckless:
-	cd sources/github.com/dnjp/dwm && \
-		make && \
-		sudo make install
-	cd sources/github.com/dnjp/dmenu && \
-		make && \
-		sudo make install
-	cd sources/github.com/dnjp/slstatus && \
-		make && \
-		sudo make install
-
 yay:
 	cd sources/github.com/Jguer/yay && \
 		make && \
 		sudo make install
-
-vis:
-	bin/sh/sym $(shell pwd)/editors/vis ~/.config/vis
-	cd sources/github.com/dnjp/vis && \
-		./configure && \
-		make && \
-		sudo make install
-
-plan9port:
-ifeq ($(wildcard /usr/local/plan9/.*),)
-	cd sources/github.com/dnjp/plan9port && \
-		./PREINSTALL 
-endif
 
 ###########################
 #  git.savannah.gnu.org
@@ -408,30 +410,6 @@ bash:
 	bin/sh/sym $(shell pwd)/shells/bash/bash_profile ${HOME}/.bash_profile
 	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
 # endif
-
-emacs:
-	cd sources/git.savannah.gnu.org/emacs && \
-		git clean -fdx && \
-		git reset --hard && \
-		git checkout master && \
-		git checkout feature/native-comp && \
-		git pull && \
-		./autogen.sh && \
-		./configure && \
-		make && \
-		sudo make install
-	bin/sh/sym $(shell pwd)/editors/emacs/config ${HOME}/.emacs
-	bin/sh/sym $(shell pwd)/editors/emacs/emacs.d ${HOME}/.emacs.d
-
-
-###########################
-#  git.notmuchmail.org
-###########################
-
-notmuch-emacs:
-	cd sources/git.notmuchmail.org/notmuch/emacs/ && \
-		make && \
-		sudo make install
 
 ###########################
 #  gitlab.com
@@ -487,51 +465,3 @@ x330brightness:
 		sudo mv script /usr/local/bin/backlight
 	sudo cp x330/50-display.rules /etc/udev/rules.d/
 
-pacman-deps:
-	sudo pacman -S \
-		xapian-core \
-		gmime3 \
-		talloc \
-		zlib \
-		python3 \
-		pip \
-		nextcoud-client \
-		cmake \
-		boost \
-		yaml-cpp \
-		gnome-keyring \
-		seahorse \
-		pulseaudio \
-		pulseaudio-bluetooth \
-		pavucontrol \
-		docker \
-		okular \
-		unzip \
-		htop \
-		dunst \
-		acpi \
-		alot \
-		w3m \
-		scdoc \
-		libtermkey \
-		lua \
-		lua-lpeg \
-		gdb \
-		valgrind \
-		scrot \
-		postgresql \
-		jre8-openjdk \
-		jdk8-openjdk \
-		maven \
-		docker-compose \
-		chromium \
-		pgadmin4 \
-		libbsd
-
-yay-deps:
-	yay -S \
-		brave-bin \
-		slack-desktop \
-		xlayoutdisplay \
-		spotify \
-		cqlsh

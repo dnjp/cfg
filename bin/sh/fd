@@ -1,0 +1,4 @@
+#!/bin/sh
+
+du | grep $1 | awk '{print $2}'
+

@@ -1,6 +1,3 @@
-[submodule "sources/github.com/vim/vim"]
-	path = sources/github.com/vim/vim
-	url = https://github.com/vim/vim.git
 [submodule "sources/github.com/jarun/nnn"]
 	path = sources/github.com/jarun/nnn
 	url = https://github.com/jarun/nnn.git
@@ -28,33 +25,18 @@
 [submodule "sources/github.com/dominikh/go-tools"]
 	path = sources/github.com/dominikh/go-tools
 	url = https://github.com/dominikh/go-tools.git
-[submodule "sources/github.com/exercism/cli"]
-	path = sources/github.com/exercism/cli
-	url = https://github.com/exercism/cli.git
 [submodule "sources/github.com/golang/tools"]
 	path = sources/github.com/golang/tools
 	url = https://github.com/golang/tools.git
 [submodule "sources/github.com/nvm-sh/nvm"]
 	path = sources/github.com/nvm-sh/nvm
 	url = https://github.com/nvm-sh/nvm.git
-[submodule "sources/github.com/curl/curl"]
-	path = sources/github.com/curl/curl
-	url = https://github.com/curl/curl.git
-[submodule "sources/github.com/junegunn/fzf"]
-	path = sources/github.com/junegunn/fzf
-	url = https://github.com/junegunn/fzf.git
-[submodule "sources/github.com/alols/xcape"]
-	path = sources/github.com/alols/xcape
-	url = https://github.com/alols/xcape.git
 [submodule "sources/github.com/dnjp/nvi"]
 	path = sources/github.com/dnjp/nvi
 	url = git@github.com:dnjp/nvi.git
 [submodule "sources/github.com/go-delve/delve"]
 	path = sources/github.com/go-delve/delve
 	url = https://github.com/go-delve/delve
-[submodule "sources/git.savannah.gnu.org/emacs"]
-	path = sources/git.savannah.gnu.org/emacs
-	url = git://git.savannah.gnu.org/emacs.git
 [submodule "sources/git.notmuchmail.org/notmuch"]
 	path = sources/git.notmuchmail.org/notmuch
 	url = git://git.notmuchmail.org/git/notmuch
