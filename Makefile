@@ -25,7 +25,8 @@ all: yay \
 	caps2esc \
 	x330brightness \
 	suckless \
-	9fans
+	9fans \
+	walk
 
 ###########################
 #      Variables
@@ -443,6 +444,12 @@ caps2esc: interception
 9fans:
 	cd sources/github.com/9fans/go/acme/editinacme && \
 		go install
+
+walk:
+	cd sources/github.com/google/walk && \
+		make && \
+		sudo cp walk /usr/local/bin/walk && \
+		sudo cp sor /usr/local/bin/sor
 
 ###########################
 #  git.sr.ht

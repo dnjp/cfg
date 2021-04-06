@@ -76,3 +76,6 @@
 [submodule "sources/github.com/9fans/go"]
 	path = sources/github.com/9fans/go
 	url = https://github.com/9fans/go.git
+[submodule "sources/github.com/google/walk"]
+	path = sources/github.com/google/walk
+	url = https://github.com/google/walk.git

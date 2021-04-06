@@ -1,6 +1,3 @@
-# set mode
-set -o emacs
-
 # set prompt
 export PS1='$ '
 
@@ -141,5 +138,12 @@ if [ "$INSIDE_ACME" ]; then
 		\cd "$@" && awd
 	}
 	alias cd=_cd
+else
+	# set mode
+	set -o emacs
 fi
 
+# prefer plan9port utilities
+for x in $(ls $PLAN9/bin); do
+	alias "$x"="9 $x $*"
+done
