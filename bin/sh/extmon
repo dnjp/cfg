@@ -4,7 +4,7 @@
 # xrandr --output eDP1 --auto --output HDMI1 --auto --panning 3840x2160+3200+0 --scale 2x2 --right-of eDP1
 # xrandr --output eDP1 --auto --output HDMI1 --auto --panning [C*E]x[D*F]+[A]+0 --scale [E]x[F] --right-of eDP1
 
-xrandr --output eDP-1 --auto --output HDMI-1 --auto --left-of eDP-1
+xrandr --output eDP-1 --auto --output HDMI-1 --auto --left-of eDP-1 --scale 2x2
 
 # xrandr \
 # 	--output eDP-1 \
@@ -39,13 +39,13 @@ xrandr --output eDP-1 --auto --output HDMI-1 --auto --left-of eDP-1
 # xrandr --output "${INT}" --auto --pos ${off_w}x${ext_h} --scale 1x1  --output "${EXT}" --auto --scale 2x2 --pos 0x0
 
 
-xrandr \
- --dpi 228 \
- --output eDP-1 --mode 2560x1600 --rate 60 --pos 0x0 \
- --output VGA-1 --off \
- --output HDMI-1 --mode 1920x1080 --rate 60 --pos 2560x0 --primary --left-of eDP-1 \
- --output DP-1 --off \
- --output HDMI-2 --off \
- --output DP-2 --off
+# xrandr \
+ # --dpi 228 \
+ # --output eDP-1 --mode 2560x1600 --rate 60 --pos 0x0 \
+ # --output VGA-1 --off \
+ # --output HDMI-1 --mode 1920x1080 --rate 60 --pos 2560x0 --primary --left-of eDP-1 \
+ # --output DP-1 --off \
+ # --output HDMI-2 --off \
+ # --output DP-2 --off
 
-echo "Xft.dpi: 114" | xrdb -merge
+# echo "Xft.dpi: 114" | xrdb -merge

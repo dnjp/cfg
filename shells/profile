@@ -4,7 +4,6 @@ export PS1='$ '
 # No color
 export NO_COLOR=1
 
-# defaults
 export BROWSER="brave"
 export EDITOR='editinacme'
 export VISUAL=$EDITOR
@@ -23,13 +22,15 @@ export GOPATH=$HOME/go
 
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 
+export TERRAFORM_DEFAULT_ARGS="-no-color"
+
 # source external scipts
 . ~/Nextcloud/secrets/secrets.sh
 . $MARTIN/shell/aliases.sh
 . $MARTIN/shell/functions.sh
 
 # Navigation
-alias v="vim $*"
+alias ".."="cd .."
 alias h="cd ~"
 alias mar="cd $MARTIN"
 alias per="cd $PERSONAL"
@@ -37,28 +38,16 @@ alias cfg="cd $CFG"
 alias dow="cd ~/Downloads"
 alias notes="cd ~/notes"
 alias drop="cd ~/Dropbox"
-alias cl="clear"
-alias l="ls"
-alias ".."="cd .."
-alias "~"="cd ~"
-alias n="noice $*"
-# github.com/boyter/scc
-alias sloc="scc $*"
 alias next="cd ~/Nextcloud"
 alias learn="cd $HOME/exercism"
+maven() {
+	mvn -Dstyle.color=never $*
+}
 
 # unix defaults
 alias cp="cp -i"                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
-
-# Git
-alias g="git $*"
-alias gs="git status"
-alias gc="git commit -am"
-alias gp="git push"
-alias ga="git add"
-alias gitu='git add . && git commit && git push'
 
 # Tmux
 alias t="tmux -2 -u"
@@ -144,6 +133,6 @@ else
 fi
 
 # prefer plan9port utilities
-for x in $(ls $PLAN9/bin); do
-	alias "$x"="9 $x $*"
-done
+# for x in $(ls $PLAN9/bin); do
+	# alias "$x"="9 $x $*"
+# done

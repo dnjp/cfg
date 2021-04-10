@@ -4,4 +4,4 @@
 
 plumber &
 
-font=/mnt/font/MesloLGS-Regular/18a/font $PLAN9/bin/sam $*
+font=/mnt/font/MesloLGS-Regular/10a/font $PLAN9/bin/sam $*

@@ -125,7 +125,8 @@ yay-deps:
 		xlayoutdisplay \
 		spotify \
 		cqlsh \
-		dashbinsh
+		dashbinsh \
+		postman-bin
 
 ###########################
 #         bin/src
@@ -266,7 +267,7 @@ suckless:
 plan9port:
 ifeq ($(wildcard /usr/local/plan9/.*),)
 	cd sources/github.com/dnjp/plan9port && \
-		./PREINSTALL 
+		./PREINSTALL
 endif
 
 vi:
@@ -400,6 +401,7 @@ bash:
 		git checkout master && \
 		git pull && \
 		./configure --prefix=/usr \
+			--enable-strict-posix-default \
 			--without-bash-malloc \
 			--enable-readline && \
 		make && \

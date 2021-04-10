@@ -1,5 +1,5 @@
-source ~/.profile
-source /usr/share/git/completion/git-completion.bash
+. ~/.profile
+. /usr/share/git/completion/git-completion.bash
 
 # always start ssh-agent
 # if ! pgrep -u "$USER" ssh-agent > /dev/null; then
