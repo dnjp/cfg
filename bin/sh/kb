@@ -24,21 +24,22 @@ flags:
 	Re-map Caps Lock to Escape
   -c
 	Re-map Caps Lock to Escape when pressed and Ctrl when held
+  -s
+	Set sensible defaults for keyboard
 EOF
 }
 
-eflag=
-cflag=
-while getopts :ceh flag
+while getopts :cehs flag
 do
 	case ${flag} in
 	e) 
-		eflag=1
 		capstoescape
 		;;	
 	c) 
-		cflag=1
 		capstoescapectrl
+		;;
+	s) 
+		settings
 		;;
 	h)
 		usage

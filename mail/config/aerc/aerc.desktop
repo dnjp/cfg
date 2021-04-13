@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Aerc (Email)
+GenericName=Email Client
+Comment=email client
+Exec=aerc %u
+MimeType=x-scheme-handler/mailto;
+Icon=emblem-mail
+Terminal=false
+Type=Application
+Categories=Network;Email;
+Keywords=Mail;E-mail;Email;
+X-Desktop-File-Install-Version=0.26

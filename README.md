@@ -31,6 +31,10 @@ The following dependencies are required:
 - [libx11](https://packages.debian.org/search?keywords=libx11-dev)
 - [libxtst](https://packages.debian.org/sid/libxtst-dev)
 - [libxi](https://packages.debian.org/search?keywords=libxi-dev)
+- [gtk-chtheme](https://github.com/ap/gtk-chtheme)
+- [isync]()
+- [notmuch]()
+- [notmuch-emacs]()
 
 After installation is complete, this is the file tree that will be setup in your
 home directory:

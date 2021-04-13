@@ -5,6 +5,7 @@ window:
   padding:
     x: 4
     y: 4
+  decorations: full # none
 
 font:
   normal:
@@ -16,10 +17,10 @@ font:
   italic:
     family: Meslo LG S
     style: Italic
-  size: 7.5
+  size: 9
   offset:
     x: 0
-    y: 3
+    y: 4
 
 custom_cursor_colors: true
 
@@ -61,6 +62,7 @@ custom_cursor_colors: true
     # magenta: '0xba8baf'
     # cyan:    '0x86c1b9'
     # white:   '0xf8f8f8'
+  
 # # pencil light
 # colors:
   # primary:
@@ -85,7 +87,7 @@ custom_cursor_colors: true
     # cyan:    '0x4fb8cc'
     # white:   '0xf1f1f1'
 
-# Terminal.app
+# # Terminal.app
 # colors:
   # primary:
     # background: '#FFFFFF'

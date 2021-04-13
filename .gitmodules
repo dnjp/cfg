@@ -49,3 +49,45 @@
 [submodule "sources/github.com/dnjp/nvi"]
 	path = sources/github.com/dnjp/nvi
 	url = git@github.com:dnjp/nvi.git
+[submodule "sources/github.com/go-delve/delve"]
+	path = sources/github.com/go-delve/delve
+	url = https://github.com/go-delve/delve
+[submodule "sources/git.savannah.gnu.org/emacs"]
+	path = sources/git.savannah.gnu.org/emacs
+	url = git://git.savannah.gnu.org/emacs.git
+[submodule "sources/git.notmuchmail.org/notmuch"]
+	path = sources/git.notmuchmail.org/notmuch
+	url = git://git.notmuchmail.org/git/notmuch
+[submodule "x330/brightness"]
+	path = x330/brightness
+	url = https://github.com/xy-tech/agan_brightness_X230_X330.git
+[submodule "sources/gitlab.com/interception/linux/tools"]
+	path = sources/gitlab.com/interception/linux/tools
+	url = https://gitlab.com/interception/linux/tools.git
+[submodule "sources/gitlab.com/interception/linux/plugins/caps2esc"]
+	path = sources/gitlab.com/interception/linux/plugins/caps2esc
+	url = https://gitlab.com/interception/linux/plugins/caps2esc.git
+[submodule "sources/github.com/dnjp/dwm"]
+	path = sources/github.com/dnjp/dwm
+	url = https://github.com/dnjp/dwm
+[submodule "sources/github.com/dnjp/dmenu"]
+	path = sources/github.com/dnjp/dmenu
+	url = https://github.com/dnjp/dmenu
+[submodule "sources/github.com/dnjp/slstatus"]
+	path = sources/github.com/dnjp/slstatus
+	url = https://github.com/dnjp/slstatus
+[submodule "sources/github.com/Jguer/yay"]
+	path = sources/github.com/Jguer/yay
+	url = https://github.com/Jguer/yay.git
+[submodule "sources/git.sr.ht/sircmpwn/aerc"]
+	path = sources/git.sr.ht/sircmpwn/aerc
+	url = https://git.sr.ht/~sircmpwn/aerc
+[submodule "editors/vis/plugins/vis-ctags"]
+	path = editors/vis/vis-ctags
+	url = https://github.com/kupospelov/vis-ctags.git
+[submodule "sources/github.com/dnjp/vis"]
+	path = sources/github.com/dnjp/vis
+	url = git@github.com:dnjp/vis.git
+[submodule "sources/github.com/dnjp/plan9port"]
+	path = sources/github.com/dnjp/plan9port
+	url = git@github.com:dnjp/plan9port.git

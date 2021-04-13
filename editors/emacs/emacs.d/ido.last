@@ -1,0 +1,31 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/" . "daniel/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/daniel/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ ".profile"
+ ".emacs"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/" (24669 11831 766106 772000) "../" "daniel/" "./")
+
+ ("/home/daniel/work/" (24669 24975 437403 74000) "wdeps/" "../" "./" "martin-bidder/")
+
+ ("/home/daniel/work/martin-bidder/" (24669 27740 420797 458000) ".gitignore" "scripts/" "static/" ".git/" ".github/" ".clang-format" "INSTALL" "jvm/" "reports/" "docs/" ".actrc" "../" "shell/" "infra/" ".gitmodules" "deployment/" "README.md" "./" "bin/" "pkg/" "go/" "proto/" "Makefile" "secrets/" "third_party/" "CODEOWNERS" "docker/" "TAGS" "buf.yaml")
+
+ ("/home/daniel/" (24669 56827 823399 376000) ".elinks/" ".profile" "tmp/" ".tmux.conf" "Downloads/" ".emacs" ".bashrc.backup" ".bash_logout" ".bash_profile" ".ratpoison_history" ".notmuch-config" ".fzf.bash" ".mozilla/" ".nvm/" "cfg/" ".viminfo" ".mbsyncrc" "work/" ".emacs.d/" ".lesshst" "../" ".config/" ".gnupg/" ".rustup/" "google-cloud-sdk/" ".local/" ".exrc" ".ssh/" ".mail/" ".npm/" ".profile.bak" "./" "bin/" "go/" "src/" ".cargo/" ".rnd" ".bashrc.bak" ".bashrc" "personal/" ".Xauthority" ".gitconfig" "Nextcloud/" ".bash_history" ".xinitrc" ".cache/" ".pki/" ".msmtprc" ".bash_profile.bak")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

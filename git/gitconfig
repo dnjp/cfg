@@ -1,6 +1,6 @@
 [user]
 	name = Daniel
-	email = danieljamespost@posteo.net
+	email = dnjp@posteo.org
 [use]
 	name = Daniel Posthuma
 [alias]
@@ -14,7 +14,7 @@
 	user = danieljamespost
 [sendemail]
 	smtpserver = posteo.de
-	smtpuser = danieljamespost@posteo.net
+	smtpuser = dnjp@posteo.org
 	smtpencryption = tls
 	smtpserverport = 587
 [color]

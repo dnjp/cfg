@@ -1,5 +1,5 @@
-
 all: git \
+	hdirs \
 	bash \
 	go \
 	rust \
@@ -10,16 +10,23 @@ all: git \
 	golint \
 	gotools \
 	staticcheck \
+	delve \
 	redshift \
 	ripgrep \
 	exercism \
 	nvm \
 	prettier \
-	hdirs \
 	fzf \
 	xcape \
 	vim \
-	vi
+	vi \
+	emacs \
+	notmuch-emacs \
+	mail \
+	caps2esc \
+	x330brightness \
+	suckless \
+	yay
 
 ###########################
 #      Variables
@@ -30,6 +37,10 @@ export PATH := /bin:$(PATH):/usr/local/go/bin
 
 USER=daniel
 HBIN=/home/daniel/bin
+
+POSTEOPASS ?= $(shell stty -echo; read -p "Posteo Password: " pwd; stty echo; echo $$pwd)
+MARTINPASS ?= $(shell stty -echo; read -p "Martin Password: " pwd; stty echo; echo $$pwd)
+GMAILPASS ?= $(shell stty -echo; read -p "Gmail Password: " pwd; stty echo; echo $$pwd)
 
 ###########################
 #         Versions
@@ -44,15 +55,18 @@ GO_VERSION=1.15.6
 .PHONY: git
 git:
 	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
+	sudo cp git/ssh-agent.service \
+		/etc/systemd/system/ssh-agent.service
+	sudo systemctl enable ssh-agent
 
 # go: curl
-go: 
-# ifeq ($(wildcard /usr/local/go/.*),)
+go:
+ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
 		curl -OL https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz && \
 		sudo rm -rf /usr/local/go && \
 		sudo tar -C /usr/local -xzf go$(GO_VERSION).linux-amd64.tar.gz
-# endif
+endif
 
 rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
@@ -70,7 +84,11 @@ hdirs: go bash
 		make && \
 		make install
 
-	mkdir -p $(HOME)/personal
+
+ifeq ($(wildcard $(HOME)/personal/.*),)
+	git clone git@github.com:dnjp/personal.git $(HOME)/personal --recurse-submodules
+endif
+
 	mkdir -p $(HOME)/work
 	mkdir -p $(HOME)/tmp
 
@@ -88,10 +106,79 @@ else
 endif
 
 ###########################
+#         Mail
+###########################
+.PHONY: mail
+mail:
+	# dependencies
+# ifeq (, $(shell which afew))
+#	pip install afew
+# # endif
+# ifeq (, $(shell which notmuch))
+#	$(error "notmuch not in $$PATH: apt install notmuch")
+# endif
+# ifeq (, $(shell which mbsync))
+#	$(error "mbsync not in $$PATH: apt install mbsync")
+# endif
+# ifeq (, $(shell which msmtp))
+#	$(error "msmtp not in $$PATH: apt install msmtp")
+# endif
+	# notmuch
+	bin/sh/sym $(shell pwd)/mail/config/notmuch-config $(HOME)/.notmuch-config
+	# mbsync
+	bin/sh/sym $(shell pwd)/mail/config/mbsyncrc $(HOME)/.mbsyncrc
+	# msmtp
+	cp $(shell pwd)/mail/config/msmtprc $(HOME)/.msmtprc
+	chmod 600 $(HOME)/.msmtprc
+	mkdir -p ~/.msmtpqueue
+
+	# afew
+	mkdir -p ~/.config/afew
+	bin/sh/sym $(shell pwd)/mail/config/afew-config $(HOME)/.config/afew/config
+
+	mkdir -p ~/.config/systemd/user
+	bin/sh/sym \
+		$(shell pwd)/mail/services/checkmail.service \
+		$(HOME)/.config/systemd/user/checkmail.service
+	bin/sh/sym \
+		$(shell pwd)/mail/services/checkmail.timer \
+		$(HOME)/.config/systemd/user/checkmail.timer
+	bin/sh/sym \
+		$(shell pwd)/mail/services/nm-backup.service \
+		$(HOME)/.config/systemd/user/nm-backup.service
+	bin/sh/sym \
+		$(shell pwd)/mail/services/nm-backup.timer \
+		$(HOME)/.config/systemd/user/nm-backup.timer
+
+	bin/sh/sym $(shell pwd)/mail $(HOME)/.mail
+
+	systemctl --user enable checkmail.timer
+	systemctl --user start checkmail.timer
+	systemctl --user enable nm-backup.timer
+	systemctl --user start nm-backup.timer
+
+gpgimport:
+	gpg --import ~/Nextcloud/secrets/privkey.asc
+
+mailsecrets:
+ifeq (failed, $(shell bin/sh/check 'gpg --list-keys dnjp@posteo.org'))
+	gpg --full-generate-key
+endif
+	# create secrets
+	echo $(POSTEOPASS) > mail/secrets/posteo
+	$(info '')
+	echo $(GMAILPASS)  > mail/secrets/gmail
+	$(info '')
+	echo $(MARTINPASS) > mail/secrets/martin
+	gpg -r dnjp@posteo.org -e mail/secrets/posteo
+	gpg -r dnjp@posteo.org -e mail/secrets/gmail
+	gpg -r dnjp@posteo.org -e mail/secrets/martin
+
+###########################
 #         Fonts
 ###########################
 
-.PHONY:
+.PHONY: progfonts
 progfonts:
 	sudo mkdir -p /usr/share/fonts/meslo
 	sudo cp \
@@ -118,9 +205,14 @@ vim:
 		git checkout master && \
 		git pull && \
 		./configure \
+			--enable-fail-if-missing \
 			--enable-fontset \
 			--disable-gpm \
 			--enable-multibyte \
+			--enable-pythoninterp=yes \
+			--with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu \
+			--enable-python3interp=yes \
+			--with-python-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
 			--with-x \
 			--with-features=big && \
 		make && \
@@ -189,8 +281,9 @@ ctags:
 		./configure && \
 		make && \
 		sudo make install
-	mkdir -p $(HOME)/.config/ctags
-	bin/sh/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags/ctags
+	mkdir -p $(HOME)/.config/ctags.d
+	bin/sh/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags.d/default.ctags
+	sudo ln -s /usr/local/bin/ctags /usr/bin/ctags
 
 golint:
 	cd sources/github.com/golang/lint/golint && \
@@ -221,6 +314,9 @@ staticcheck:
 		git pull && \
 		go install cmd/staticcheck/staticcheck.go
 
+delve:
+	cd sources/github.com/go-delve/delve && \
+		go install ./...
 exercism:
 	cd sources/github.com/exercism/cli && \
 		git clean -fdx && \
@@ -233,10 +329,10 @@ exercism:
 nvm: bash
 	cd sources/github.com/nvm-sh/nvm && \
 		./install.sh && \
-		source ~/.bashrc && \	
+		source ~/.bashrc && \
 		nvm install --lts
 
-prettier: nvm
+prettier:
 	npm install prettier -g
 
 curl:
@@ -258,11 +354,40 @@ xcape:
 		make && \
 		sudo make install
 
+suckless:
+	cd sources/github.com/dnjp/dwm && \
+		make && \
+		sudo make install
+	cd sources/github.com/dnjp/dmenu && \
+		make && \
+		sudo make install
+	cd sources/github.com/dnjp/slstatus && \
+		make && \
+		sudo make install
+
+yay:
+	cd sources/github.com/Jguer/yay && \
+		make && \
+		sudo make install
+
+vis:
+	bin/sh/sym $(shell pwd)/editors/vis ~/.config/vis
+	cd sources/github.com/dnjp/vis && \
+		./configure && \
+		make && \
+		sudo make install
+
+plan9port:
+ifeq ($(wildcard /usr/local/plan9/.*),)
+	cd sources/github.com/dnjp/plan9port && \
+		./PREINSTALL 
+endif
+
 ###########################
 #  git.savannah.gnu.org
 ###########################
 bash:
-ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
+# ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	cd sources/git.savannah.gnu.org/bash && \
 		git clean -fdx && \
 		git reset --hard && \
@@ -280,7 +405,122 @@ ifneq ($(shell command -v bash 2> /dev/null), /usr/bin/bash)
 	chsh -s /usr/bin/bash $(USER)
 
 	bin/sh/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
+	bin/sh/sym $(shell pwd)/shells/bash/bash_profile ${HOME}/.bash_profile
 	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
-endif
+# endif
+
+emacs:
+	cd sources/git.savannah.gnu.org/emacs && \
+		git clean -fdx && \
+		git reset --hard && \
+		git checkout master && \
+		git checkout feature/native-comp && \
+		git pull && \
+		./autogen.sh && \
+		./configure && \
+		make && \
+		sudo make install
+	bin/sh/sym $(shell pwd)/editors/emacs/config ${HOME}/.emacs
+	bin/sh/sym $(shell pwd)/editors/emacs/emacs.d ${HOME}/.emacs.d
 
 
+###########################
+#  git.notmuchmail.org
+###########################
+
+notmuch-emacs:
+	cd sources/git.notmuchmail.org/notmuch/emacs/ && \
+		make && \
+		sudo make install
+
+###########################
+#  gitlab.com
+###########################
+interception:
+	cd sources/gitlab.com/interception/linux/tools && \
+		mkdir -p build && \
+		cmake -B build -DCMAKE_BUILD_TYPE=Release && \
+		cmake --build build && \
+		cd build && \
+		sudo make install
+	sudo cp sources/gitlab.com/interception/linux/tools/udevmon.service \
+		/etc/systemd/system/
+	sudo ln -s /usr/local/bin/udevmon /usr/bin/udevmon
+	sudo systemctl enable udevmon
+
+caps2esc: interception
+	cd sources/gitlab.com/interception/linux/plugins/caps2esc && \
+		mkdir -p build && \
+		cmake -B build -DCMAKE_BUILD_TYPE=Release && \
+		cmake --build build && \
+		cd build && \
+		sudo make install
+
+	sudo mkdir -p /etc/interception/udevmon.d
+	sudo cp x330/caps2esc.udev.yaml /etc/interception/udevmon.d/udev.yaml
+
+###########################
+#  git.sr.ht
+###########################
+
+aerc:
+	cd sources/git.sr.ht/sircmpwn/aerc && \
+		git clean -fdx && \
+		git checkout master && \
+		git pull && \
+		GOFLAGS=-tags=notmuch make && \
+		sudo make install
+
+	bin/sh/sym $(shell pwd)/mail/config/aerc $(HOME)/.config/aerc
+
+	sudo cp $(shell pwd)/mail/config/aerc/aerc.desktop \
+		/usr/share/applications/
+	xdg-mime default aerc.desktop 'x-scheme-handler/mailto'
+
+###########################
+#  Other
+###########################
+
+x330brightness:
+	cd x330/brightness && \
+		make && \
+		sudo mv script /usr/local/bin/backlight
+	sudo cp x330/50-display.rules /etc/udev/rules.d/
+
+pacman-deps:
+	sudo pacman -S \
+		xapian-core \
+		gmime3 \
+		talloc \
+		zlib \
+		python3 \
+		pip \
+		nextcoud-client \
+		cmake \
+		boost \
+		yaml-cpp \
+		gnome-keyring \
+		seahorse \
+		pulseaudio \
+		pulseaudio-bluetooth \
+		pavucontrol \
+		docker \
+		okular \
+		unzip \
+		htop \
+		dunst \
+		acpi \
+		alot \
+		w3m \
+		scdoc \
+		libtermkey \
+		lua \
+		lua-lpeg \
+		gdb \
+		valgrind
+
+yay-deps:
+	yay -S \
+		brave-bin \
+		slack-desktop \
+		xlayoutdisplay

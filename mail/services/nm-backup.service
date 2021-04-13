@@ -1,0 +1,9 @@
+[Unit]
+Description=backup notmuch
+RefuseManualStart=no
+RefuseManualStop=yes
+
+[Service]
+Type=oneshot
+ExecStart=notmuch dump --output=/home/daniel/Nextcloud/notmuch/dump
+
