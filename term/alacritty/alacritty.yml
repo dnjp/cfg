@@ -41,7 +41,7 @@ custom_cursor_colors: true
     # background: '0x181818'
     # foreground: '0xd8d8d8'
   # cursor:
-    # text: '0xd8d8d8'
+    # text: '0x181818'
     # cursor: '0xd8d8d8'
   # normal:
     # black:   '0x181818'
@@ -61,7 +61,6 @@ custom_cursor_colors: true
     # magenta: '0xba8baf'
     # cyan:    '0x86c1b9'
     # white:   '0xf8f8f8'
-
 # # pencil light
 # colors:
   # primary:

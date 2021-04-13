@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# TODO: check for empty input
+# TODO: check input to ensure markdown argument and return without error if not markdown
+
+file=$1
+bare="${file%.*}"
+
+pandoc $bare.md -t html -o $bare.html
