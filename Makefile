@@ -72,6 +72,16 @@ ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
 
+debian-deps:
+	sudo apt install -y \
+		build-essential \
+		automake \
+		libxft-dev \
+		libfontconfig1-dev \
+		libx11-dev \
+		libxext-dev \
+		libxt-dev
+
 pacman-deps:
 	sudo pacman -S \
 		xapian-core \
@@ -446,6 +456,13 @@ caps2esc: interception
 9fans:
 	cd sources/github.com/9fans/go/acme/editinacme && \
 		go install
+
+acmelsp: go
+	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/acme-lsp@latest
+	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/L@latest
+	GO111MODULE=on go get golang.org/x/tools/gopls@latest
+	mkdir -p $(HOME)/.config/acme-lsp
+	bin/sh/sym $(shell pwd)/editors/lsp.toml $(HOME)/.config/acme-lsp/config.toml
 
 walk:
 	cd sources/github.com/google/walk && \

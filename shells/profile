@@ -11,7 +11,7 @@ export GIT_EDITOR=$EDITOR
 alias e="$EDITOR $*"
 
 # constants
-export NEXTCLOUD=/home/daniel/Nextcloud/
+export NEXTCLOUD=/mnt/c/Users/dnjp/Nextcloud
 export MARTIN=/home/daniel/work/martin-bidder
 export PERSONAL=/home/daniel/personal
 export CFG=/home/daniel/cfg
@@ -25,7 +25,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 export TERRAFORM_DEFAULT_ARGS="-no-color"
 
 # source external scipts
-. ~/Nextcloud/secrets/secrets.sh
+. $NEXTCLOUD/secrets/secrets.sh
 . $MARTIN/shell/aliases.sh
 . $MARTIN/shell/functions.sh
 
@@ -38,7 +38,7 @@ alias cfg="cd $CFG"
 alias dow="cd ~/Downloads"
 alias notes="cd ~/notes"
 alias drop="cd ~/Dropbox"
-alias next="cd ~/Nextcloud"
+alias next="cd $NEXTCLOUD"
 alias learn="cd $HOME/exercism"
 maven() {
 	mvn -Dstyle.color=never $*
@@ -57,6 +57,7 @@ alias tk="tmux kill-session -t"
 
 # scripts
 export PATH=$PATH:$BIN_DIR/sh
+export PATH=$PATH:$BIN_DIR/rc
 export PATH=$PATH:$BIN_DIR/amd64
 
 # SSH

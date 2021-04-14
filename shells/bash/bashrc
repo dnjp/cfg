@@ -1,5 +1,11 @@
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
+export GDK_SCALE=2
+export GDK_DPI_SCALE=0.5
+
+xrdb -merge ~/.Xresources
+
 . ~/.profile
-. /usr/share/git/completion/git-completion.bash
 
 # always start ssh-agent
 # if ! pgrep -u "$USER" ssh-agent > /dev/null; then
