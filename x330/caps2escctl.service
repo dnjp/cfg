@@ -1,6 +1,0 @@
-[Unit]
-Description=udevmon
-[Service]
-ExecStart=/usr/bin/nice -n -20 udevmon -c /etc/interception/udevmon.d/udev.yaml
-[Install]
-WantedBy=multi-user.target

@@ -34,120 +34,20 @@
 "   - check out tmux plugin - github.com/christoomey/vim-tmux-navigator
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"           install dependencies
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" vim-plug
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
-
-call plug#begin('~/.vim/plugged')
-	Plug 'prabirshrestha/vim-lsp'
-	" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
-	Plug 'vim-latex/vim-latex'
-call plug#end()
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   lsp
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" if executable('gopls')
-	augroup LspGo
-		au!
-		autocmd User lsp_setup call lsp#register_server({
-			\ 'name': 'go-lang',
-			\ 'cmd': {server_info->['gopls']},
-			\ 'whitelist': ['go'],
-			\ })
-		" autocmd FileType go setlocal omnifunc=lsp#complete
-		" autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
-		"autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
-		"autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
-	augroup end
-" endif
-
-" if executable('clangd')
-	augroup lsp_clangd
-		autocmd!
-		autocmd User lsp_setup call lsp#register_server({
-			\ 'name': 'clangd',
-			\ 'cmd': {server_info->['clangd']},
-			\ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-			\ })
-		" autocmd FileType c setlocal omnifunc=lsp#complete
-		" autocmd FileType cpp setlocal omnifunc=lsp#complete
-		" autocmd FileType objc setlocal omnifunc=lsp#complete
-		" autocmd FileType objcpp setlocal omnifunc=lsp#complete
-	augroup end
-" endif
-
-function! s:on_lsp_buffer_enabled() abort
-
-	setlocal omnifunc=lsp#complete
-	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-
-	nmap <buffer> gd <plug>(lsp-definition)
-
-	" TODO: fix git and lsp mapping conflicts
-	
-	" nmap <buffer> gs <plug>(lsp-document-symbol-search)
-	" nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-	" nmap <buffer> gr <plug>(lsp-references)
-	" nmap <buffer> gi <plug>(lsp-implementation)
-	" nmap <buffer> gt <plug>(lsp-type-definition)
-	" nmap <buffer> <leader>rn <plug>(lsp-rename)
-	" nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-	" nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-	
-	" scrolling in popup window
-	nmap <buffer> K <plug>(lsp-hover)
-	" autocmd User lsp_float_opened nnoremap <buffer> <expr><c-j> lsp#scroll(+20)
-	" autocmd User lsp_float_opened nnoremap <buffer> <expr><c-k> lsp#scroll(-20)
-	" autocmd User lsp_float_closed nunmap <buffer> <c-j>
-	" autocmd User lsp_float_closed nunmap <buffer> <c-k>
-
-	let g:lsp_format_sync_timeout = 1000
-
-	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-	
-	" refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-	au!
-	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
-	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-
-" disable highlight references to symbol under cursor
-let g:lsp_document_highlight_enabled = 0
-
-" disable support for document code action hints for |signs|.
-let g:lsp_document_code_action_signs_enabled = 0
-
-" let g:lsp_completion_documentation_enabled = 0
-
-" turn off diagnostic support
-let g:lsp_diagnostics_enabled = 0
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set shell=/usr/bin/bash
+set shell=/bin/bash
 set path+=**
 set nocompatible				" don't try to be like traditional vi
 set cedit=					" ctrl-r to view command edit
-set rtp+=~/cfg/sources/github.com/junegunn/fzf
+set rtp+=~/.fzf
 set backupdir=~/.vim/.backup//
+function! InitBackupDir()                       " automatically create backup directory
+	if !isdirectory(&backupdir)
+		call mkdir(&backupdir)
+	endif
+endfunction
+call InitBackupDir()
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -162,34 +62,6 @@ set wrapmargin=8 				" set margin
 set backspace=indent,eol,start			" inteligent backspace behavior
 set autoindent					" auto indentation based on last line
 set smartindent					" indentation based on syntax
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                     visuals
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax off					" turn off syntax highlighting
-set nonumber 					" turn off line numbers
-set showmode 					" show '-- INSERT --'
-set noruler					" turn off position information
-set report=0					" don't show messages like '4 lines yanked'
-set laststatus=0				" disable status line
-set pumheight=10                                " Completion window max size
-set background=dark                             " tell vim to have a background
-let loaded_matchparen = 1                       " don't highlight matching delims
-set showmatch 					" jump to matching delim when typing
-set matchtime=2 				" duration (1/10s) for showing matching delim
-
-" fix colors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set t_Co=256                                    " set 256 colors, set to 0 for
-						" no colors
-" Set split separator to Unicode box drawing character
-set encoding=utf8
-set fillchars+=vert:\ 
-highlight VertSplit cterm=NONE
-" set omni completion menu to more sensible color
-highlight Pmenu ctermbg=238 gui=bold
-highlight LineNr ctermfg=grey
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -219,6 +91,66 @@ set wildmenu					" display matching files when tab complete
 nnoremap  l :b #
 " make ctrl-w behave like nvi
 map  
+" make jj escape
+imap jj <Esc>
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"           install dependencies
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin('~/.vim/plugged')
+	Plug 'prabirshrestha/vim-lsp'
+	Plug 'mattn/vim-lsp-settings' 
+	" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+	Plug 'vim-latex/vim-latex'
+call plug#end()
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   lsp
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:on_lsp_buffer_enabled() abort
+	setlocal omnifunc=lsp#complete
+	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+	nmap <buffer> gd <plug>(lsp-definition)
+	nmap <buffer> K <plug>(lsp-hover) " scrolling in popup window
+	let g:lsp_format_sync_timeout = 1000
+	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+endfunction
+augroup lsp_install
+	au!
+	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
+	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+" disable highlight references to symbol under cursor
+let g:lsp_document_highlight_enabled = 0
+
+" disable support for document code action hints for |signs|.
+let g:lsp_document_code_action_signs_enabled = 0
+
+" let g:lsp_completion_documentation_enabled = 0
+
+" turn off diagnostic support
+let g:lsp_diagnostics_enabled = 0
+
+" automatically insalled servers go here
+let g:lsp_settings_servers_dir = '/home/daniel/.local/share/vim-lsp-settings/servers'
+
+let g:lsp_settings = {
+\  'clangd': {'disabled': v:false},
+\  'gopls': {'disabled': v:false},
+\  'eclipse-jdt-ls': {'disabled': v:false},
+\}
+
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -252,7 +184,7 @@ map S :w
 map X :!
 map ; :
 map ve :sp:e ~/.vimrc
-map    :w:suspend
+" map    :w:suspend
 map  ct :!ctags -R .
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   text manipulation
@@ -322,8 +254,6 @@ map  tv :!terraform validate
 map  tp :!terraform plan
 map  ta :!terraform apply
 map  tf :w:!terraform fmt:e!
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "             Filetype Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -363,3 +293,29 @@ au filetype terraform set shiftwidth=2 tabstop=2 expandtab
 let g:tex_flavor='latex'
 autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
 au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                     visuals
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax off					" turn off syntax highlighting
+set nonumber 					" turn off line numbers
+set showmode 					" show '-- INSERT --'
+set noruler					" turn off position information
+set report=0					" don't show messages like '4 lines yanked'
+set laststatus=0				" disable status line
+set pumheight=10                                " Completion window max size
+set background=dark                             " tell vim to have a background
+let loaded_matchparen = 1                       " don't highlight matching delims
+set showmatch 					" jump to matching delim when typing
+set matchtime=2 				" duration (1/10s) for showing matching delim
+
+" Set split separator to Unicode box drawing character
+set encoding=utf8
+set fillchars+=vert:\ 
+highlight VertSplit cterm=NONE
+
+" set omni completion menu to more sensible color
+highlight Pmenu ctermbg=gray guibg=gray
+highlight PmenuSel ctermbg=white guibg=white
+
+" turn off color
+" set t_Co=0

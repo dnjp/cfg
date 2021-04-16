@@ -1,169 +1,0 @@
-"	       	     NOTES
-"
-"             Special Characters
-"                7c - pipe 
-"                   - space
-"                   - ctrl+r
-"
-"                Mapping Rules
-"  map ctrl+p   ... reserved for fzf
-"  map g        ... reserved for git, except for gg
-"  map <space>m ... reserved for make
-"  map <space>g ... reserved for go
-"  map <space>r ... reserved for rust
-"  map <space>c ... reserved for ctags
-"  map <space>t ... reserved for terraform
-"  map <space>f ... reserved for general formatting
-"
-"                   Marks
-"            'm' - starting mark
-"            'a' - ending mark
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   defaults
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-set shell=/usr/bin/bash
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                     tags
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-set tags=tags
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                  indentation
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-set tabstop=8
-set autoindent wrapmargin=8
-set shiftwidth=8
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                    visuals
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" set nomesg
-set showmode
-set showmatch
-set matchtime=3
-set nonumber
-set noflash
-set ruler
-set verbose
-set leftright
-set report=1
-" ^V^V^V<tab>
-set filec=	
-set cedit=
-set terse
-set path=.
-set tildeop
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   searching
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" set ignorecase
-set searchincr		
-set wrapscan
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   navigation
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" go to previous buffer
-map  l :e #
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                      FZF
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" open file
-map  :!fzf >> /tmp/fzffile:vs /tmp/fzffileG"zy$:q!:Goedit "zp
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   convenience
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map gg 1G
-map Q :q!
-map S :w
-map X :! 
-map ; :
-map ve :E ~/.exrc
-map    :w:suspend
-map  ct :!ctags -R .
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   text manipulation
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" replace between marks
-map R :'m,'a s/
-" ctrl-/ to un/comment current line
-map  :.!com -f %
-" space-ctrl-/ to un/comment current selection
-map   :'m,'a!com -f % 
-" primitive completion
-map!  b"zyw:o:!cat % 7c nxt -w "zpA >> /tmp/compfile:E /tmp/compfileG"zye:q!e"zpwbea
-" replace builtin >> command to use a+/a- commands from nyne
-map >> :.!ind -f %
-map << :.!ind -f % -u true
-" space-{>>/<<} to un/indent selection
-map  >> :'m,'a!ind -f %
-map  << :'m,'a!ind -f % -u true
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   formatting
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" expand tabs to spaces
-map  fe :set expandtab
-" format document using fmt
-map  fF :%!fmt -s
-" prettier
-map  fP :%!prettier --print-width 80 --prose-wrap always %
-" remove trailing spaces
-map  fs :%s/[[:space:]]\{1,\}/
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   indentation
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map 8 :set tabstop=8:set sw=8
-map 4 :set tabstop=4:set sw=4
-map 2 :set ts=2:set sw=2
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" display vi buffers
-map K :display buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   clipboard
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" map rc +:r!xclip -o -sel clip^M 
-map  p :read ! xclip -o -sel clip
-map  y :E /tmp/pastefilep:.,$!xclip -sel clip 
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                      git
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" git search for word under cursor
-map g/ wb"zye::o:!git grep "zp
-" git status
-map gs :!git status >/tmp/statout:E /tmp/statout
-" git add
-map ga :!git add 
-" git add  -a
-map gA :!git add -A
-" git commit
-map gc :!git commit -am '
-" git diff
-map gd :!git diff
-" git push
-map gp :!git push
-" git blame 
-map gb :E"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
-" git log
-map gl :!git log
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   Rust
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map  rr :%rustfmt
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                    Go
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map  gf :%!gofmt
-map  gd :!go doc 
-map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:E /tmp/testout
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   Make
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map  m :!make 
-map  M :!make >/tmp/makeout 2>&1:E /tmp/makeout
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                 Terraform
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map  tv :!terraform validate
-map  tp :!terraform plan
-map  ta :!terraform apply
-map  tf :w:!terraform fmt:e!
