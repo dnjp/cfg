@@ -40,7 +40,7 @@ set shell=/bin/bash
 set path+=**
 set nocompatible				" don't try to be like traditional vi
 set cedit=					" ctrl-r to view command edit
-set rtp+=~/.fzf
+set rtp+=~/cfg/sources/github.com/junegunn/fzf
 set backupdir=~/.vim/.backup//
 function! InitBackupDir()                       " automatically create backup directory
 	if !isdirectory(&backupdir)
@@ -110,7 +110,6 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin('~/.vim/plugged')
 	Plug 'prabirshrestha/vim-lsp'
 	Plug 'mattn/vim-lsp-settings' 
-	" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
 	Plug 'vim-latex/vim-latex'
 call plug#end()
@@ -150,11 +149,9 @@ let g:lsp_settings = {
 \  'gopls': {'disabled': v:false},
 \  'eclipse-jdt-ls': {'disabled': v:false},
 \}
-
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""
-
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
 
@@ -174,7 +171,6 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 map  :Buffers
 map  :Files
 map  / :RG
-
 """""""""""""""""""""""""""""""""""
 "             convenience
 """""""""""""""""""""""""""""""""""

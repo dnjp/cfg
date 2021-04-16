@@ -160,7 +160,7 @@ progfonts:
 ###########################
 #        Symlinks
 ###########################
-symlinks:
+symlinks: 
 	# vim
 	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
 	# tmux
@@ -213,3 +213,6 @@ walk:
 		make && \
 		sudo cp walk /usr/local/bin/walk && \
 		sudo cp sor /usr/local/bin/sor
+fzf:
+	cd sources/github.com/junegunn/fzf && \
+		./install

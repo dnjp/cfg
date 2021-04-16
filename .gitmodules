@@ -22,3 +22,6 @@
 [submodule "sources/github.com/google/walk"]
 	path = sources/github.com/google/walk
 	url = https://github.com/google/walk.git
+[submodule "sources/github.com/junegunn/fzf"]
+	path = sources/github.com/junegunn/fzf
+	url = https://github.com/junegunn/fzf.git
