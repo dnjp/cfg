@@ -1,9 +1,0 @@
-#!/bin/sh
-
-in=
-stty -echo
-# printf '%s ' $(echo $1)
-read in
-stty echo
-printf "\n"
-echo -n $in

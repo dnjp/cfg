@@ -1,54 +1,33 @@
-all: yay \
-	pacman-deps \
-	yay-deps \
+all: debian-deps \
 	git \
 	hdirs \
-	bash \
+	symlinks \
 	go \
 	rust \
 	progfonts \
-	alacritty \
-	tmux \
-	ctags \
-	vi \
-	vis \
-	aerc \
 	golint \
 	gotools \
 	staticcheck \
 	delve \
-	redshift \
-	ripgrep \
 	nvm \
 	prettier \
-	mail \
-	caps2esc \
-	x330brightness \
-	suckless \
-	9fans \
-	walk
-
+	walk \
+	fzf
 ###########################
 #      Variables
 ###########################
-
+USER=daniel
+HBIN=/home/daniel/bin
 SHELL := /bin/bash
 export PATH := /bin:$(PATH):/usr/local/go/bin
 export APPDATA := /mnt/c/Users/dnjp/AppData/Roaming
-
-USER=daniel
-HBIN=/home/daniel/bin
-
 ###########################
 #         Versions
 ###########################
 GO_VERSION=1.15.6
-# GO_VERSION=1.16
-
 ###########################
 #         Deps
 ###########################
-
 .PHONY: git
 git:
 	bin/sh/sym $(shell pwd)/git/gitconfig $(HOME)/.gitconfig
@@ -63,12 +42,10 @@ ifeq ($(wildcard /usr/local/go/.*),)
 		sudo rm -rf /usr/local/go && \
 		sudo tar -C /usr/local -xzf go$(GO_VERSION).linux-amd64.tar.gz
 endif
-
 rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
-
 debian-deps:
 	sudo apt update
 	sudo apt upgrade
@@ -105,26 +82,20 @@ debian-deps:
 		openjdk-11-jdk \
 		adoptopenjdk-13-hotspot \
 		maven 
-
 ###########################
 #         bin/src
 ###########################
-
 hdirs: go bash
 	bin/sh/sym $(shell pwd)/src $(HOME)/src
 	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
 	cd $(HOME)/src && \
 		make && \
 		make install
-
-
 ifeq ($(wildcard $(HOME)/personal/.*),)
 	git clone git@github.com:dnjp/personal.git $(HOME)/personal --recurse-submodules
 endif
-
 	mkdir -p $(HOME)/work
 	mkdir -p $(HOME)/tmp
-
 ifeq ($(wildcard $(HOME)/work/wdeps/.*),)
 	cd $(HOME)/work && \
 		git clone git@github.com:dnjp/wdeps.git \
@@ -137,11 +108,9 @@ else
 		git pull && \
 		make
 endif
-
 ###########################
 #         Fonts
 ###########################
-
 .PHONY: progfonts
 progfonts:
 	sudo mkdir -p /usr/share/fonts/meslo
