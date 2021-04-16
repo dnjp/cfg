@@ -34,7 +34,6 @@ git:
 	sudo cp git/ssh-agent.service \
 		/etc/systemd/system/ssh-agent.service
 	sudo systemctl enable ssh-agent
-
 go:
 ifeq ($(wildcard /usr/local/go/.*),)
 	cd /tmp && \
@@ -71,8 +70,9 @@ debian-deps:
 		postgresql \
 		ripgrep \
 		tmux \
-		universal-ctags
-
+		universal-ctags \
+		clang \
+		clang-format
 	# java 
 	wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 	sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
@@ -85,7 +85,7 @@ debian-deps:
 ###########################
 #         bin/src
 ###########################
-hdirs: go bash
+hdirs: go 
 	bin/sh/sym $(shell pwd)/src $(HOME)/src
 	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
 	cd $(HOME)/src && \
@@ -117,11 +117,9 @@ progfonts:
 	sudo cp \
 		fonts/meslo/meslo_lg_1.2.1/*.ttf \
 		/usr/share/fonts/meslo
-
 	sudo cp \
 		fonts/meslo/meslo_lg_dz_1.2.1/*.ttf \
 		/usr/share/fonts/meslo
-
 	sudo mkdir -p /usr/share/fonts/go
 	sudo cp fonts/go/*.ttf /usr/share/fonts/go
 	sudo mkdir -p /usr/share/fonts/lucida
@@ -137,7 +135,10 @@ symlinks:
 	# ctags
 	mkdir -p $(HOME)/.config/ctags.d
 	bin/sh/sym $(shell pwd)/editors/ctags $(HOME)/.config/ctags.d/default.ctags
-	sudo ln -s /usr/local/bin/ctags /usr/bin/ctags
+	# bash
+	bin/sh/sym $(shell pwd)/shells/bash/bashrc ${HOME}/.bashrc
+	bin/sh/sym $(shell pwd)/shells/bash/bash_profile ${HOME}/.bash_profile
+	bin/sh/sym $(shell pwd)/shells/profile ${HOME}/.profile
 ###########################
 #        Github
 ###########################

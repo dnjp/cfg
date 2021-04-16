@@ -16,14 +16,15 @@ export MARTIN=/home/daniel/work/martin-bidder
 export PERSONAL=/home/daniel/personal
 export CFG=/home/daniel/cfg
 export BIN_DIR=$HOME/bin
-export PLAN9=/usr/local/plan9
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export APPDATA=/mnt/c/Users/dnjp/AppData/Roaming/
-
 export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
-
+# Terraform
 export TERRAFORM_DEFAULT_ARGS="-no-color"
+# FZF
+export FZF_DEFAULT_OPTS='--no-color'
+export FZF_DEFAULT_COMMAND='rg --files'
 
 # source external scipts
 . $NEXTCLOUD/secrets/secrets.sh
@@ -69,10 +70,6 @@ export PATH=$PATH:$BIN_DIR/amd64
 alias "sshedge"="ssh daniel@192.168.1.1"
 alias "sshacpro"="ssh ubnt@192.168.1.2"
 
-# Plan9
-export PATH=$PATH:$PLAN9/bin
-# export PATH=$PLAN9/bin:$PATH
-
 # Google
 PATH=$PATH:$HOME/google-cloud-sdk/bin/:
 
@@ -90,20 +87,13 @@ export PATH=$PATH:$MARTIN/bin
 export VCPKG_FEATURE_FLAGS="manifests"
 
 # Rust
-export PATH="$HOME/.cargo/bin:$PATH"
+source "$HOME/.cargo/env"
 
 # Java
 export _JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
 
-# FZF
-export FZF_DEFAULT_OPTS='--no-color'
-export FZF_DEFAULT_COMMAND='rg --files'
-
 # Linkerd
 export PATH=$PATH:/home/daniel/.linkerd2/bin
-
-# set environment for dash
-# export ENV=$HOME/.shinit
 
 gcloudconfig() {
 	gcloud config configurations activate $1
@@ -115,30 +105,4 @@ proj() {
 	gcloud info | grep Project
 }
 
-kgetnew() {
 
-	pattern=$1
-
-	watch "echo new: $(kubectl get po | grep $pattern | grep ' [0-9]m' | wc -l) total: $(kubectl get po | grep $pattern | wc -l)"
-}
-
-if [ "$INSIDE_ACME" ]; then
-
-	# handle man pages more cleanly
-	export PAGER=nobs
-	export MANPAGER=nobs
-
-	# Patch cd command for acme
-	_cd () {
-		\cd "$@" && awd
-	}
-	alias cd=_cd
-else
-	# set mode
-	set -o emacs
-fi
-
-# prefer plan9port utilities
-# for x in $(ls $PLAN9/bin); do
-	# alias "$x"="9 $x $*"
-# done
