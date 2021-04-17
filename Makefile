@@ -56,7 +56,7 @@ debian-deps:
 		libx11-dev \
 		libxext-dev \
 		libxt-dev \
-		vim \
+		vim-gtk3 \
 		apt-transport-https \
 		ca-certificates \
 		wget \
@@ -72,7 +72,9 @@ debian-deps:
 		tmux \
 		universal-ctags \
 		clang \
-		clang-format
+		clang-format \
+		graphviz \
+		htop
 	# java 
 	wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 	sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/

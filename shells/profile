@@ -43,6 +43,18 @@ alias drop="cd ~/Dropbox"
 alias next="cd $NEXTCLOUD"
 alias learn="cd $HOME/exercism"
 alias appdata="cd $APPDATA"
+
+# git
+alias gs="git status"
+alias gp="git push"
+g() {
+	git $*
+}
+gc() {
+	git commit -am $*
+}
+
+# "aliases" requiring input
 maven() {
 	mvn -Dstyle.color=never $*
 }
