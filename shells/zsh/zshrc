@@ -88,6 +88,8 @@ export PATH=$PATH:$MARTIN/bin
 export PATH=$PATH:$BIN_DIR/sh
 export PATH=$PATH:$BIN_DIR/amd64
 
+export PATH=$PATH:$USER_DIR/.local/bin
+
 # Google Cloud SDK
 if [ -f '/Users/daniel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/daniel/google-cloud-sdk/path.zsh.inc'; fi
 if [ -f '/Users/daniel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/daniel/google-cloud-sdk/completion.zsh.inc'; fi
@@ -113,3 +115,4 @@ export PATH=$PATH:$GOPATH/bin:
 autoload -U colors && colors
 export PS1="%{$fg[blue]%}%c%{$reset_color%} %% "  # current directory name
 
+[ -f "/Users/daniel/.ghcup/env" ] && source "/Users/daniel/.ghcup/env" # ghcup-env

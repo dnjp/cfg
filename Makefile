@@ -37,6 +37,14 @@ ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
 
+haskell:
+ifeq ($(shell command -v ghc 2> /dev/null),)
+	curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | arch -x86_64 /bin/bash
+endif
+ifeq ($(shell command -v stack 2> /dev/null),)
+	curl -sSL https://get.haskellstack.org/ | sh
+endif
+
 homebrew:
 	bin/sh/scripts/installbrew
 
@@ -62,7 +70,8 @@ homebrewdeps:
 		reattach-to-user-namespace \
 		linkerd \
 		helm \
-		vim
+		vim \
+		exercism
 
 	brew install --cask \
 		font-source-code-pro \
@@ -189,5 +198,4 @@ fzf:
 
 base16:
 	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-
 

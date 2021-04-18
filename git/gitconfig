@@ -29,6 +29,9 @@
 [difftool "vscode"]
 	cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
-	tool = vscode
+	tool = vimdiff
+	conflictstyle = diff3
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
+[mergetool]
+	prompt = false

@@ -92,11 +92,12 @@ call plug#begin('~/.vim/plugged')
 	Plug 'junegunn/fzf.vim'
 	Plug 'vim-latex/vim-latex'
 	Plug 'tpope/vim-commentary'
-	" Plug 'chriskempson/base16-vim'
 	Plug 'tpope/vim-fugitive'
 	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 	Plug 'godlygeek/tabular'
 	Plug 'plasticboy/vim-markdown'
+	Plug 'vhdirk/vim-cmake'
+	Plug 'skywind3000/asyncrun.vim'
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   lsp
