@@ -23,6 +23,7 @@
 	defaultBranch = master
 [core]
 	editor = code --wait
+	excludesfile = /Users/daniel/.gitignore
 [diff]
 	tool = vscode
 [difftool "vscode"]

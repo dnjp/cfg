@@ -1,10 +1,5 @@
 "	       	     NOTES
 "
-"             Special Characters
-"                7c - pipe 
-"                   - space
-"                   - ctrl+r
-"
 "                Mapping Rules
 "  map ctrl+p   ... reserved for fzf
 "  map g        ... reserved for git, except for gg
@@ -15,31 +10,12 @@
 "  map <space>t ... reserved for terraform
 "  map <space>f ... reserved for general formatting
 "
-"                   Marks
-"            'm' - starting mark
-"            'a' - ending mark
-"
-"                    Tags
-"   Use ^] to jump to tag under cursor
-"   Use g^] for ambiguous tags
-"   Use ^t to jump back up the tag sta
-"   ^x^n for JUST this file
-"   ^x^f for filenames (works with our path trick!)
-"   ^x^] for tags only
-"   ^n for anything specified by the 'complete' option
-"   Use ^n and ^p to go back and forth in the suggestion list
-"
-"                   TODO
-"   - check out fzf plugin - github.com/junegunn/fzf.vim
-"   - check out tmux plugin - github.com/christoomey/vim-tmux-navigator
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   defaults
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set shell=/bin/bash
-set path+=**
 set nocompatible				" don't try to be like traditional vi
-set cedit=					" ctrl-r to view command edit
+set shell=/bin/zsh
+set path+=**
 set rtp+=~/cfg/sources/github.com/junegunn/fzf
 set backupdir=~/.vim/.backup//
 function! InitBackupDir()                       " automatically create backup directory
@@ -48,6 +24,10 @@ function! InitBackupDir()                       " automatically create backup di
 	endif
 endfunction
 call InitBackupDir()
+" Allow us to use Ctrl-s and Ctrl-q as keybinds
+silent !stty -ixon
+" " Restore default behaviour when leaving Vim.
+autocmd VimLeave * silent !stty ixon
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -74,7 +54,6 @@ set wildmode=longest,list
 set noswapfile					" don't create swap files
 set noerrorbells				" turn off alerts
 set shortmess=I 				" turn off splash screen
-set autoread					" always refresh file
 set hidden					" hides buffers instead of closing them
 set autoread                                    " reload buffer in vim when file changes on disk
 """""""""""""""""""""""""""""""""""
@@ -82,15 +61,17 @@ set autoread                                    " reload buffer in vim when file
 """""""""""""""""""""""""""""""""""
 set ignorecase					" ignore case when searching
 set incsearch					" start searching right away when typing
-set nohlsearch 					" don't highlight search terms
+set hlsearch 					" highlight search results
 set wildmenu					" display matching files when tab complete
 """""""""""""""""""""""""""""""""""
 "            navigation
 """""""""""""""""""""""""""""""""""
 " easily switch buffers with space+l
-nnoremap  l :b #
+nnoremap <Space>l :b #<Enter>
 " make ctrl-w behave like nvi
-map  
+map <C-w> <C-w><C-w>
+" use mouse
+set mouse=a
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "           install dependencies
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -110,6 +91,12 @@ call plug#begin('~/.vim/plugged')
 	Plug 'mattn/vim-lsp-settings' 
 	Plug 'junegunn/fzf.vim'
 	Plug 'vim-latex/vim-latex'
+	Plug 'tpope/vim-commentary'
+	" Plug 'chriskempson/base16-vim'
+	Plug 'tpope/vim-fugitive'
+	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+	Plug 'godlygeek/tabular'
+	Plug 'plasticboy/vim-markdown'
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   lsp
@@ -140,7 +127,7 @@ let g:lsp_document_code_action_signs_enabled = 0
 let g:lsp_diagnostics_enabled = 0
 
 " automatically insalled servers go here
-let g:lsp_settings_servers_dir = '/home/daniel/.local/share/vim-lsp-settings/servers'
+" let g:lsp_settings_servers_dir = '/Users/daniel/.local/share/vim-lsp-settings/servers'
 
 let g:lsp_settings = {
 \  'clangd': {'disabled': v:false},
@@ -148,7 +135,7 @@ let g:lsp_settings = {
 \  'eclipse-jdt-ls': {'disabled': v:false},
 \}
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                      FZF
+"                Searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
@@ -166,88 +153,74 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
-map  :Buffers
-map  :Files
-map  / :RG
+map <C-l> :Buffers<Enter>
+map <C-p> :Files<Enter>
+map <C-S> :RG<Enter>
 """""""""""""""""""""""""""""""""""
 "             convenience
 """""""""""""""""""""""""""""""""""
 map gg 1G
-map Q :q!
-map S :w
+map Q :q!<Enter>
+map S :w<Enter>
 map X :!
 map ; :
-map ve :sp:e ~/.vimrc
-" map    :w:suspend
-map  ct :!ctags -R .
+map ve :sp<Enter>:e ~/.vimrc<Enter>
+map <Space><Space> :suspend<Enter>
+map <Space>ct :!ctags -R .<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   text manipulation
 """""""""""""""""""""""""""""""""""""""""""""""""""
-" replace between marks
-map R :'m,'a s/
-" ctrl-/ to comment/uncomment lines
-map  :.!com -f %
-" space-ctrl-/ to un/comment current selection
-map   :'<,'>!com -f % 
+" un/comment lines
+map <C-\> <Plug>Commentary
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   formatting
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " detect filetypes 
 filetype on 
 " expand tabs to spaces
-map te :set expandtab
+map te :set expandtab<Enter>
 " format document using fmt
-map  fF :%!fmt -s
+map <Space>fF :%!fmt -s<Enter>
 " prettier
-map  fP :%!prettier --print-width 80 --prose-wrap always %
+map <Space>fP :%!prettier --print-width 80 --prose-wrap always %<Enter>
 " remove trailing spaces
-map  fs :%s/[[:space:]]\{1,\}/
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-" display vi buffers
-" map K :display buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   clipboard
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-set clipboard=unnamedplus
+map <Space>fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                      git
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " git search for word under cursor
-map g/ wb"zye::o:!git grep "zp
-map gs :!git status >/tmp/statout:sp:e /tmp/statout
-map ga :!git add 
-map gA :!git add -A
-map gc :!git commit -am '
-map gC :!git checkout -b 
-map gP :!git push
-map gp :!git pull
-map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
-map gB :!git checkout 
-map gl :!git log
+map gs :Git status
+map ga :Git add 
+map gA :Git add -A<Enter>
+map gc :Git commit -am '
+map gC :Git checkout -b 
+map gP :Git push<Enter>
+map gp :Git pull<Enter>
+map gb :Git blame<Enter>
+map gB :Git checkout 
+map gl :Git log<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Rust
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  gr :%rustfmt
+map <Space>gr :%rustfmt<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    Go
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  gf :%!gofmt
-map  gd :!go doc 
-map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:sp /tmp/testout
+map <Space>gf :GoFmt<Enter>
+map <Space>gd :GoDoc
+map <Space>gt :GoTest<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Make
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  m :!make 
-map  M :!make >/tmp/makeout 2>&1:sp /tmp/makeout
+map <Space>m :!make 
+map <Space>M :!make >/tmp/makeout 2>&1<Enter>:sp /tmp/makeout<Enter><Enter><Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                 Terraform
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  tv :!terraform validate
-map  tp :!terraform plan
-map  ta :!terraform apply
-map  tf :w:!terraform fmt:e!
+map <Space>tv :!terraform validate<Enter>
+map <Space>tp :!terraform plan<Enter>
+map <Space>ta :!terraform apply<Enter>
+map <Space>tf :w<Enter>:!terraform fmt<Enter>:e!<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "             Filetype Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -276,7 +249,18 @@ autocmd BufRead,BufNewFile *.yaml,*.yml setlocal filetype=yaml
 au filetype yaml set shiftwidth=2 tabstop=2 expandtab
 
 autocmd BufRead,BufNewFile *.md setlocal filetype=markdown
-au filetype markdown set shiftwidth=2 tabstop=2 expandtab
+augroup Markdown
+	autocmd!
+		" autocmd FileType markdown set wrap
+		autocmd FileType markdown set wrap linebreak nolist nonumber
+		autocmd FileType markdown set shiftwidth=2 tabstop=2 expandtab textwidth=80
+		autocmd FileType markdown set fo+=t
+		autocmd FileType markdown set tw=80 fo=cqt wm=0
+		autocmd FileType markdown map j gj
+		autocmd FileType markdown map k gk
+		autocmd FileType markdown set columns=80
+		autocmd VimResized * if (&columns > 80) | set columns=80 | endif
+augroup END
 
 autocmd BufRead,BufNewFile *.proto setlocal filetype=protobuf
 au filetype protobuf set shiftwidth=2 tabstop=2 expandtab
@@ -290,26 +274,28 @@ au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                     visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
-syntax off					" turn off syntax highlighting
-set nonumber 					" turn off line numbers
+" set nonumber 					" turn off line numbers
+set number 					" turn on line numbers
 set showmode 					" show '-- INSERT --'
 set noruler					" turn off position information
 set report=0					" don't show messages like '4 lines yanked'
 set laststatus=0				" disable status line
 set pumheight=10                                " Completion window max size
-set background=dark                             " tell vim to have a background
 let loaded_matchparen = 1                       " don't highlight matching delims
 set showmatch 					" jump to matching delim when typing
 set matchtime=2 				" duration (1/10s) for showing matching delim
 
-" Set split separator to Unicode box drawing character
+" use modern colors
+set termguicolors
+syntax on					
+set background=dark
+colorscheme default
+" Set split separator to simple dotted line
 set encoding=utf8
 set fillchars+=vert:\ 
 highlight VertSplit cterm=NONE
-
+" don't emphasize line numbers
+highlight LineNr ctermfg=grey
 " set omni completion menu to more sensible color
 highlight Pmenu ctermbg=gray guibg=gray
 highlight PmenuSel ctermbg=white guibg=white
-
-" turn off color
-" set t_Co=0

@@ -2,7 +2,10 @@
 
 create() {
 	sudo_cmd=""
-	group="$(stat -c '%G' $(dirname $output_file))"
+
+	# TODO: fix for macos
+	# group="$(stat -c '%G' $(dirname $output_file))"
+	group="wheel"
 
 	if [ "$group" = "root" ]; then
 		sudo_cmd="sudo"
