@@ -12,7 +12,7 @@ export CFG=$USER_DIR/cfg
 export BIN_DIR=$HOME/bin
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-# export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
+export ICLOUDDIR="$USER_DIR/Library/Mobile\ Documents/com~apple~CloudDocs"
 
 # FZF
 export FZF_DEFAULT_COMMAND='rg --files'
@@ -34,6 +34,8 @@ alias drop="cd ~/Dropbox"
 alias next="cd $NEXTCLOUD"
 alias learn="cd $HOME/exercism"
 alias brewup="brew update; brew upgrade; brew cleanup; brew doctor"
+alias refresh="source ~/.zshrc"
+alias icloud="cd $ICLOUDDIR"
 alias gs="git status"
 alias gp="git push"
 
@@ -48,17 +50,10 @@ alias tat="tmux attach -t"
 alias ts="tmux ls"
 alias tk="tmux kill-session -t"
 
-g() {
-	git $*
-}
-
-gc() {
-	git commit -am $*
-}
-
-pip() {
-	pip3 $*
-}
+l() { ls $* }
+g() { git $* }
+gc() { git commit -am $* }
+pip() { pip3 $* }
 
 gcloudconfig() {
 	gcloud config configurations activate $1
@@ -70,13 +65,20 @@ proj() {
 	gcloud info | grep Project
 }
 
+#
+# Prompt
+#
+autoload -U colors && colors
+export PS1="%{$fg[blue]%}%c%{$reset_color%} %% "  # current directory name
 
-# BASE16_SHELL="$HOME/.config/base16-shell/"
-# [ -n "$PS1" ] && \
-#     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-#         eval "$("$BASE16_SHELL/profile_helper.sh")" 
-# # set colorscheme
-# base16_default-dark
+#
+# Keybindings
+#
+bindkey -e
+
+#
+# $PATH
+#
 
 # ensure homebrew path is set
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -109,10 +111,5 @@ source "$HOME/.cargo/env"
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$GOPATH/bin:
 
-#
-# Prompt
-#
-autoload -U colors && colors
-export PS1="%{$fg[blue]%}%c%{$reset_color%} %% "  # current directory name
-
 [ -f "/Users/daniel/.ghcup/env" ] && source "/Users/daniel/.ghcup/env" # ghcup-env
+

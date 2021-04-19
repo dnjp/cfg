@@ -71,6 +71,7 @@ nnoremap <Space>l :b #<Enter>
 " make ctrl-w behave like nvi
 map <C-w> <C-w><C-w>
 " use mouse
+set ttymouse=xterm2
 set mouse=a
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "           install dependencies
@@ -87,17 +88,20 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin('~/.vim/plugged')
+	" Language Server Protocol
 	Plug 'prabirshrestha/vim-lsp'
 	Plug 'mattn/vim-lsp-settings' 
-	Plug 'junegunn/fzf.vim'
-	Plug 'vim-latex/vim-latex'
-	Plug 'tpope/vim-commentary'
-	Plug 'tpope/vim-fugitive'
+	" Go
 	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-	Plug 'godlygeek/tabular'
-	Plug 'plasticboy/vim-markdown'
+	" Searching
+	Plug 'junegunn/fzf.vim'
+	" Editing Operations
+	Plug 'tpope/vim-commentary'
+	" Git
+	Plug 'tpope/vim-fugitive'
+	Plug 'idanarye/vim-merginal'
+	" Build Systems
 	Plug 'vhdirk/vim-cmake'
-	Plug 'skywind3000/asyncrun.vim'
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   lsp
@@ -190,10 +194,10 @@ map <Space>fs :%s/[[:space:]]\{1,\}/
 "                      git
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " git search for word under cursor
-map gs :Git status
+map gs :G<Enter>
 map ga :Git add 
 map gA :Git add -A<Enter>
-map gc :Git commit -am '
+map gc :Git commit
 map gC :Git checkout -b 
 map gP :Git push<Enter>
 map gp :Git pull<Enter>
@@ -287,7 +291,6 @@ set showmatch 					" jump to matching delim when typing
 set matchtime=2 				" duration (1/10s) for showing matching delim
 
 " use modern colors
-set termguicolors
 syntax on					
 set background=dark
 colorscheme default
@@ -296,7 +299,7 @@ set encoding=utf8
 set fillchars+=vert:\ 
 highlight VertSplit cterm=NONE
 " don't emphasize line numbers
-highlight LineNr ctermfg=grey
+highlight LineNr ctermfg=grey guifg=grey
 " set omni completion menu to more sensible color
 highlight Pmenu ctermbg=gray guibg=gray
 highlight PmenuSel ctermbg=white guibg=white

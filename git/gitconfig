@@ -29,9 +29,13 @@
 [difftool "vscode"]
 	cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
-	tool = vimdiff
+	tool = diffconflicts
 	conflictstyle = diff3
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
 [mergetool]
 	prompt = false
+	keepBackup = false
+[mergetool "diffconflicts"]
+	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+	trustExitCode = true

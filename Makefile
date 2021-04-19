@@ -70,8 +70,8 @@ homebrewdeps:
 		reattach-to-user-namespace \
 		linkerd \
 		helm \
-		vim \
-		exercism
+		exercism \
+		iterm2
 
 	brew install --cask \
 		font-source-code-pro \
