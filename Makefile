@@ -28,7 +28,7 @@ export PATH := /bin:$(PATH):/usr/local/go/bin
 #         Versions
 ###########################
 GO_VERSION=1.15.6
-TF_VERSION=0.14.6
+TF_VERSION=0.14.10
 ###########################
 #         Deps
 ###########################
@@ -71,7 +71,11 @@ homebrewdeps:
 		linkerd \
 		helm \
 		exercism \
-		iterm2
+		iterm2 \
+		llvm \
+		watch \
+		moreutils \
+		git
 
 	brew install --cask \
 		font-source-code-pro \
@@ -109,6 +113,8 @@ endif
 symlinks: 
 	# vim
 	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
+	mkdir -p $(HOME)/.vim
+	bin/sh/sym $(shell pwd)/editors/vim/templates $(HOME)/.vim/templates
 	# tmux
 	bin/sh/sym $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
 	# ctags

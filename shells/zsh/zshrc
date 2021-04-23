@@ -83,6 +83,13 @@ bindkey -e
 # ensure homebrew path is set
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+#
+# Set paths for homebrew installed programs
+#
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+
 # Monorepo
 export PATH=$PATH:$MARTIN/bin
 
