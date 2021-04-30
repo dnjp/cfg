@@ -148,6 +148,13 @@
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook 'visual-line-mode)
 (add-hook 'text-mode-hook 'visual-fill-column-mode)
+
+;; C-M-- Global decrease text size
+;; C-M-= Global increase text size
+(use-package default-text-scale
+  :ensure t
+  :config
+  (default-text-scale-mode))
 ;; ----------------------------------------------------------------------------
 
 ;;                                  SEARCHING
@@ -408,7 +415,7 @@
  '(electric-indent-mode nil)
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(xterm-color almost-mono-themes hydandata-light-theme ace-window forge base16-theme minimal-theme discover multi-term exec-path-from-shell company auctex markdown-mode yaml-mode protobuf-mode go-mode ido-vertical-mode rg magit visual-fill-column auto-package-update use-package)))
+   '(default-text-scale xterm-color almost-mono-themes hydandata-light-theme ace-window forge base16-theme minimal-theme discover multi-term exec-path-from-shell company auctex markdown-mode yaml-mode protobuf-mode go-mode ido-vertical-mode rg magit visual-fill-column auto-package-update use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
