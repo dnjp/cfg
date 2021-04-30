@@ -75,7 +75,11 @@ homebrewdeps:
 		llvm \
 		watch \
 		moreutils \
-		git
+		git \
+		vim \
+		gpg \
+		pinentry-mac \
+		ispell
 
 	brew install --cask \
 		font-source-code-pro \
@@ -87,7 +91,7 @@ homebrewdeps:
 		font-ia-writer-duospace \
 		font-ia-writer-mono \
 		font-ia-writer-quattro
- 
+
 .PHONY: kb
 kb:
 	mkdir -p ~/.config/karabiner/assets/complex_modifications
@@ -97,7 +101,7 @@ kb:
 ###########################
 #    Home Directories
 ###########################
-hdirs: go 
+hdirs: go
 	bin/sh/sym $(shell pwd)/src $(HOME)/src
 	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
 	mkdir -p $(HOME)/work
@@ -110,7 +114,7 @@ endif
 ###########################
 #        Symlinks
 ###########################
-symlinks: 
+symlinks:
 	# vim
 	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
 	mkdir -p $(HOME)/.vim
@@ -125,6 +129,9 @@ symlinks:
 	bin/sh/sym $(shell pwd)/git/gitignore $(HOME)/.gitignore
 	# zsh
 	bin/sh/sym $(shell pwd)/shells/zsh/zshrc ${HOME}/.zshrc
+	# emacs
+	bin/sh/sym $(shell pwd)/editors/emacs/config ${HOME}/.emacs
+	bin/sh/sym $(shell pwd)/editors/emacs/emacs.d ${HOME}/.emacs.d
 
 ###########################
 #        Binaries
@@ -139,13 +146,19 @@ kubectl: gcloud
 
 terraform:
 	curl -o /tmp/terraform.zip \
-		https://releases.hashicorp.com/terraform/$(TF_VERSION)/terraform_$(TF_VERSION)_darwin_amd64.zip 
+		https://releases.hashicorp.com/terraform/$(TF_VERSION)/terraform_$(TF_VERSION)_darwin_amd64.zip
 	unzip /tmp/terraform.zip -d /tmp
 	sudo mv /tmp/terraform /usr/local/bin/terraform
 
 cqlsh:
 	sudo mkdir -p /usr/local/share/cqlsh
 	sudo tar -xf sources/cqlsh.tar -C /usr/local/share/cqlsh
+
+urbit:
+	mkdir -p ~/urbit
+	cd ~/urbit && curl -JLO https://urbit.org/install/mac/latest
+	cd ~/urbit && tar zxvf ./darwin.tgz --strip=1
+	~/urbit/urbit
 
 ###########################
 #        Sources
@@ -183,7 +196,7 @@ delve:
 	cd sources/github.com/go-delve/delve && \
 		go install ./...
 
-nvm: 
+nvm:
 	cd sources/github.com/nvm-sh/nvm && \
 		./install.sh && \
 		source ~/.zshrc && \
@@ -204,4 +217,3 @@ fzf:
 
 base16:
 	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-
