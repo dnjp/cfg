@@ -17,7 +17,8 @@ all: homebrew \
 	terraform \
 	gcloud \
 	base16 \
-	ohmyzsh
+	ohmyzsh \
+	lisp
 
 ###########################
 #      Variables
@@ -79,7 +80,8 @@ homebrewdeps:
 		vim \
 		gpg \
 		pinentry-mac \
-		ispell
+		ispell \
+		sbcl
 
 	brew install --cask \
 		font-source-code-pro \
@@ -160,6 +162,13 @@ urbit:
 	cd ~/urbit && tar zxvf ./darwin.tgz --strip=1
 	~/urbit/urbit
 
+lisp:
+	curl -o /tmp/quicklisp.lisp \
+		https://beta.quicklisp.org/quicklisp.lisp
+	sbcl --load /tmp/quicklisp.lisp
+	# (quicklisp-quickstart:install)
+	# (ql:add-to-init-file)
+	# (ql:quickload "quicklisp-slime-helper")
 ###########################
 #        Sources
 ###########################

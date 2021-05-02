@@ -80,8 +80,9 @@ e() {
 #
 # Prompt
 #
-autoload -U colors && colors
-export PS1="%{$fg[blue]%}%c%{$reset_color%} %% "  # current directory name
+# autoload -U colors && colors
+# export PS1="%{$fg[blue]%}%c%{$reset_color%} %% "  # current directory name
+export PS1='$ '
 
 #
 # Keybindings
