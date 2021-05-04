@@ -31,3 +31,6 @@
 [submodule "editors/emacs/emacs.d/plugins/hoon-mode.el"]
 	path = editors/emacs/emacs.d/plugins/hoon-mode.el
 	url = https://github.com/urbit/hoon-mode.el
+[submodule "editors/emacs/emacs.d/plugins/exercism-emacs"]
+	path = editors/emacs/emacs.d/plugins/exercism-emacs
+	url = https://github.com/canweriotnow/exercism-emacs.git

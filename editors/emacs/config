@@ -99,10 +99,13 @@
 ;;	    nil t))
 
 ;; (add-hook 'shell-mode-hook 'track-shell-directory/procfs)
+(use-package native-complete
+  :ensure t
+  :config
+  (native-complete-setup-bash))
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-;; (require 'native-complete)
-;; (with-eval-after-load 'shell
-;;   (native-complete-setup-bash))
+;; (add-hook 'shell-mode-hook (setenv "TERM" "dumb"))
 ;; ----------------------------------------------------------------------------
 ;;                                 EMACS SERVER
 ;; ----------------------------------------------------------------------------
@@ -117,8 +120,7 @@
 ;; ----------------------------------------------------------------------------
 ;;                                     FONTS
 ;; ----------------------------------------------------------------------------
-(set-face-attribute 'default nil :font "Source Code Pro" :height 130 :weight 'Medium) ;; set font
-;; (set-face-font 'default "Menlo-13")
+(set-face-attribute 'default nil :font "Fira Mono" :height 130 :weight 'Medium) ;; set font
 (set-face-attribute 'fringe nil :background nil)       ;; fringe color
 ;; ----------------------------------------------------------------------------
 ;;                               SENSIBLE DEFAULTS
@@ -146,9 +148,6 @@
 ;;                                 THEME / COLORS
 ;; ----------------------------------------------------------------------------
 (use-package minimal-theme :ensure t)
-(use-package base16-theme :ensure t)
-(use-package hydandata-light-theme :ensure t)
-(use-package almost-mono-themes :ensure t)
 (load-theme 'minimal-light 't)
 ;; ----------------------------------------------------------------------------
 ;;                                 LINE WRAPPING
@@ -213,7 +212,7 @@
 			"~/work/martin-bidder/infra/terraform/TAGS"
 			"~/personal/compete"
 			"~/personal/C"
-			"~/personal/exercism"))
+			"~/exercism"))
 (setq etags-table-search-up-depth 99)
 
 (defun ido-select-tags-file ()
@@ -286,7 +285,7 @@
 (use-package magit
   :ensure t
   :config
-  (global-set-key (kbd "M-g") 'magit))
+  (global-set-key (kbd "M-G") 'magit))
 
 (with-eval-after-load 'magit
   (magit-add-section-hook 'magit-status-sections-hook 'forge-insert-assigned-issues   nil t)
@@ -384,14 +383,39 @@
 ;; ----------------------------------------------------------------------------
 ;;                                    LISP
 ;; ----------------------------------------------------------------------------
-(use-package slime
-  :ensure t
-  :init
-  (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  :config
-  (setq slime-lisp-implementations
-	'((sbcl  ("/opt/homebrew/bin/sbcl" "--dynamic-space-size" "2GB") :coding-system utf-8-unix)))
-  (setq inferior-lisp-program "sbcl"))
+;; (use-package slime
+;;   :ensure t
+;;   :init
+;;   (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;;   :config
+;;   (setq slime-lisp-implementations
+;;	'((sbcl  ("/opt/homebrew/bin/sbcl" "--dynamic-space-size" "2GB") :coding-system utf-8-unix)))
+;;   (setq inferior-lisp-program "sbcl"))
+(add-to-list 'load-path "~/tmp/slime")
+(require 'slime-autoloads)
+(setq inferior-lisp-program "/opt/homebrew/bin/sbcl")
+;; (use-package paredit
+;;   :ensure t
+;;   :config
+;;     (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+;;     (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+;;     (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+;;     (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+;;     (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+;;     (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+;;     (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
+
+;; (use-package parinfer-rust-mode
+;;   :ensure t
+;;   :hook emacs-lisp-mode
+;;   :hook lisp-mode
+;;   :hook lisp-interaction-mode
+;;   :hook ielm-mode
+;;   :hook scheme-mode
+;;   :init
+;;   (setq parinfer-rust-auto-download t))
+
+
 ;; ----------------------------------------------------------------------------
 
 
@@ -402,6 +426,14 @@
 ;;                                     SQL
 ;; ----------------------------------------------------------------------------
 (use-package sql :ensure t)
+;; ----------------------------------------------------------------------------
+;;                                  EXERCISM
+;; ----------------------------------------------------------------------------
+(use-package request :ensure t)
+(setq exercism-config-file (expand-file-name "~/.config/exercism/user.json"))
+(setq exercism-dir (expand-file-name "~/Exercism"))
+(setq exercism-auto-enable nil)
+(load (expand-file-name "~/.emacs.d/plugins/exercism-emacs/exercism.el"))
 ;; ----------------------------------------------------------------------------
 
 ;;                                PRODUCTIVITY
@@ -463,11 +495,12 @@
  '(ansi-color-names-vector
    ["#f8f8f8" "#ab4642" "#a1b56c" "#f7ca88" "#7cafc2" "#ba8baf" "#7cafc2" "#383838"])
  '(custom-safe-themes
-   '("cbd85ab34afb47003fa7f814a462c24affb1de81ebf172b78cb4e65186ba59d2" "77b9cad4f0e64f7267acc55181d5c1999627b16f9d6424ed57420a39134e66e7" "3e335d794ed3030fefd0dbd7ff2d3555e29481fe4bbb0106ea11c660d6001767" "16dd114a84d0aeccc5ad6fd64752a11ea2e841e3853234f19dc02a7b91f5d661" default))
+   '("cfb7f51dcfd7a42080fce44babd015f6148524427dea0d27935876880105a391" "64e3f7a494ad5491dea52e49253ee807be7799a4758822725fe29682abfe0cf7" "d96587ec2c7bf278269b8ec2b800c7d9af9e22d816827639b332b0e613314dfd" "cbd85ab34afb47003fa7f814a462c24affb1de81ebf172b78cb4e65186ba59d2" "77b9cad4f0e64f7267acc55181d5c1999627b16f9d6424ed57420a39134e66e7" "3e335d794ed3030fefd0dbd7ff2d3555e29481fe4bbb0106ea11c660d6001767" "16dd114a84d0aeccc5ad6fd64752a11ea2e841e3853234f19dc02a7b91f5d661" default))
+ '(debug-on-error t)
  '(electric-indent-mode nil)
  '(ns-command-modifier 'meta)
  '(package-selected-packages
-   '(slime default-text-scale xterm-color almost-mono-themes hydandata-light-theme ace-window forge base16-theme minimal-theme discover multi-term exec-path-from-shell company auctex markdown-mode yaml-mode protobuf-mode go-mode ido-vertical-mode rg magit visual-fill-column auto-package-update use-package)))
+   '(parinfer-rust-mode acme-theme paredit native-complete slime default-text-scale xterm-color almost-mono-themes hydandata-light-theme ace-window forge base16-theme minimal-theme discover multi-term exec-path-from-shell company auctex markdown-mode yaml-mode protobuf-mode go-mode ido-vertical-mode rg magit visual-fill-column auto-package-update use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
