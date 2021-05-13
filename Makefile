@@ -88,7 +88,8 @@ homebrewdeps:
 		ledger \
 		node@16 \
 		svn \
-		protobuf
+		protobuf \
+		gh
 
 	# from tap
 	brew tap homebrew/cask-fonts

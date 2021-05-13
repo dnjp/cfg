@@ -111,6 +111,7 @@ call plug#begin('~/.vim/plugged')
 	" Editing Operations
 	"
 	Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-dispatch'
 	" 
 	" Formatting
 	"
@@ -203,20 +204,31 @@ map <leader>fP :%!prettier --print-width 80 --prose-wrap always %<Enter>
 " remove trailing spaces
 map <leader>fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"                    terminal
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" get to command mode
+tnoremap <C-\> <C-\><C-n>
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                      git
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " Menus
 "   Status 
 map <LocalLeader>gs :Git<Enter>
 map <LocalLeader>gc :Git commit -am '
-map <LocalLeader>gp :Git push<Enter>
+map <LocalLeader>gp :Dispatch! Git push<Enter>
 map <LocalLeader>gf :Git pull<Enter>
 map <LocalLeader>gb :Git checkout -b 
 map <LocalLeader>gB :Git blame<Enter>
 map <LocalLeader>gl :Git log<Enter>
+if has('nvim')
+	map <LocalLeader>gr :term gh pr create<Enter>
+	let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+endif
+
 " diffing
 nmap <leader>dh :diffget //3<Enter>
 nmap <leader>du :diffget //2<Enter>
+" git gutter
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '>'
 let g:gitgutter_sign_removed = '-'
@@ -240,8 +252,7 @@ map <leader>ch :sp<Enter>:help csupport-usage-vim<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Make
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>m :!make 
-map <leader>M :!make >/tmp/makeout 2>&1<Enter>:sp /tmp/makeout<Enter><Enter><Enter>
+map <leader>m :Dispatch make 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                 Terraform
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -337,3 +348,11 @@ highlight LineNr guibg=bg ctermbg=bg
 
 " Set split separator to simple dotted line
 set encoding=utf8
+
+" folding
+set foldmethod=syntax
+set foldnestmax=1
+" zo - open fold
+" zc - close fold
+" zR - open all folds
+" zm - fold one level down
