@@ -19,6 +19,7 @@ set path+=**
 set rtp+=~/cfg/sources/github.com/junegunn/fzf
 set backupdir=~/.vim/.backup//
 let mapleader = " "
+let maplocalleader = "\\"
 function! InitBackupDir()                       " automatically create backup directory
 	if !isdirectory(&backupdir)
 		call mkdir(&backupdir)
@@ -56,7 +57,7 @@ set wildmode=longest,list
 """""""""""""""""""""""""""""""""""
 set noswapfile					" don't create swap files
 set noerrorbells				" turn off alerts
-set shortmess=I 				" turn off splash screen
+set shortmess=aoOtI				" turn off splash screen, press <Enter>, etc
 set hidden					" hides buffers instead of closing them
 set autoread                                    " reload buffer in vim when file changes on disk
 """""""""""""""""""""""""""""""""""
@@ -105,6 +106,10 @@ call plug#begin('~/.vim/plugged')
 	Plug 'rust-lang/rust.vim'
 	" Terraform
 	Plug 'hashivim/vim-terraform'
+	" Lisp
+	" Plug 'kovisoft/slimv'
+	Plug 'vlime/vlime', {'rtp': 'vim/'}
+	Plug 'vim-scripts/paredit.vim'
 	" 
 	" Searching
 	"
@@ -144,6 +149,7 @@ augroup lsp_install
 augroup END
 
 let g:lsp_document_code_action_signs_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 1
 
 let g:lsp_settings = {
 \  'clangd': {'disabled': v:false},
@@ -206,12 +212,13 @@ map <leader>fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " Menus
 "   Status 
-map gS :G<Enter>
-" basic git operations
-map gP :Git push<Enter>
-map gp :Git pull<Enter>
-map gb :Git blame<Enter>
-map gl :Git log<Enter>
+map <LocalLeader>gs :Git<Enter>
+map <LocalLeader>gc :Git commit -am '
+map <LocalLeader>gp :Git push<Enter>
+map <LocalLeader>gf :Git pull<Enter>
+map <LocalLeader>gb :Git checkout -b 
+map <LocalLeader>gB :Git blame<Enter>
+map <LocalLeader>gl :Git log<Enter>
 " diffing
 nmap <leader>dh :diffget //3<Enter>
 nmap <leader>du :diffget //2<Enter>
@@ -243,6 +250,15 @@ map <leader>ta :!terraform apply<Enter>
 map <leader>tf :w<Enter>:!terraform fmt<Enter>:e!<Enter>
 let g:terraform_fmt_on_save=1
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"                   Lisp
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" <LocalLeader>rr - start server
+" <LocalLeader>cc - connect to server
+" <LocalLeader>cs - list connections to server
+" <LocalLeader>cd - disconnect from server
+" <LocalLeader>ss - send s-expression to server
+" <LocalLeader>i - enable/disable interactive mode. <CR> to send expression.
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "             Filetype Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufRead,BufNewFile *.py setlocal filetype=python
@@ -270,19 +286,8 @@ autocmd BufRead,BufNewFile *.yaml,*.yml setlocal filetype=yaml
 au filetype yaml set shiftwidth=2 tabstop=2 expandtab
 
 autocmd BufRead,BufNewFile *.md setlocal filetype=markdown
-augroup Markdown
-	autocmd!
-		" autocmd FileType markdown set wrap
-		autocmd FileType markdown set wrap linebreak nolist nonumber
-		autocmd FileType markdown set shiftwidth=2 tabstop=2 expandtab 
-		" textwidth=80
-		" autocmd FileType markdown set fo+=t
-		" autocmd FileType markdown set tw=80 fo=cqt wm=0
-		" autocmd FileType markdown map j gj
-		" autocmd FileType markdown map k gk
-		" autocmd FileType markdown set columns=80
-		" autocmd VimResized * if (&columns > 80) | set columns=80 | endif
-augroup END
+au filetype markdown set wrap linebreak nolist nonumber
+au filetype markdown set shiftwidth=2 tabstop=2 expandtab 
 
 autocmd BufRead,BufNewFile *.proto setlocal filetype=protobuf
 au filetype protobuf set shiftwidth=2 tabstop=2 expandtab
@@ -297,7 +302,8 @@ au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:
 "                     visuals
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " set nonumber 					" turn off line numbers
-set number 					" turn on line numbers
+" set number 					" turn on line numbers
+set nonumber 					" turn on line numbers
 set showmode 					" show '-- INSERT --'
 set noruler					" turn off position information
 set report=0					" don't show messages like '4 lines yanked'

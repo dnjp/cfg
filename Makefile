@@ -9,7 +9,6 @@ all: homebrew \
 	gotools \
 	staticcheck \
 	delve \
-	nvm \
 	prettier \
 	walk \
 	fzf \
@@ -52,7 +51,8 @@ homebrew:
 homebrewdeps:
 	brew update
 	brew upgrade
-	brew tap homebrew/cask-fonts
+
+	# from default repo
 	brew install \
 		wget \
 		cmake \
@@ -81,8 +81,23 @@ homebrewdeps:
 		gpg \
 		pinentry-mac \
 		ispell \
-		sbcl
+		sbcl \
+		font-fira-sans \
+		ansible \
+		jq \
+		ledger \
+		node@16 \
+		svn \
+		protobuf
 
+	# from tap
+	brew tap homebrew/cask-fonts
+	brew tap railwaycat/emacsmacport
+
+	# from source
+	brew install --build-from-source roswell
+
+	# from cask
 	brew install --cask \
 		font-source-code-pro \
 		font-fira-code \
@@ -93,6 +108,10 @@ homebrewdeps:
 		font-ia-writer-duospace \
 		font-ia-writer-mono \
 		font-ia-writer-quattro
+
+	# emacs
+	brew install emacs-mac --with-modules
+	ln -s /usr/local/opt/emacs-mac/Emacs.app /Applications/Emacs.app
 
 .PHONY: kb
 kb:
@@ -172,6 +191,10 @@ lisp:
 ###########################
 #        Sources
 ###########################
+godeps:
+	go get -u github.com/cweill/gotests/...
+	go get github.com/motemen/gore/cmd/gore
+
 golint:
 	cd sources/github.com/golang/lint/golint && \
 		git clean -fdx && \
@@ -204,12 +227,6 @@ staticcheck:
 delve:
 	cd sources/github.com/go-delve/delve && \
 		go install ./...
-
-nvm:
-	cd sources/github.com/nvm-sh/nvm && \
-		./install.sh && \
-		source ~/.zshrc && \
-		nvm install --lts
 
 prettier:
 	npm install prettier -g

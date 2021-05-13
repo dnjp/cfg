@@ -25,12 +25,3 @@
 [submodule "sources/github.com/junegunn/fzf"]
 	path = sources/github.com/junegunn/fzf
 	url = https://github.com/junegunn/fzf.git
-[submodule "editors/emacs/emacs.d/plugins/emacs-native-shell-complete"]
-	path = editors/emacs/emacs.d/plugins/emacs-native-shell-complete
-	url = https://github.com/CeleritasCelery/emacs-native-shell-complete
-[submodule "editors/emacs/emacs.d/plugins/hoon-mode.el"]
-	path = editors/emacs/emacs.d/plugins/hoon-mode.el
-	url = https://github.com/urbit/hoon-mode.el
-[submodule "editors/emacs/emacs.d/plugins/exercism-emacs"]
-	path = editors/emacs/emacs.d/plugins/exercism-emacs
-	url = https://github.com/canweriotnow/exercism-emacs.git
