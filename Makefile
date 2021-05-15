@@ -5,18 +5,13 @@ all: homebrew \
 	hdirs \
 	symlinks \
 	rust \
-	golint \
 	gotools \
-	staticcheck \
-	delve \
 	prettier \
-	walk \
 	fzf \
 	gcloud \
 	terraform \
 	gcloud \
 	base16 \
-	ohmyzsh \
 	lisp
 
 ###########################
@@ -27,11 +22,19 @@ export PATH := /bin:$(PATH):/usr/local/go/bin
 ###########################
 #         Versions
 ###########################
-GO_VERSION=1.15.6
+GO_VERSION=1.16.4
 TF_VERSION=0.14.10
 ###########################
 #         Deps
 ###########################
+go:
+ifneq (go$(GO_VERSION), $(shell go version | awk '{print $$3}'))
+	curl -L -o /tmp/go.tar.gz \
+		https://golang.org/dl/go$(GO_VERSION).darwin-arm64.tar.gz 
+	sudo rm -rf /usr/local/go
+	sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+endif
+
 rust:
 ifeq ($(shell command -v cargo 2> /dev/null),)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -89,7 +92,10 @@ homebrewdeps:
 		node@16 \
 		svn \
 		protobuf \
-		gh
+		gh \
+		staticcheck \
+		delve \
+		tree
 
 	# from tap
 	brew tap homebrew/cask-fonts
@@ -123,7 +129,7 @@ kb:
 ###########################
 #    Home Directories
 ###########################
-hdirs: go
+hdirs: 
 	bin/sh/sym $(shell pwd)/src $(HOME)/src
 	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
 	mkdir -p $(HOME)/work
@@ -192,55 +198,22 @@ lisp:
 ###########################
 #        Sources
 ###########################
-godeps:
+godeps: go
 	go get -u github.com/cweill/gotests/...
 	go get github.com/motemen/gore/cmd/gore
 
-golint:
-	cd sources/github.com/golang/lint/golint && \
-		git clean -fdx && \
-		git reset --hard && \
-		git checkout master && \
-		git pull && \
-		go build -o golint && \
-		sudo mv ./golint /usr/local/bin/golint
-
-gotools:
-	cd sources/github.com/golang/tools && \
-		git clean -fdx && \
-		git reset --hard && \
-		git checkout master && \
-		git pull && \
-		mkdir -p bin && \
-		go build -o ./bin/gocover cmd/cover/... && \
-		go build -o ./bin/godigraph cmd/digraph/digraph.go && \
-		go build -o ./bin/gostress cmd/stress/stress.go && \
-		sudo mv ./bin/* /usr/local/bin/
-
-staticcheck:
-	cd sources/github.com/dominikh/go-tools && \
-		git clean -fdx && \
-		git reset --hard && \
-		git checkout master && \
-		git pull && \
-		go install cmd/staticcheck/staticcheck.go
-
-delve:
-	cd sources/github.com/go-delve/delve && \
-		go install ./...
+gotools: go
+	go get -u golang.org/x/tools/...
 
 prettier:
 	npm install prettier -g
-
-walk:
-	cd sources/github.com/google/walk && \
-		make && \
-		sudo cp walk /usr/local/bin/walk && \
-		sudo cp sor /usr/local/bin/sor
 
 fzf:
 	cd sources/github.com/junegunn/fzf && \
 		./install
 
 base16:
-	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+	git clone \
+		https://github.com/chriskempson/base16-shell.git \
+		~/.config/base16-shell
+
