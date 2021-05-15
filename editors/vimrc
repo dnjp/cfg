@@ -94,6 +94,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'sheerun/vim-polyglot'
 	" Go
 	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+	Plug 'buoto/gotests-vim'
 	" Terraform
 	Plug 'hashivim/vim-terraform'
 	" Lisp
@@ -241,10 +242,16 @@ map <leader>gr :%rustfmt<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    Go
 """""""""""""""""""""""""""""""""""""""""""""""""""
+let g:gotests_bin = '/Users/daniel/go/bin/gotests'
 au filetype go set shiftwidth=8 tabstop=8 
+" manually format document
 map <leader>gf :GoFmt<Enter>
-map <leader>gd :GoDoc
+" show documentation under cursor
+map <leader>gd :GoDoc<Enter>
+" run tests
 map <leader>gt :GoTest<Enter>
+" generate tests
+map <leader>gg :GoTests<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    C
 """""""""""""""""""""""""""""""""""""""""""""""""""

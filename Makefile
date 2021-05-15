@@ -12,7 +12,8 @@ all: homebrew \
 	terraform \
 	gcloud \
 	base16 \
-	lisp
+	lisp \
+	godeps
 
 ###########################
 #      Variables
@@ -186,20 +187,24 @@ ifeq (, $(shell which urbit))
 endif
 
 lisp:
+	# (quicklisp-quickstart:install)
+	# (ql:add-to-init-file)
+	# (ql:quickload "quicklisp-slime-helper")
 ifeq (, $(shell ls ~ | grep quicklisp))
 	curl -o /tmp/quicklisp.lisp \
 		https://beta.quicklisp.org/quicklisp.lisp
 	sbcl --load /tmp/quicklisp.lisp
 endif
-	# (quicklisp-quickstart:install)
-	# (ql:add-to-init-file)
-	# (ql:quickload "quicklisp-slime-helper")
 ###########################
 #        Sources
 ###########################
 godeps: go
+ifeq (, $(shell which gotests))
 	go get -u github.com/cweill/gotests/...
+endif
+ifeq (, $(shell which gore))
 	go get github.com/motemen/gore/cmd/gore
+endif
 
 gotools: go
 ifeq (, $(shell which gopls))
