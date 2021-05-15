@@ -1,5 +1,5 @@
 all: homebrew \
-	homebrew-deps \
+	homebrewdeps \
 	kb \
 	git \
 	hdirs \
@@ -36,22 +36,24 @@ ifneq (go$(GO_VERSION), $(shell go version | awk '{print $$3}'))
 endif
 
 rust:
-ifeq ($(shell command -v cargo 2> /dev/null),)
+ifeq (, $(shell which cargo))
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 endif
 
 haskell:
-ifeq ($(shell command -v ghc 2> /dev/null),)
+ifeq (, $(shell which ghc))
 	curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | arch -x86_64 /bin/bash
 endif
-ifeq ($(shell command -v stack 2> /dev/null),)
+ifeq (, $(shell which stack))
 	curl -sSL https://get.haskellstack.org/ | sh
 endif
 
 homebrew:
+ifeq (, $(shell which brew))
 	bin/sh/scripts/installbrew
+endif
 
-homebrewdeps:
+homebrewdeps: homebrew
 	brew update
 	brew upgrade
 
@@ -99,10 +101,6 @@ homebrewdeps:
 
 	# from tap
 	brew tap homebrew/cask-fonts
-	brew tap railwaycat/emacsmacport
-
-	# from source
-	brew install --build-from-source roswell
 
 	# from cask
 	brew install --cask \
@@ -116,9 +114,7 @@ homebrewdeps:
 		font-ia-writer-mono \
 		font-ia-writer-quattro
 
-	# emacs
-	brew install emacs-mac --with-modules
-	ln -s /usr/local/opt/emacs-mac/Emacs.app /Applications/Emacs.app
+	brew unlink go
 
 .PHONY: kb
 kb:
@@ -157,41 +153,43 @@ symlinks:
 	bin/sh/sym $(shell pwd)/git/gitignore $(HOME)/.gitignore
 	# zsh
 	bin/sh/sym $(shell pwd)/shells/zsh/zshrc ${HOME}/.zshrc
-	# emacs
-	bin/sh/sym $(shell pwd)/editors/emacs/config ${HOME}/.emacs
-	bin/sh/sym $(shell pwd)/editors/emacs/emacs.d ${HOME}/.emacs.d
 
 ###########################
 #        Binaries
 ###########################
 gcloud:
-ifeq ($(shell command -v gcloud 2> /dev/null),)
+ifeq (, $(shell which gcloud))
 	curl https://sdk.cloud.google.com | bash
 endif
 
-kubectl: gcloud
-	source ~/.zshenv && gcloud components install kubectl
-
 terraform:
+ifneq (v$(TF_VERSION), $(shell terraform version | head -n 1 | awk '{print $$2}'))
 	curl -o /tmp/terraform.zip \
 		https://releases.hashicorp.com/terraform/$(TF_VERSION)/terraform_$(TF_VERSION)_darwin_amd64.zip
 	unzip /tmp/terraform.zip -d /tmp
 	sudo mv /tmp/terraform /usr/local/bin/terraform
+endif
 
 cqlsh:
+ifeq (, $(shell which cqlsh))
 	sudo mkdir -p /usr/local/share/cqlsh
 	sudo tar -xf sources/cqlsh.tar -C /usr/local/share/cqlsh
+endif
 
 urbit:
+ifeq (, $(shell which urbit))
 	mkdir -p ~/urbit
 	cd ~/urbit && curl -JLO https://urbit.org/install/mac/latest
 	cd ~/urbit && tar zxvf ./darwin.tgz --strip=1
 	~/urbit/urbit
+endif
 
 lisp:
+ifeq (, $(shell ls ~ | grep quicklisp))
 	curl -o /tmp/quicklisp.lisp \
 		https://beta.quicklisp.org/quicklisp.lisp
 	sbcl --load /tmp/quicklisp.lisp
+endif
 	# (quicklisp-quickstart:install)
 	# (ql:add-to-init-file)
 	# (ql:quickload "quicklisp-slime-helper")
@@ -203,17 +201,24 @@ godeps: go
 	go get github.com/motemen/gore/cmd/gore
 
 gotools: go
+ifeq (, $(shell which gopls))
 	go get -u golang.org/x/tools/...
+endif
 
 prettier:
+ifeq (, $(shell which prettier))
 	npm install prettier -g
+endif
 
 fzf:
+ifeq (, $(shell which fzf))
 	cd sources/github.com/junegunn/fzf && \
 		./install
+endif
 
 base16:
+ifeq (, $(shell ls ~/.config | grep base16))
 	git clone \
 		https://github.com/chriskempson/base16-shell.git \
 		~/.config/base16-shell
-
+endif
