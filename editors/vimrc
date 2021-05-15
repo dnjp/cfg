@@ -1,5 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   defaults
+"
+"                      defaults
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible				" don't try to be like traditional vi
 set shell=/bin/zsh
@@ -26,7 +28,7 @@ autocmd VimLeave * silent !stty ixon
 " tell vim about python
 let g:python3_host_prog='/opt/homebrew/bin/python3'
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     tags
+"                        tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set tags=tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -45,24 +47,24 @@ set smartindent					" indentation based on syntax
 set smartcase					" do the right thing when searching
 set wildmenu					" better menu in command mode
 set wildmode=longest,list
-"""""""""""""""""""""""""""""""""""
-"        general settings
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                general settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 set noswapfile					" don't create swap files
 set noerrorbells				" turn off alerts
 set shortmess=aoOtI				" turn off splash screen, press <Enter>, etc
 set hidden					" hides buffers instead of closing them
 set autoread                                    " reload buffer in vim when file changes on disk
-"""""""""""""""""""""""""""""""""""
-"        searching
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                  searching
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 set ignorecase					" ignore case when searching
 set incsearch					" start searching right away when typing
 set hlsearch 					" highlight search results
 set wildmenu					" display matching files when tab complete
-"""""""""""""""""""""""""""""""""""
-"            navigation
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                 navigation
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 " easily switch buffers with space+l
 nnoremap <leader>l :b #<Enter>
 " use mouse
@@ -85,50 +87,36 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin('~/.vim/plugged')
-	" 
 	" Language Server Protocol
-	"
 	Plug 'prabirshrestha/vim-lsp'
 	Plug 'mattn/vim-lsp-settings' 
-	"
 	"Languages
-	"
+	Plug 'sheerun/vim-polyglot'
 	" Go
 	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-	" Rust
-	Plug 'rust-lang/rust.vim'
 	" Terraform
 	Plug 'hashivim/vim-terraform'
 	" Lisp
-	" Plug 'kovisoft/slimv'
 	Plug 'vlime/vlime', {'rtp': 'vim/'}
 	Plug 'vim-scripts/paredit.vim'
-	" 
 	" Searching
-	"
 	Plug 'junegunn/fzf.vim'
-	" 
 	" Editing Operations
-	"
 	Plug 'tpope/vim-commentary'
 	Plug 'tpope/vim-dispatch'
-	" 
 	" Formatting
-	"
 	Plug 'rhysd/vim-clang-format'
-	"
 	" Git
-	"
 	Plug 'tpope/vim-fugitive'
 	Plug 'tpope/vim-rhubarb'
 	Plug 'airblade/vim-gitgutter'
-	" 
 	" Colors
-	"
 	Plug 'chriskempson/base16-vim'
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   lsp
+"
+"                      LSP
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:on_lsp_buffer_enabled() abort
 	setlocal omnifunc=lsp#complete
@@ -153,7 +141,7 @@ let g:lsp_settings = {
 \  'eclipse-jdt-ls': {'disabled': v:false},
 \}
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                Searching
+"                    Searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
@@ -174,9 +162,9 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 map <C-l> :Buffers<Enter>
 map <C-p> :Files<Enter>
 map <C-S> :RG<Enter>
-"""""""""""""""""""""""""""""""""""
-"             convenience
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   convenience
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 map gg 1G
 map Q :q!<Enter>
 map S :w<Enter>
@@ -186,12 +174,14 @@ map <leader>ve :sp<Enter>:e ~/.vimrc<Enter>
 map <leader><leader> :suspend<Enter>
 map <leader>ct :!ctags -R .<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   text manipulation
+"                text manipulation
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " un/comment lines
 map <C-\> <Plug>Commentary
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "                   formatting
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " detect filetypes 
 filetype on 
@@ -204,12 +194,16 @@ map <leader>fP :%!prettier --print-width 80 --prose-wrap always %<Enter>
 " remove trailing spaces
 map <leader>fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "                    terminal
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " get to command mode
 tnoremap <C-\> <C-\><C-n>
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "                      git
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " Menus
 "   Status 
@@ -236,19 +230,32 @@ let g:gitgutter_sign_removed_first_line = '^'
 let g:gitgutter_sign_modified_removed = '<'
 let g:gitgutter_override_sign_column_highlight = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                 Languages
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Rust
 """""""""""""""""""""""""""""""""""""""""""""""""""
 map <leader>gr :%rustfmt<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    Go
 """""""""""""""""""""""""""""""""""""""""""""""""""
+au filetype go set shiftwidth=8 tabstop=8 
 map <leader>gf :GoFmt<Enter>
 map <leader>gd :GoDoc
 map <leader>gt :GoTest<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    C
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>ch :sp<Enter>:help csupport-usage-vim<Enter>
+au filetype c set shiftwidth=8 tabstop=8 
+au filetype cpp set shiftwidth=2 tabstop=2 expandtab
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                  Latex
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:tex_flavor='latex'
+autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
+au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Make
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -261,6 +268,7 @@ map <leader>tp :!terraform plan<Enter>
 map <leader>ta :!terraform apply<Enter>
 map <leader>tf :w<Enter>:!terraform fmt<Enter>:e!<Enter>
 let g:terraform_fmt_on_save=1
+let g:lsp_settings_filetype_terraform = ['terraform-ls']
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Lisp
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -271,47 +279,9 @@ let g:terraform_fmt_on_save=1
 " <LocalLeader>ss - send s-expression to server
 " <LocalLeader>i - enable/disable interactive mode. <CR> to send expression.
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"             Filetype Settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufRead,BufNewFile *.py setlocal filetype=python
-au filetype python set shiftwidth=4 tabstop=4 expandtab
-
-autocmd BufRead,BufNewFile *.c,*.h setlocal filetype=c
-au filetype c set shiftwidth=8 tabstop=8 
-
-autocmd BufRead,BufNewFile *.cc,*.hh,*.cpp,*.hpp setlocal filetype=cpp
-au filetype cpp set shiftwidth=4 tabstop=4 expandtab
-
-autocmd BufRead,BufNewFile *.go setlocal filetype=go
-au filetype go set shiftwidth=8 tabstop=8 
-
-autocmd BufRead,BufNewFile *.js,*.ts setlocal filetype=javascript
-au filetype javascript set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.java setlocal filetype=java
-au filetype java set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.json setlocal filetype=json
-au filetype json set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.yaml,*.yml setlocal filetype=yaml
-au filetype yaml set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.md setlocal filetype=markdown
-au filetype markdown set wrap linebreak nolist nonumber
-au filetype markdown set shiftwidth=2 tabstop=2 expandtab 
-
-autocmd BufRead,BufNewFile *.proto setlocal filetype=protobuf
-au filetype protobuf set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.tf setlocal filetype=terraform
-au filetype terraform set shiftwidth=2 tabstop=2 expandtab
-
-let g:tex_flavor='latex'
-autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
-au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                     
 "                     visuals
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set number 					" turn on line numbers
 set showmode 					" show '-- INSERT --'
