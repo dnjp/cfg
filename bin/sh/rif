@@ -14,5 +14,7 @@ if [ -z "$search" ] || [ -z "$replace" ]; then
 	exit 1
 fi
 
-grep -rl $search ./ | xargs sed -i s/$search/$replace/g
-
+# grep -rl $search ./ | xargs sed -i s/$search/$replace/g
+for file in $(rg -l $search); do 
+	rg --passthru $search -r $replace $file | sponge $file
+done

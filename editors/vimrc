@@ -1,155 +1,34 @@
-"	       	     NOTES
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-"             Special Characters
-"                7c - pipe 
-"                   - space
-"                   - ctrl+r
-"
-"                Mapping Rules
-"  map ctrl+p   ... reserved for fzf
-"  map g        ... reserved for git, except for gg
-"  map <space>m ... reserved for make
-"  map <space>g ... reserved for go
-"  map <space>r ... reserved for rust
-"  map <space>c ... reserved for ctags
-"  map <space>t ... reserved for terraform
-"  map <space>f ... reserved for general formatting
-"
-"                   Marks
-"            'm' - starting mark
-"            'a' - ending mark
-"
-"                    Tags
-"   Use ^] to jump to tag under cursor
-"   Use g^] for ambiguous tags
-"   Use ^t to jump back up the tag sta
-"   ^x^n for JUST this file
-"   ^x^f for filenames (works with our path trick!)
-"   ^x^] for tags only
-"   ^n for anything specified by the 'complete' option
-"   Use ^n and ^p to go back and forth in the suggestion list
-"
-"                   TODO
-"   - check out fzf plugin - github.com/junegunn/fzf.vim
-"   - check out tmux plugin - github.com/christoomey/vim-tmux-navigator
+"                      defaults
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"           install dependencies
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" vim-plug
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
-
-call plug#begin('~/.vim/plugged')
-	Plug 'prabirshrestha/vim-lsp'
-	" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
-	Plug 'vim-latex/vim-latex'
-call plug#end()
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   lsp
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" if executable('gopls')
-	augroup LspGo
-		au!
-		autocmd User lsp_setup call lsp#register_server({
-			\ 'name': 'go-lang',
-			\ 'cmd': {server_info->['gopls']},
-			\ 'whitelist': ['go'],
-			\ })
-		" autocmd FileType go setlocal omnifunc=lsp#complete
-		" autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
-		"autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
-		"autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
-	augroup end
-" endif
-
-" if executable('clangd')
-	augroup lsp_clangd
-		autocmd!
-		autocmd User lsp_setup call lsp#register_server({
-			\ 'name': 'clangd',
-			\ 'cmd': {server_info->['clangd']},
-			\ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-			\ })
-		" autocmd FileType c setlocal omnifunc=lsp#complete
-		" autocmd FileType cpp setlocal omnifunc=lsp#complete
-		" autocmd FileType objc setlocal omnifunc=lsp#complete
-		" autocmd FileType objcpp setlocal omnifunc=lsp#complete
-	augroup end
-" endif
-
-function! s:on_lsp_buffer_enabled() abort
-
-	setlocal omnifunc=lsp#complete
-	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-
-	nmap <buffer> gd <plug>(lsp-definition)
-
-	" TODO: fix git and lsp mapping conflicts
-	
-	" nmap <buffer> gs <plug>(lsp-document-symbol-search)
-	" nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-	" nmap <buffer> gr <plug>(lsp-references)
-	" nmap <buffer> gi <plug>(lsp-implementation)
-	" nmap <buffer> gt <plug>(lsp-type-definition)
-	" nmap <buffer> <leader>rn <plug>(lsp-rename)
-	" nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-	" nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-	
-	" scrolling in popup window
-	nmap <buffer> K <plug>(lsp-hover)
-	" autocmd User lsp_float_opened nnoremap <buffer> <expr><c-j> lsp#scroll(+20)
-	" autocmd User lsp_float_opened nnoremap <buffer> <expr><c-k> lsp#scroll(-20)
-	" autocmd User lsp_float_closed nunmap <buffer> <c-j>
-	" autocmd User lsp_float_closed nunmap <buffer> <c-k>
-
-	let g:lsp_format_sync_timeout = 1000
-
-	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-	
-	" refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-	au!
-	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
-	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-
-" disable highlight references to symbol under cursor
-let g:lsp_document_highlight_enabled = 0
-
-" disable support for document code action hints for |signs|.
-let g:lsp_document_code_action_signs_enabled = 0
-
-" let g:lsp_completion_documentation_enabled = 0
-
-" turn off diagnostic support
-let g:lsp_diagnostics_enabled = 0
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   defaults
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-set shell=/usr/bin/bash
-set path+=**
 set nocompatible				" don't try to be like traditional vi
-set cedit=					" ctrl-r to view command edit
+set shell=/bin/zsh
+set path+=**
 set rtp+=~/cfg/sources/github.com/junegunn/fzf
 set backupdir=~/.vim/.backup//
+
+" leader keys
+let mapleader = " "
+let maplocalleader = "\\"
+
+" automatically create backup directory
+function! InitBackupDir()                       
+	if !isdirectory(&backupdir)
+		call mkdir(&backupdir)
+	endif
+endfunction
+call InitBackupDir()
+
+" Allow us to use Ctrl-s and Ctrl-q as keybinds
+silent !stty -ixon
+" " Restore default behaviour when leaving Vim.
+autocmd VimLeave * silent !stty ixon
+" tell vim about python
+let g:python3_host_prog='/opt/homebrew/bin/python3'
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     tags
+"                        tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set tags=tags
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -163,66 +42,107 @@ set backspace=indent,eol,start			" inteligent backspace behavior
 set autoindent					" auto indentation based on last line
 set smartindent					" indentation based on syntax
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                     visuals
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax off					" turn off syntax highlighting
-set nonumber 					" turn off line numbers
-set showmode 					" show '-- INSERT --'
-set noruler					" turn off position information
-set report=0					" don't show messages like '4 lines yanked'
-set laststatus=0				" disable status line
-set pumheight=10                                " Completion window max size
-set background=dark                             " tell vim to have a background
-let loaded_matchparen = 1                       " don't highlight matching delims
-set showmatch 					" jump to matching delim when typing
-set matchtime=2 				" duration (1/10s) for showing matching delim
-
-" fix colors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set t_Co=256                                    " set 256 colors, set to 0 for
-						" no colors
-" Set split separator to Unicode box drawing character
-set encoding=utf8
-set fillchars+=vert:\ 
-highlight VertSplit cterm=NONE
-" set omni completion menu to more sensible color
-highlight Pmenu ctermbg=238 gui=bold
-highlight LineNr ctermfg=grey
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                   searching
 """""""""""""""""""""""""""""""""""""""""""""""""""
 set smartcase					" do the right thing when searching
 set wildmenu					" better menu in command mode
 set wildmode=longest,list
-"""""""""""""""""""""""""""""""""""
-"        general settings
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                general settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 set noswapfile					" don't create swap files
 set noerrorbells				" turn off alerts
-set shortmess=I 				" turn off splash screen
-set autoread					" always refresh file
+set shortmess=aoOtI				" turn off splash screen, press <Enter>, etc
 set hidden					" hides buffers instead of closing them
 set autoread                                    " reload buffer in vim when file changes on disk
-"""""""""""""""""""""""""""""""""""
-"        searching
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                  searching
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 set ignorecase					" ignore case when searching
 set incsearch					" start searching right away when typing
-set nohlsearch 					" don't highlight search terms
+set hlsearch 					" highlight search results
 set wildmenu					" display matching files when tab complete
-"""""""""""""""""""""""""""""""""""
-"            navigation
-"""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                 navigation
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 " easily switch buffers with space+l
-nnoremap  l :b #
-" make ctrl-w behave like nvi
-map  
+nnoremap <leader>l :b #<Enter>
+" use mouse
+if !has('nvim')
+	set ttymouse=xterm2
+endif
+set mouse=a
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                      FZF
+"           install dependencies
 """""""""""""""""""""""""""""""""""""""""""""""""""
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin('~/.vim/plugged')
+	" Language Server Protocol
+	Plug 'prabirshrestha/vim-lsp'
+	Plug 'mattn/vim-lsp-settings' 
+	"Languages
+	Plug 'sheerun/vim-polyglot'
+	" Go
+	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+	" Terraform
+	Plug 'hashivim/vim-terraform'
+	" Lisp
+	Plug 'vlime/vlime', {'rtp': 'vim/'}
+	Plug 'vim-scripts/paredit.vim'
+	" Searching
+	Plug 'junegunn/fzf.vim'
+	" Editing Operations
+	Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-dispatch'
+	" Formatting
+	Plug 'rhysd/vim-clang-format'
+	" Git
+	Plug 'tpope/vim-fugitive'
+	Plug 'tpope/vim-rhubarb'
+	Plug 'airblade/vim-gitgutter'
+	" Colors
+	Plug 'chriskempson/base16-vim'
+call plug#end()
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                      LSP
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:on_lsp_buffer_enabled() abort
+	setlocal omnifunc=lsp#complete
+	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+	nmap <buffer> gd <plug>(lsp-definition)
+	nmap <buffer> K <plug>(lsp-hover) " scrolling in popup window
+	let g:lsp_format_sync_timeout = 1000
+	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+endfunction
+augroup lsp_install
+	au!
+	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
+	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+let g:lsp_document_code_action_signs_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 1
+
+let g:lsp_settings = {
+\  'clangd': {'disabled': v:false},
+\  'gopls': {'disabled': v:false},
+\  'eclipse-jdt-ls': {'disabled': v:false},
+\}
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                    Searching
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
 
@@ -239,127 +159,170 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
-map  :Buffers
-map  :Files
-map  / :RG
-
-"""""""""""""""""""""""""""""""""""
-"             convenience
-"""""""""""""""""""""""""""""""""""
+map <C-l> :Buffers<Enter>
+map <C-p> :Files<Enter>
+map <C-S> :RG<Enter>
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   convenience
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 map gg 1G
-map Q :q!
-map S :w
+map Q :q!<Enter>
+map S :w<Enter>
 map X :!
 map ; :
-map ve :sp:e ~/.vimrc
-map    :w:suspend
-map  ct :!ctags -R .
+map <leader>ve :sp<Enter>:e ~/.vimrc<Enter>
+map <leader><leader> :suspend<Enter>
+map <leader>ct :!ctags -R .<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   text manipulation
+"                text manipulation
 """""""""""""""""""""""""""""""""""""""""""""""""""
-" replace between marks
-map R :'m,'a s/
-" ctrl-/ to comment/uncomment lines
-map  :.!com -f %
-" space-ctrl-/ to un/comment current selection
-map   :'<,'>!com -f % 
+" un/comment lines
+map <C-\> <Plug>Commentary
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "                   formatting
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " detect filetypes 
 filetype on 
 " expand tabs to spaces
-map te :set expandtab
+map te :set expandtab<Enter>
 " format document using fmt
-map  fF :%!fmt -s
+map <leader>fF :%!fmt -s<Enter>
 " prettier
-map  fP :%!prettier --print-width 80 --prose-wrap always %
+map <leader>fP :%!prettier --print-width 80 --prose-wrap always %<Enter>
 " remove trailing spaces
-map  fs :%s/[[:space:]]\{1,\}/
+map <leader>fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   buffers
+"
+"                    terminal
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
-" display vi buffers
-" map K :display buffers
+" get to command mode
+tnoremap <C-\> <C-\><C-n>
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   clipboard
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-set clipboard=unnamedplus
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "                      git
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""
-" git search for word under cursor
-map g/ wb"zye::o:!git grep "zp
-map gs :!git status >/tmp/statout:sp:e /tmp/statout
-map ga :!git add 
-map gA :!git add -A
-map gc :!git commit -am '
-map gC :!git checkout -b 
-map gP :!git push
-map gp :!git pull
-map gb :sp"zy1G:edit /tmp/blamefile"zp:.,$!wc -l"zyy:.,$!git blame -- #:o"zpI:
-map gB :!git checkout 
-map gl :!git log
+" Menus
+"   Status 
+map <LocalLeader>gs :Git<Enter>
+map <LocalLeader>gc :Git commit -am '
+map <LocalLeader>gp :Dispatch! Git push<Enter>
+map <LocalLeader>gf :Git pull<Enter>
+map <LocalLeader>gb :Git checkout -b 
+map <LocalLeader>gB :Git blame<Enter>
+map <LocalLeader>gl :Git log<Enter>
+if has('nvim')
+	map <LocalLeader>gr :term gh pr create<Enter>
+	let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+endif
+
+" diffing
+nmap <leader>dh :diffget //3<Enter>
+nmap <leader>du :diffget //2<Enter>
+" git gutter
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_modified_removed = '<'
+let g:gitgutter_override_sign_column_highlight = 1
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                 Languages
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                   Rust
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  gr :%rustfmt
+map <leader>gr :%rustfmt<Enter>
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                    Go
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map  gf :%!gofmt
-map  gd :!go doc 
-map  gt :!cd $(dirname %) && go test -race -bench Benchmark* -count=1 >/tmp/testout 2>&1:sp /tmp/testout
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                   Make
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map  m :!make 
-map  M :!make >/tmp/makeout 2>&1:sp /tmp/makeout
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"                 Terraform
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map  tv :!terraform validate
-map  tp :!terraform plan
-map  ta :!terraform apply
-map  tf :w:!terraform fmt:e!
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"             Filetype Settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufRead,BufNewFile *.py setlocal filetype=python
-au filetype python set shiftwidth=4 tabstop=4 expandtab
-
-autocmd BufRead,BufNewFile *.c,*.h setlocal filetype=c
-au filetype c set shiftwidth=8 tabstop=8 
-
-autocmd BufRead,BufNewFile *.cc,*.hh,*.cpp,*.hpp setlocal filetype=cpp
-au filetype cpp set shiftwidth=4 tabstop=4 expandtab
-
-autocmd BufRead,BufNewFile *.go setlocal filetype=go
 au filetype go set shiftwidth=8 tabstop=8 
-
-autocmd BufRead,BufNewFile *.js,*.ts setlocal filetype=javascript
-au filetype javascript set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.java setlocal filetype=java
-au filetype java set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.json setlocal filetype=json
-au filetype json set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.yaml,*.yml setlocal filetype=yaml
-au filetype yaml set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.md setlocal filetype=markdown
-au filetype markdown set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.proto setlocal filetype=protobuf
-au filetype protobuf set shiftwidth=2 tabstop=2 expandtab
-
-autocmd BufRead,BufNewFile *.tf setlocal filetype=terraform
-au filetype terraform set shiftwidth=2 tabstop=2 expandtab
-
+map <leader>gf :GoFmt<Enter>
+map <leader>gd :GoDoc
+map <leader>gt :GoTest<Enter>
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                    C
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+au filetype c set shiftwidth=8 tabstop=8 
+au filetype cpp set shiftwidth=2 tabstop=2 expandtab
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                  Latex
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:tex_flavor='latex'
 autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
 au filetype tex set shiftwidth=2 tabstop=2 expandtab iskeyword+=:
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   Make
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>m :Dispatch make 
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                 Terraform
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>tv :!terraform validate<Enter>
+map <leader>tp :!terraform plan<Enter>
+map <leader>ta :!terraform apply<Enter>
+map <leader>tf :w<Enter>:!terraform fmt<Enter>:e!<Enter>
+let g:terraform_fmt_on_save=1
+let g:lsp_settings_filetype_terraform = ['terraform-ls']
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                   Lisp
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" <LocalLeader>rr - start server
+" <LocalLeader>cc - connect to server
+" <LocalLeader>cs - list connections to server
+" <LocalLeader>cd - disconnect from server
+" <LocalLeader>ss - send s-expression to server
+" <LocalLeader>i - enable/disable interactive mode. <CR> to send expression.
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"                     
+"                     visuals
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+set number 					" turn on line numbers
+set showmode 					" show '-- INSERT --'
+set noruler					" turn off position information
+set report=0					" don't show messages like '4 lines yanked'
+set laststatus=0				" disable status line
+set pumheight=10                                " Completion window max size
+let loaded_matchparen = 1                       " don't highlight matching delims
+set showmatch 					" jump to matching delim when typing
+set matchtime=2 				" duration (1/10s) for showing matching delim
+set scl=yes                                     " turn on sign column
+
+" use modern colors
+syntax on					
+set background=dark
+
+" use base16 shell colors or the defined colorscheme
+if filereadable(expand("~/.vimrc_background"))
+	let base16colorspace=256
+	source ~/.vimrc_background
+else
+	colorscheme base16-default-dark
+endif
+
+" use default background for SignColumn / Git Gutter background
+highlight SignColumn guibg=bg ctermbg=bg
+highlight GitGutterAdd guibg=bg ctermbg=bg
+highlight GitGutterChange guibg=bg ctermbg=bg
+highlight GitGutterDelete guibg=bg ctermbg=bg
+highlight GitGutterChangeDelete guibg=bg ctermbg=bg
+
+" line number background color
+highlight LineNr guibg=bg ctermbg=bg
+
+" Set split separator to simple dotted line
+set encoding=utf8
+
+" folding
+set foldmethod=syntax
+set foldnestmax=1
+" zo - open fold
+" zc - close fold
+" zR - open all folds
+" zm - fold one level down

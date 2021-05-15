@@ -1,5 +1,11 @@
-source ~/.profile
-source /usr/share/git/completion/git-completion.bash
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
+# export GDK_SCALE=2
+# export GDK_DPI_SCALE=0.5
+
+xrdb -merge ~/.Xresources
+
+. ~/.profile
 
 # always start ssh-agent
 # if ! pgrep -u "$USER" ssh-agent > /dev/null; then
@@ -8,8 +14,6 @@ source /usr/share/git/completion/git-completion.bash
 # if [[ ! "$SSH_AUTH_SOCK" ]]; then
 #     source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
 # fi
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -20,3 +24,6 @@ if [ -f '/home/daniel/google-cloud-sdk/path.bash.inc' ]; then . '/home/daniel/go
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/daniel/google-cloud-sdk/completion.bash.inc' ]; then . '/home/daniel/google-cloud-sdk/completion.bash.inc'; fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source "$HOME/.cargo/env"

@@ -1,5 +1,5 @@
 [user]
-	name = Daniel
+	name = Daniel Posthuma
 	email = dnjp@posteo.org
 [use]
 	name = Daniel Posthuma
@@ -11,7 +11,7 @@
 [pull]
 	rebase = false
 [github]
-	user = danieljamespost
+	user = dnjp
 [sendemail]
 	smtpserver = posteo.de
 	smtpuser = dnjp@posteo.org
@@ -23,11 +23,26 @@
 	defaultBranch = master
 [core]
 	editor = code --wait
+	excludesfile = /Users/daniel/.gitignore
 [diff]
 	tool = vscode
 [difftool "vscode"]
 	cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
-	tool = vscode
-[mergetool "vscode"]
-	cmd = code --wait $MERGED
+	# tool = diffconflicts
+	# conflictstyle = diff3
+	tool = ediff
+[mergetool]
+	prompt = false
+	keepBackup = false
+[mergetool "diffconflicts"]
+	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+	trustExitCode = true
+[mergetool "ediff"]
+	cmd = emacsclient -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

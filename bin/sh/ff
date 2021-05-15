@@ -1,0 +1,4 @@
+#!/bin/sh
+
+walk | grep $1
+

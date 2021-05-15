@@ -1,29 +1,37 @@
-all: com \
-	tree \
-	next \
-	ind
+include config.mk
 
-SHELL := /bin/bash
-BINDIR := /home/daniel/bin/amd64
+SRC = com.c array.c ft.c line.c
+OBJ = ${SRC:.c=.o}
+CFLAGS = "-g"
 
-.PHONY: com
-com:
-	go build cmd/com/com.go
+all: options com
 
-.PHONY: tree
-tree:
-	go build cmd/tree/tree.go
+options:
+	@echo com build options:
+	@echo "CFLAGS   = ${CFLAGS}"
+	@echo "LDFLAGS  = ${LDFLAGS}"
+	@echo "CC       = ${CC}"
 
-.PHONY: next
-next:
-	go build cmd/next/next.go
+.c.o:
+	${CC} -c ${CFLAGS} $<
 
-.PHONY: ind
-ind:
-	go build cmd/ind/ind.go
+${OBJ}: config.h ft.h array.h config.mk
+
+config.h:
+	cp config.def.h $@
+
+com: ${OBJ}
+	${CC} -o $@ ${OBJ} ${LDFLAGS}
+
+clean:
+	rm -f com ${OBJ} 
 
 install: all
-	cp com ${BINDIR}/com
-	cp tree ${BINDIR}/tree
-	cp next ${BINDIR}/nxt
-	cp ind ${BINDIR}/ind
+	mkdir -p ${BINDIR}
+	cp -f com ${BINDIR}
+	chmod 755 ${BINDIR}/com
+
+uninstall:
+	rm -f ${BINDIR}/com
+
+.PHONY: all options clean install uninstall

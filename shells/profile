@@ -1,42 +1,38 @@
 # set prompt
 export PS1='$ '
 
-# make dash happy
-export ENV=$HOME/.profile;
-
 # No color
 export NO_COLOR=1
 
-# defaults
 # export BROWSER="brave"
-export BROWSER="firefox"
-# export EDITOR='emacsclient'
-export EDITOR='vis'
+export BROWSER="chromium"
+export EDITOR='vim'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
-alias e="$EDITOR $*"
-alias vi="vis $*"
 
 # constants
-export NEXTCLOUD=/home/daniel/Nextcloud/
+export NEXTCLOUD=/mnt/c/Users/dnjp/Nextcloud
 export MARTIN=/home/daniel/work/martin-bidder
 export PERSONAL=/home/daniel/personal
 export CFG=/home/daniel/cfg
 export BIN_DIR=$HOME/bin
-export PLAN9=/usr/local/plan9
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-
+export APPDATA=/mnt/c/Users/dnjp/AppData/Roaming/
 export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
-export FZF_DIR=$HOME/cfg/sources/github.com/junegunn/fzf
+# Terraform
+export TERRAFORM_DEFAULT_ARGS="-no-color"
+# FZF
+export FZF_DEFAULT_OPTS='--no-color'
+export FZF_DEFAULT_COMMAND='rg --files'
 
 # source external scipts
-. ~/Nextcloud/secrets/secrets.sh
+. $NEXTCLOUD/secrets/secrets.sh
 . $MARTIN/shell/aliases.sh
 . $MARTIN/shell/functions.sh
 
 # Navigation
-alias v="vim $*"
+alias ".."="cd .."
 alias h="cd ~"
 alias mar="cd $MARTIN"
 alias per="cd $PERSONAL"
@@ -44,28 +40,32 @@ alias cfg="cd $CFG"
 alias dow="cd ~/Downloads"
 alias notes="cd ~/notes"
 alias drop="cd ~/Dropbox"
-alias c="clear"
-alias l="ls"
-alias ".."="cd .."
-alias "~"="cd ~"
-alias n="noice $*"
-# github.com/boyter/scc
-alias sloc="scc $*"
-alias next="cd ~/Nextcloud"
+alias next="cd $NEXTCLOUD"
 alias learn="cd $HOME/exercism"
+alias appdata="cd $APPDATA"
+
+# git
+alias gs="git status"
+alias gp="git push"
+g() {
+	git $*
+}
+gc() {
+	git commit -am $*
+}
+
+# "aliases" requiring input
+maven() {
+	mvn -Dstyle.color=never $*
+}
+vi() {
+	vim $*
+}
 
 # unix defaults
 alias cp="cp -i"                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
-
-# Git
-alias g="git $*"
-alias gs="git status"
-alias gc="git commit -am"
-alias gp="git push"
-alias ga="git add"
-alias gitu='git add . && git commit && git push'
 
 # Tmux
 alias t="tmux -2 -u"
@@ -75,17 +75,12 @@ alias tk="tmux kill-session -t"
 
 # scripts
 export PATH=$PATH:$BIN_DIR/sh
+export PATH=$PATH:$BIN_DIR/rc
 export PATH=$PATH:$BIN_DIR/amd64
-
-# fzf
-export PATH=$PATH:$FZF_DIR/bin
 
 # SSH
 alias "sshedge"="ssh daniel@192.168.1.1"
 alias "sshacpro"="ssh ubnt@192.168.1.2"
-
-# Plan9
-export PATH=$PATH:$PLAN9/bin
 
 # Google
 PATH=$PATH:$HOME/google-cloud-sdk/bin/:
@@ -104,14 +99,10 @@ export PATH=$PATH:$MARTIN/bin
 export VCPKG_FEATURE_FLAGS="manifests"
 
 # Rust
-export PATH="$HOME/.cargo/bin:$PATH"
+source "$HOME/.cargo/env"
 
 # Java
 export _JAVA_AWT_WM_NONREPARENTING=1 # Work with any window manager
-
-# FZF
-export FZF_DEFAULT_OPTS='--no-color'
-export FZF_DEFAULT_COMMAND='rg --files'
 
 # Linkerd
 export PATH=$PATH:/home/daniel/.linkerd2/bin
@@ -126,27 +117,4 @@ proj() {
 	gcloud info | grep Project
 }
 
-kgetnew() {
-
-	pattern=$1
-
-	watch "echo new: $(kubectl get po | grep $pattern | grep ' [0-9]m' | wc -l) total: $(kubectl get po | grep $pattern | wc -l)"
-}
-
-# patch cd for acme
-if [ "$INSIDE_ACME" ]; then
-	# handle man pages more cleanly
-	export PAGER=nobs
-	export MANPAGER=nobs
-
-	# set font
-	export font=$PLAN9/font/pelm/euro.8.font
-	export lfont=$PLAN9/font/lucsans/unicode.7.font
-
-	# Patch cd command for acme
-	_cd () {
-		\cd "$@" && awd
-	}
-	alias cd=_cd
-fi
 

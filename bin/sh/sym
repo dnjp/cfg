@@ -1,15 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 create() {
 	sudo_cmd=""
-	group="$(stat -c '%G' $(dirname $output_file))"
+
+	# TODO: fix for macos
+	# group="$(stat -c '%G' $(dirname $output_file))"
+	group="wheel"
 
 	if [ "$group" = "root" ]; then
 		sudo_cmd="sudo"
 	fi
 
 	# if the file already exists
-	if [[ -f "$output_file" || -d "$output_file" ]]; then
+	if [ -f "$output_file" ] || [ -d "$output_file" ]; then
 
 		# check if we've already symlinked the file
 		if [ -L "$output_file" ]; then
