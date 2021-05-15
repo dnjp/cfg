@@ -83,6 +83,7 @@ homebrewdeps: homebrew
 		moreutils \
 		git \
 		vim \
+		neovim \
 		gpg \
 		pinentry-mac \
 		ispell \
@@ -97,7 +98,7 @@ homebrewdeps: homebrew
 		gh \
 		staticcheck \
 		delve \
-		tree
+		tree 
 
 	# from tap
 	brew tap homebrew/cask-fonts
