@@ -90,7 +90,12 @@ export PS1='$ '
 #
 # Keybindings
 #
-bindkey -e
+bindkey -v
+
+# zoxide
+export _ZO_DATA_DIR=/Users/daniel/Library/Application\ Support
+export _ZO_ECHO=1
+eval "$(zoxide init zsh)"
 
 #
 # $PATH

@@ -111,6 +111,8 @@ call plug#begin('~/.vim/plugged')
 	Plug 'tpope/vim-fugitive'
 	Plug 'tpope/vim-rhubarb'
 	Plug 'airblade/vim-gitgutter'
+	" Navigation
+	Plug 'nanotee/zoxide.vim'
 	" Colors
 	Plug 'chriskempson/base16-vim'
 call plug#end()
@@ -201,6 +203,14 @@ map <leader>fs :%s/[[:space:]]\{1,\}/
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " get to command mode
 tnoremap <C-\> <C-\><C-n>
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                   navigation
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" zoxide
+map z :Z 
+map Z :Zi 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "
 "                      git

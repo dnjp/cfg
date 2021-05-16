@@ -99,7 +99,8 @@ homebrewdeps: homebrew
 		gh \
 		staticcheck \
 		delve \
-		tree 
+		tree \
+		zoxide
 
 	# from tap
 	brew tap homebrew/cask-fonts
