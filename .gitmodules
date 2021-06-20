@@ -16,3 +16,6 @@
 [submodule "sources/github.com/junegunn/fzf"]
 	path = sources/github.com/junegunn/fzf
 	url = https://github.com/junegunn/fzf.git
+[submodule "src"]
+	path = src
+	url = https://github.com/dnjp/tools
