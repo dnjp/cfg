@@ -1,0 +1,11 @@
+shift + cmd - f [
+  "/Users/daniel/plan9/bin/acme" : L comp -e | 9p write acme/$(dial unix!`namespace`/acmefocused)/errors
+]
+
+shift + cmd - r [
+  "/Users/daniel/plan9/bin/acme" : L refs | 9p write acme/$(dial unix!`namespace`/acmefocused)/errors
+]
+
+shift + cmd - d [
+  "/Users/daniel/plan9/bin/acme" : L def | 9p write acme/$(dial unix!`namespace`/acmefocused)/errors
+]

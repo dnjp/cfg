@@ -31,7 +31,7 @@ TF_VERSION=0.14.10
 go:
 ifneq (go$(GO_VERSION), $(shell go version | awk '{print $$3}'))
 	curl -L -o /tmp/go.tar.gz \
-		https://golang.org/dl/go$(GO_VERSION).darwin-arm64.tar.gz 
+		https://golang.org/dl/go$(GO_VERSION).darwin-arm64.tar.gz
 	sudo rm -rf /usr/local/go
 	sudo tar -C /usr/local -xzf /tmp/go.tar.gz
 endif
@@ -102,6 +102,10 @@ homebrewdeps: homebrew
 		tree \
 		zoxide
 
+	# platform specific
+	arch -arm64 brew install koekeishiya/formulae/skhd
+	brew services start skhd
+
 	# from tap
 	brew tap homebrew/cask-fonts
 
@@ -121,14 +125,19 @@ homebrewdeps: homebrew
 
 .PHONY: kb
 kb:
+	# karabiner
 	mkdir -p ~/.config/karabiner/assets/complex_modifications
 	bin/sh/sym $(shell pwd)/kb/capslock.json ~/.config/karabiner/assets/complex_modifications/capslock.json
 	bin/sh/sym $(shell pwd)/kb/karabiner.json ~/.config/karabiner/karabiner.json
 
+	# skhd
+	mkdir -p ~/.config/skhd
+	bin/sh/sym $(shell pwd)/kb/skhdrc ~/.config/skhd/skhdrc
+
 ###########################
 #    Home Directories
 ###########################
-hdirs: 
+hdirs:
 	bin/sh/sym $(shell pwd)/src $(HOME)/src
 	bin/sh/sym $(shell pwd)/bin $(HOME)/bin
 	mkdir -p $(HOME)/work
@@ -156,6 +165,16 @@ symlinks:
 	bin/sh/sym $(shell pwd)/git/gitignore $(HOME)/.gitignore
 	# zsh
 	bin/sh/sym $(shell pwd)/shells/zsh/zshrc ${HOME}/.zshrc
+
+###########################
+#        Daemons
+###########################
+.PHONY: daemons
+daemons:
+	mkdir -p ${HOME}/.local/var/log/9lab
+
+	cp $(shell pwd)/daemons/9lab.org.acme-lsp.plist ~/Library/LaunchAgents/9lab.org.acme-lsp.plist
+	cp $(shell pwd)/daemons/9lab.org.acmefocused.plist ~/Library/LaunchAgents/9lab.org.acmefocused.plist
 
 ###########################
 #        Binaries
@@ -196,6 +215,15 @@ ifeq (, $(shell ls ~ | grep quicklisp))
 		https://beta.quicklisp.org/quicklisp.lisp
 	sbcl --load /tmp/quicklisp.lisp
 endif
+
+setupacme:
+	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/acme-lsp@latest
+	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/L@latest
+	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/acmefocused@latest
+	GO111MODULE=on go get golang.org/x/tools/gopls@latest
+	mkdir -p ${HOME}/Library/Application\ Support/acme-lsp
+	cp $(shell pwd)/editors/lsp.toml ${HOME}/Library/Application\ Support/acme-lsp/config.toml
+
 ###########################
 #        Sources
 ###########################
@@ -229,3 +257,16 @@ ifeq (, $(shell ls ~/.config | grep base16))
 		https://github.com/chriskempson/base16-shell.git \
 		~/.config/base16-shell
 endif
+
+plan9:
+ifeq (, $(shell ls ~/ | grep plan9))
+	git clone \
+		https://github.com/9fans/plan9port.git \
+		~/plan9
+	~/plan9/INSTALL
+endif
+
+.PHONY: mac
+mac:
+	cp -r mac/9term.app /Applications/
+	cp -r mac/acme.app /Applications/

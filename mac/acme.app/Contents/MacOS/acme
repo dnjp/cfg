@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+
+fshell=$(finger $(whoami) | sed -n 's/.*Shell: //p' | sed 1q)
+SHELL=${fshell:-$SHELL}
+PLAN9=${PLAN9:-/Users/daniel/plan9}
+
+export tabstop=8
+export INSIDE_ACME=true
+export PAGER=nobs
+export MANPAGER=nobs
+
+cd $HOME
+case "$SHELL" in
+*/rc)
+	echo '
+		if(! ~ $PLAN9/bin $path)
+			path=($path $PLAN9/bin)
+		$PLAN9/bin/acme &
+	' | $SHELL -l
+	exit 0
+	;;
+*/bash)
+	. ~/.bash_profile
+	;;
+*/zsh)
+	source ~/.zshrc
+	;;
+*)
+	. ~/.profile
+	;;
+esac
+
+if ! [[ :$PATH: =~ :$PLAN9/bin: ]]
+then
+	PATH=$PATH:$PLAN9/bin
+fi
+
+if hash skhd 2>/dev/null; then 
+	echo 'acme: starting skhd' >> /tmp/acmelog
+	skhd &
+else
+	echo 'acme: skhd not in $PATH, skipping...' >> /tmp/acmelog
+fi
+
+$PLAN9/bin/plumber &
+$PLAN9/bin/fontsrv &
+$PLAN9/bin/acme -a -f $font &
+
+exit 0
+

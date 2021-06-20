@@ -124,8 +124,17 @@ call plug#end()
 function! s:on_lsp_buffer_enabled() abort
 	setlocal omnifunc=lsp#complete
 	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+	
+	" lsp mappings
 	nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> gs <plug>(lsp-document-symbol-search)
+  nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+	nmap <buffer> gr <plug>(lsp-references)
+	nmap <buffer> <leader>rn <plug>(lsp-rename)
 	nmap <buffer> K <plug>(lsp-hover) " scrolling in popup window
+  inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+  inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
 	let g:lsp_format_sync_timeout = 1000
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
@@ -209,8 +218,9 @@ tnoremap <C-\> <C-\><C-n>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""
 " zoxide
-map z :Z 
-map Z :Zi 
+map Z :Z 
+" interactive
+map <leader>Z :Zi 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "
 "                      git
@@ -246,14 +256,10 @@ let g:gitgutter_override_sign_column_highlight = 1
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""
-"                   Rust
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>gr :%rustfmt<Enter>
-"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                    Go
 """""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gotests_bin = '/Users/daniel/go/bin/gotests'
-au filetype go set shiftwidth=8 tabstop=8 
+au filetype go set shiftwidth=2 tabstop=2 
 " manually format document
 map <leader>gf :GoFmt<Enter>
 " show documentation under cursor
@@ -268,6 +274,11 @@ map <leader>gg :GoTests<Enter>
 au filetype c set shiftwidth=8 tabstop=8 
 au filetype cpp set shiftwidth=2 tabstop=2 expandtab
 """""""""""""""""""""""""""""""""""""""""""""""""""
+"                 Protobuf
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+au filetype proto set shiftwidth=4 tabstop=4 
+au filetype proto ClangFormatAutoEnable
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "                  Latex
 """""""""""""""""""""""""""""""""""""""""""""""""""
 let g:tex_flavor='latex'
@@ -280,9 +291,8 @@ map <leader>m :Dispatch make
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "                 Terraform
 """""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>tv :!terraform validate<Enter>
-map <leader>tp :!terraform plan<Enter>
-map <leader>ta :!terraform apply<Enter>
+map <leader>tv :Dispatch! terraform validate<Enter>
+map <leader>tp :Dispatch! terraform plan<Enter>
 map <leader>tf :w<Enter>:!terraform fmt<Enter>:e!<Enter>
 let g:terraform_fmt_on_save=1
 let g:lsp_settings_filetype_terraform = ['terraform-ls']
@@ -343,3 +353,4 @@ set foldnestmax=1
 " zc - close fold
 " zR - open all folds
 " zm - fold one level down
+set nofoldenable " don't fold by default

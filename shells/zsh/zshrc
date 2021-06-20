@@ -1,18 +1,11 @@
-if [ -n "$INSIDE_EMACS" ]; then
-	# export TERM='dumb'
-	chpwd() { print -P "\033AnSiTc %d" }
-	print -P "\033AnSiTu %n"
-	print -P "\033AnSiTc %d"
-fi
-
 # defaults
 export EDITOR='nvim'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
-export USER_DIR=/Users/daniel
 vi() {
 	nvim $*
 }
+export USER_DIR=/Users/daniel
 
 # constants
 export NEXTCLOUD=$USER_DIR/Nextcloud
@@ -24,9 +17,13 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export ICLOUDDIR="$USER_DIR/Library/Mobile\ Documents/com~apple~CloudDocs"
 export URBIT=$HOME/urbit
+export PLAN9=/Users/daniel/plan9 export PLAN9
 
 # FZF
 export FZF_DEFAULT_COMMAND='rg --files'
+
+# ripgrep
+export RIPGREP_CONFIG_PATH=$USER_DIR/.ripgreprc
 
 # source external scipts
 source $NEXTCLOUD/secrets/secrets.sh
@@ -54,6 +51,7 @@ alias gp="git push"
 alias cp="cp -i"                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
+alias sed='gsed'
 
 # Tmux
 alias t="tmux -2 -u"
@@ -80,6 +78,17 @@ e() {
 	emacsclient $*
 }
 
+# kind
+kd() {
+	kubectl --context kind-kind $*
+}
+kdload() {
+	kind load docker-image $*
+}
+kdls() {
+	docker exec -ti 459121f7a7ee crictl images $*
+}
+
 #
 # Prompt
 #
@@ -92,17 +101,21 @@ export PS1='$ '
 #
 bindkey -v
 
-# zoxide
-export _ZO_DATA_DIR=/Users/daniel/Library/Application\ Support
-export _ZO_ECHO=1
-eval "$(zoxide init zsh)"
-
 #
 # $PATH
 #
 
+# plan9port
+export PATH=$PLAN9/bin:$PATH
+export PATH=$PATH:/usr/local/bin
+
 # ensure homebrew path is set
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# zoxide
+export _ZO_DATA_DIR=/Users/daniel/Library/Application\ Support
+export _ZO_ECHO=1
+eval "$(zoxide init zsh)"
 
 #
 # Set paths for homebrew installed programs
@@ -119,6 +132,7 @@ export PATH=$PATH:$URBIT
 
 # Home Bin
 export PATH=$PATH:$BIN_DIR/sh
+export PATH=$PATH:$BIN_DIR/rc
 export PATH=$PATH:$BIN_DIR/amd64
 export PATH=$PATH:$USER_DIR/.local/bin
 
@@ -128,14 +142,6 @@ export PATH=$PATH:/Applications/Emacs.app/Contents/MacOS/bin
 # Google Cloud SDK
 if [ -f '/Users/daniel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/daniel/google-cloud-sdk/path.zsh.inc'; fi
 if [ -f '/Users/daniel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/daniel/google-cloud-sdk/completion.zsh.inc'; fi
-
-# NVM
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Rust
 source "$HOME/.cargo/env"
@@ -147,11 +153,51 @@ export PATH=$PATH:$GOPATH/bin:
 # Haskell
 [ -f "/Users/daniel/.ghcup/env" ] && source "/Users/daniel/.ghcup/env" # ghcup-env
 
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-	eval "$("$BASE16_SHELL/profile_helper.sh")"
+# kubech
+source ~/.kubech/kubech
+source ~/.kubech/completion/kubech.bash
+
+#
+# Shell
+#
+if [ "$INSIDE_ACME" ]; then
+
+	# acme
+
+	# handle man pages more cleanly
+	export PAGER=nobs
+	export MANPAGER=nobs
+
+	# no colors or terminal weirdness
+	unset zle_bracketed_paste
+	export PS1='; '
+	export PROMPT_EOL_MARK=''
+	export TERM=dumb
+
+	# set font
+	export font=/mnt/font/Menlo-Regular/13a/font
+	export lfont=/mnt/font/LucidaSans/14a/font
+
+	# Patch cd command for acme
+	_cd () {
+		\cd "$@" && awd
+	}
+	alias cd=_cd
+
+else
+
+	# FZF
+	[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+	# Base16 Shell
+	BASE16_SHELL="$HOME/.config/base16-shell/"
+	[ -n "$PS1" ] && \
+			[ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+		eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+fi
+
+
 # nix
 if [ -e /Users/daniel/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/daniel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 

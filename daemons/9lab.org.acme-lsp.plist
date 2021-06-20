@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>9lab.org.acme-lsp</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/daniel/go/bin/acme-lsp</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PLAN9</key>
+    <string>/Users/daniel/plan9</string>
+    <key>PATH</key>
+    <string>/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/daniel/plan9/bin:/Users/daniel/bin:/Users/daniel/go/bin</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/daniel/.local/var/log/9lab/acme-lsp.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/daniel/.local/var/log/9lab/acme-lsp.err.log</string>
+</dict>
+</plist>
