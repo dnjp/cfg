@@ -1,5 +1,5 @@
 # defaults
-export EDITOR='nvim'
+export EDITOR='editinacme'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 vi() {
@@ -63,6 +63,7 @@ l() { ls $* }
 g() { git $* }
 gc() { git commit -am $* }
 pip() { pip3 $* }
+zedit() { B ~/.zshrc }
 
 gcloudconfig() {
 	gcloud config configurations activate $1

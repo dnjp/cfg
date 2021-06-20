@@ -221,6 +221,7 @@ setupacme:
 	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/L@latest
 	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/acmefocused@latest
 	GO111MODULE=on go get golang.org/x/tools/gopls@latest
+	GO111MODULE=on go get 9fans.net/go/...
 	mkdir -p ${HOME}/Library/Application\ Support/acme-lsp
 	cp $(shell pwd)/editors/lsp.toml ${HOME}/Library/Application\ Support/acme-lsp/config.toml
 
