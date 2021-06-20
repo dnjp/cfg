@@ -18,4 +18,4 @@
 	url = https://github.com/junegunn/fzf.git
 [submodule "src"]
 	path = src
-	url = https://github.com/dnjp/tools
+	url = git@github.com:dnjp/tools.git
