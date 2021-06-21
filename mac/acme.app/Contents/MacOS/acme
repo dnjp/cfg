@@ -44,7 +44,8 @@ fi
 
 $PLAN9/bin/plumber &
 $PLAN9/bin/fontsrv &
-$PLAN9/bin/acme -a -f $font &
+# $PLAN9/bin/acme -a -f $font &
+edwood -a -f $font &
 
 exit 0
 

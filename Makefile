@@ -100,7 +100,8 @@ homebrewdeps: homebrew
 		staticcheck \
 		delve \
 		tree \
-		zoxide
+		zoxide \
+		macfuse
 
 	# platform specific
 	arch -arm64 brew install koekeishiya/formulae/skhd

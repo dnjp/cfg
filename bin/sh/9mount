@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mnt=$HOME/9
+mkdir -p $mnt/acme
+9pfuse unix!$(namespace)/acme $mnt/acme

@@ -51,7 +51,6 @@ alias gp="git push"
 alias cp="cp -i"                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
-alias sed='gsed'
 
 # Tmux
 alias t="tmux -2 -u"
@@ -135,6 +134,7 @@ export PATH=$PATH:$URBIT
 export PATH=$PATH:$BIN_DIR/sh
 export PATH=$PATH:$BIN_DIR/rc
 export PATH=$PATH:$BIN_DIR/amd64
+export PATH=$PATH:$BIN_DIR/arm64
 export PATH=$PATH:$USER_DIR/.local/bin
 
 # Emacs
