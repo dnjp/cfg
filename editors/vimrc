@@ -323,25 +323,27 @@ set scl=yes                                     " turn on sign column
 
 " use modern colors
 syntax on					
-set background=dark
+" set background=dark
 
 " use base16 shell colors or the defined colorscheme
-if filereadable(expand("~/.vimrc_background"))
-	let base16colorspace=256
-	source ~/.vimrc_background
-else
-	colorscheme base16-default-dark
-endif
+" if filereadable(expand("~/.vimrc_background"))
+" 	let base16colorspace=256
+" 	source ~/.vimrc_background
+" else
+" 	colorscheme base16-default-dark
+" endif
+set background=dark
+colorscheme default
 
 " use default background for SignColumn / Git Gutter background
-highlight SignColumn guibg=bg ctermbg=bg
-highlight GitGutterAdd guibg=bg ctermbg=bg
-highlight GitGutterChange guibg=bg ctermbg=bg
-highlight GitGutterDelete guibg=bg ctermbg=bg
-highlight GitGutterChangeDelete guibg=bg ctermbg=bg
+highlight SignColumn guibg=none ctermbg=none
+" highlight GitGutterAdd guibg=bg ctermbg=bg
+" highlight GitGutterChange guibg=bg ctermbg=bg
+" highlight GitGutterDelete guibg=bg ctermbg=bg
+" highlight GitGutterChangeDelete guibg=bg ctermbg=bg
 
 " line number background color
-highlight LineNr guibg=bg ctermbg=bg
+" highlight LineNr guibg=bg ctermbg=bg
 
 " Set split separator to simple dotted line
 set encoding=utf8

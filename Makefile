@@ -272,3 +272,11 @@ endif
 mac:
 	cp -r mac/9term.app /Applications/
 	cp -r mac/acme.app /Applications/
+
+.PHONY: walk
+walk:
+	rm -rf /tmp/walk
+	mkdir -p /tmp/walk
+	curl -L -o /tmp/walk.tar https://github.com/google/walk/tarball/master
+	/usr/bin/tar -xf /tmp/walk.tar -C /tmp/walk --strip-components=1
+	cd /tmp/walk && cc -o walk walk.c && sudo mv walk /usr/local/bin/walk
