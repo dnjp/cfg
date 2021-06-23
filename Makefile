@@ -1,4 +1,5 @@
-all: homebrew \
+all: go \
+	homebrew \
 	homebrewdeps \
 	kb \
 	git \
@@ -9,11 +10,14 @@ all: homebrew \
 	prettier \
 	fzf \
 	gcloud \
+	cqlsh \
 	terraform \
-	gcloud \
-	base16 \
-	lisp \
-	godeps
+	godeps \
+	daemons \
+	plan9 \
+	mac \
+	walk \
+	setupacme
 
 ###########################
 #      Variables
@@ -78,21 +82,15 @@ homebrewdeps: homebrew
 		linkerd \
 		helm \
 		exercism \
-		iterm2 \
 		llvm \
 		watch \
 		moreutils \
 		git \
 		vim \
-		neovim \
 		gpg \
 		pinentry-mac \
 		ispell \
-		sbcl \
-		font-fira-sans \
 		ansible \
-		jq \
-		ledger \
 		node@16 \
 		svn \
 		protobuf \
@@ -106,21 +104,6 @@ homebrewdeps: homebrew
 	# platform specific
 	arch -arm64 brew install koekeishiya/formulae/skhd
 	brew services start skhd
-
-	# from tap
-	brew tap homebrew/cask-fonts
-
-	# from cask
-	brew install --cask \
-		font-source-code-pro \
-		font-fira-code \
-		font-fira-mono  \
-		font-bitstream-vera \
-		font-dejavu \
-		font-ia-writer-duo \
-		font-ia-writer-duospace \
-		font-ia-writer-mono \
-		font-ia-writer-quattro
 
 	brew unlink go
 
@@ -153,9 +136,9 @@ endif
 ###########################
 symlinks:
 	# vim
-	bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
-	mkdir -p $(HOME)/.vim
-	bin/sh/sym $(shell pwd)/editors/vim/templates $(HOME)/.vim/templates
+	# bin/sh/sym $(shell pwd)/editors/vimrc $(HOME)/.vimrc
+	# mkdir -p $(HOME)/.vim
+	# bin/sh/sym $(shell pwd)/editors/vim/templates $(HOME)/.vim/templates
 	# tmux
 	bin/sh/sym $(shell pwd)/term/tmux/tmux.conf $(HOME)/.tmux.conf
 	# ctags
@@ -190,6 +173,7 @@ ifneq (v$(TF_VERSION), $(shell terraform version | head -n 1 | awk '{print $$2}'
 	curl -o /tmp/terraform.zip \
 		https://releases.hashicorp.com/terraform/$(TF_VERSION)/terraform_$(TF_VERSION)_darwin_amd64.zip
 	unzip /tmp/terraform.zip -d /tmp
+	sudo mkdir -p /usr/local/bin
 	sudo mv /tmp/terraform /usr/local/bin/terraform
 endif
 
@@ -197,24 +181,6 @@ cqlsh:
 ifeq (, $(shell which cqlsh))
 	sudo mkdir -p /usr/local/share/cqlsh
 	sudo tar -xf sources/cqlsh.tar -C /usr/local/share/cqlsh
-endif
-
-urbit:
-ifeq (, $(shell which urbit))
-	mkdir -p ~/urbit
-	cd ~/urbit && curl -JLO https://urbit.org/install/mac/latest
-	cd ~/urbit && tar zxvf ./darwin.tgz --strip=1
-	~/urbit/urbit
-endif
-
-lisp:
-	# (quicklisp-quickstart:install)
-	# (ql:add-to-init-file)
-	# (ql:quickload "quicklisp-slime-helper")
-ifeq (, $(shell ls ~ | grep quicklisp))
-	curl -o /tmp/quicklisp.lisp \
-		https://beta.quicklisp.org/quicklisp.lisp
-	sbcl --load /tmp/quicklisp.lisp
 endif
 
 setupacme:
@@ -253,25 +219,20 @@ ifeq (, $(shell which fzf))
 		./install
 endif
 
-base16:
-ifeq (, $(shell ls ~/.config | grep base16))
-	git clone \
-		https://github.com/chriskempson/base16-shell.git \
-		~/.config/base16-shell
-endif
-
 plan9:
 ifeq (, $(shell ls ~/ | grep plan9))
 	git clone \
-		https://github.com/9fans/plan9port.git \
+		git@github.com:dnjp/plan9port.git \
 		~/plan9
-	~/plan9/INSTALL
 endif
+	~/plan9/SETUP
 
 .PHONY: mac
 mac:
 	cp -r mac/9term.app /Applications/
 	cp -r mac/acme.app /Applications/
+	cp -r mac/Plumb.app /Applications/
+
 
 .PHONY: walk
 walk:
