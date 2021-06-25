@@ -1,0 +1,26 @@
+#!/usr/bin/env rc
+
+cmd=$*
+fn die{
+	>[1=2] echo $0: $*
+	exit $"*
+}
+
+ifile=$%
+if(~ $#ifile 0)
+	ifile=$samfile
+if(~ $#ifile 0)
+	die 'must use in sam or acme. $samfile or $% not defined.'
+if(~ $#cmd 0)
+	die 'must specify command to run'
+
+ifile=$ifile
+ofile=/tmp/`{basename $ifile}
+
+rm -f $ofile
+cp $ifile $ofile
+
+eval $cmd $ofile >/dev/null
+
+cat $ofile
+

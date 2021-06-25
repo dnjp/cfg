@@ -1,0 +1,165 @@
+# defaults
+EDITOR='editinacme'
+VISUAL=$EDITOR
+GIT_EDITOR=$EDITOR
+
+# constants
+NEXTCLOUD=$HOME/Nextcloud
+MARTIN=$HOME/work/martin-bidder
+PERSONAL=$HOME/personal
+CFG=$HOME/cfg
+BIN_DIR=$HOME/bin
+GOROOT=/usr/local/go
+GOPATH=$HOME/go
+ICLOUDDIR=$HOME^'/Library/Mobile\ Documents/com~apple~CloudDocs'
+URBIT=$HOME/urbit
+PLAN9=/usr/local/plan9
+TERRAFORM_DEFAULT_ARGS='-no-color'
+GOOGLE_HOME=$HOME/google-cloud-sdk
+
+# FZF
+FZF_DEFAULT_COMMAND='rg --files'
+
+# ripgrep
+RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
+# . external scipts
+. $HOME/secrets/secrets.rc
+# . $MARTIN/shell/aliases.sh
+# . $MARTIN/shell/functions.sh
+
+# Navigation
+fn '..'{ cd .. }
+fn h{ cd $home }
+fn mar{ cd $MARTIN }
+fn per{ cd $PERSONAL }
+fn cfg{ cd $CFG }
+fn dow{ cd $home/Downloads }
+fn notes{ cd $home/notes }
+fn drop{ cd $home/Dropbox }
+fn next{ cd $NEXTCLOUD }
+fn learn{ cd $HOME/exercism }
+fn brewup{ brew update; brew upgrade; brew cleanup; brew doctor }
+fn refresh{ . $home/.zshrc }
+fn icloud{ cd $ICLOUDDIR }
+fn gs{ git status }
+fn gp{ git push }
+fn l{ ls $* }
+fn g{ git $* }
+fn gc{ git commit -am $* }
+fn pip{ pip3 $* }
+fn pedit{ B $home/lib/profile }
+fn find{ /opt/homebrew/bin/gfind $* }
+
+# google
+path=($path $GOOGLE_HOME/bin)
+
+fn gcloudconfig{
+	gcloud config configurations activate $1
+	gcloud info | grep Project
+}
+
+fn proj{
+	gcloud config configurations activate $1
+	gcloud info | grep Project
+}
+
+fn stage-con{ gcloud beta container clusters get-credentials martin-bidder-stage-east --region us-east4 --project martin-bidder-stage }
+fn stage-west-con{ gcloud beta container clusters get-credentials martin-bidder-stage-west --region us-west1 --project martin-bidder-stage }
+fn prod-con{ gcloud beta container clusters get-credentials martin-bidder-prod-east --region us-east4 --project martin-bidder-prod }
+fn prod-west-con{ gcloud beta container clusters get-credentials martin-bidder-prod-west --region us-west1 --project martin-bidder-prod }
+fn spin-con{ gcloud container clusters get-credentials spinnaker-us-central1 --region us-central1 --project ci-cd-246814 }
+fn mon-con{ gcloud container clusters get-credentials martin-bidder-prod-prometheus --region us-east1 --project martin-bidder-prod }
+
+# kubernetes
+fn scaledeploy{
+	search=$1
+	replicas=$2
+	for(i in `{kubectl get deploy | grep $search | awk '{print $1}'})
+		kubectl scale deploy $i --replicas=$replicas
+}
+
+fn restartdeploy{
+	search=$1
+	for(i in `{kubectl get deploy | grep $search | awk '{print $1}'})
+		kubectl rollout restart deploy $i
+}
+
+fn kclean{
+	for(i in `{kubectl get po | grep Shutdown | awk '{print $1}'})
+		kubectl delete po $i
+}
+
+fn kk{ kubectl kustomize $* }
+fn k{ kubectl $* }
+fn kns{ kubectl config set-context --current --namespace=$1 }
+fn kpo{ kubectl get po }
+fn wkp{ wtc 'kubectl get po' }
+fn ksv{ kubectl get svc }
+fn kdp{ kubectl get deploy }
+
+# terraform
+fn tf{ terraform $* $TERRAFORM_DEFAULT_ARGS }
+
+# ensure homebrew path is set
+HOMEBREW_PREFIX=/opt/homebrew
+HOMEBREW_CELLAR=/opt/homebrew/Cellar
+HOMEBREW_REPOSITORY=/opt/homebrew
+path=(/opt/homebrew/bin:/opt/homebrew/sbin $path)
+MANPATH=(/opt/homebrew/share/man $MANPATH)
+INFOPATH=(/opt/homebrew/share/info $INFOPATH)
+CPATH=/opt/homebrew/include
+LIBRARY_PATH=/opt/homebrew/lib
+
+#
+# Set paths for homebrew installed programs
+#
+path=($path /opt/homebrew/opt/llvm/bin)
+LDFLAGS='-L/opt/homebrew/opt/llvm/lib'
+CPPFLAGS='-I/opt/homebrew/opt/llvm/include'
+
+# plan9port
+path=($PLAN9/bin $path)
+path=($path /usr/local/bin)
+
+# Monorepo
+path=($path $MARTIN/bin)
+
+# Home Bin
+path=($path $BIN_DIR/sh)
+path=($path $BIN_DIR/rc)
+path=($path $BIN_DIR/amd64)
+path=($path $BIN_DIR/arm64)
+path=($path $HOME/.local/bin)
+
+# Rust
+# . '$HOME/.cargo/env'
+
+# Go
+path=($path $GOROOT/bin)
+path=($path $GOPATH/bin)
+
+#
+# Shell
+#
+# handle man pages more cleanly
+PAGER=nobs
+MANPAGER=nobs
+
+prompt='; '
+TERM=dumb
+
+# set font
+font=/mnt/font/GoMono/13a/font
+lfont=/mnt/font/GoRegular/13a/font
+
+# homebrew
+path=($path '/opt/homebrew/opt/node@16/bin')
+# path=($path /opt/homebrew/opt/findutils/libexec/gnubin)
+HOMEBREW_PREFIX='/opt/homebrew'
+HOMEBREW_CELLAR='/opt/homebrew/Cellar'
+HOMEBREW_REPOSITORY='/opt/homebrew'
+path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+MANPATH=(/opt/homebrew/share/man $MANPATH)
+INFOPATH=(/opt/homebrew/share/info $INFOPATH)
+

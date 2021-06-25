@@ -12,10 +12,20 @@ export MANPAGER=nobs
 cd $HOME
 case "$SHELL" in
 */rc)
+	$PLAN9/bin/plumber &
+	$PLAN9/bin/fontsrv &
 	echo '
 		if(! ~ $PLAN9/bin $path)
 			path=($path $PLAN9/bin)
-		$PLAN9/bin/acme &
+		hasskhd=`{which skhd}
+		if(! ~ $#hasskhd 0){
+			echo 'acme: starting skhd' >> /tmp/acmelog
+			skhd &
+		}
+		if not{
+			echo 'acme: skhd not in $PATH, skipping...' >> /tmp/acmelog
+		}
+		$PLAN9/bin/acme -a -f $font &
 	' | $SHELL -l
 	exit 0
 	;;
@@ -35,7 +45,7 @@ then
 	PATH=$PATH:$PLAN9/bin
 fi
 
-if hash skhd 2>/dev/null; then 
+if hash skhd 2>/dev/null; then
 	echo 'acme: starting skhd' >> /tmp/acmelog
 	skhd &
 else

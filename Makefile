@@ -99,11 +99,19 @@ homebrewdeps: homebrew
 		delve \
 		tree \
 		zoxide \
-		macfuse
+		macfuse \
+		libx11 \
+		libxrender \
+		xorgproto \
+		libxt \
+		libxinput \
+		xinput
 
 	# platform specific
 	arch -arm64 brew install koekeishiya/formulae/skhd
 	brew services start skhd
+
+	arch -arm64 brew install findutils
 
 	brew unlink go
 
@@ -149,6 +157,9 @@ symlinks:
 	bin/sh/sym $(shell pwd)/git/gitignore $(HOME)/.gitignore
 	# zsh
 	bin/sh/sym $(shell pwd)/shells/zsh/zshrc ${HOME}/.zshrc
+	# p9p
+	bin/sh/sym $(shell pwd)/lib ${HOME}/lib
+
 
 ###########################
 #        Daemons
@@ -232,6 +243,7 @@ mac:
 	cp -r mac/9term.app /Applications/
 	cp -r mac/acme.app /Applications/
 	cp -r mac/Plumb.app /Applications/
+	cp -r mac/sam.app /Applications/
 
 
 .PHONY: walk

@@ -23,7 +23,7 @@ export FZF_DEFAULT_COMMAND='rg --files'
 export RIPGREP_CONFIG_PATH=$USER_DIR/.ripgreprc
 
 # source external scipts
-source $NEXTCLOUD/secrets/secrets.sh
+source $HOME/secrets/secrets.sh
 source $MARTIN/shell/aliases.sh
 source $MARTIN/shell/functions.sh
 
@@ -60,7 +60,10 @@ g() { git $* }
 gc() { git commit -am $* }
 pip() { pip3 $* }
 zedit() { B ~/.zshrc }
+find() { /opt/homebrew/bin/gfind $* }
+tf() { terraform $* -no-color }
 
+# google
 gcloudconfig() {
 	gcloud config configurations activate $1
 	gcloud info | grep Project
@@ -71,20 +74,10 @@ proj() {
 	gcloud info | grep Project
 }
 
-e() {
-	emacsclient $*
-}
-
 # kind
-kd() {
-	kubectl --context kind-kind $*
-}
-kdload() {
-	kind load docker-image $*
-}
-kdls() {
-	docker exec -ti 459121f7a7ee crictl images $*
-}
+kd() { kubectl --context kind-kind $* }
+kdload() { kind load docker-image $* }
+kdls() { docker exec -ti 459121f7a7ee crictl images $* }
 
 #
 # Prompt
@@ -108,6 +101,9 @@ export PATH=$PATH:/usr/local/bin
 
 # ensure homebrew path is set
 eval "$(/opt/homebrew/bin/brew shellenv)"
+# add c libraries
+export CPATH=/opt/homebrew/include
+export LIBRARY_PATH=/opt/homebrew/lib
 
 # zoxide
 export _ZO_DATA_DIR=/Users/daniel/Library/Application\ Support
@@ -151,10 +147,6 @@ export PATH=$PATH:$GOPATH/bin:
 # Haskell
 [ -f "/Users/daniel/.ghcup/env" ] && source "/Users/daniel/.ghcup/env" # ghcup-env
 
-# kubech
-source ~/.kubech/kubech
-source ~/.kubech/completion/kubech.bash
-
 #
 # Shell
 #
@@ -173,8 +165,8 @@ if [ "$INSIDE_ACME" ]; then
 	export TERM=dumb
 
 	# set font
-	export font=/mnt/font/Menlo-Regular/13a/font
-	export lfont=/mnt/font/LucidaSans/14a/font
+	export font=/mnt/font/GoMono/13a/font
+	export lfont=/mnt/font/GoRegular/13a/font
 
 	# Patch cd command for acme
 	_cd () {
