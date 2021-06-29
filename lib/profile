@@ -150,8 +150,10 @@ prompt='; '
 TERM=dumb
 
 # set font
-font=/mnt/font/GoMono/13a/font
-lfont=/mnt/font/GoRegular/13a/font
+# font=/mnt/font/GoMono/13a/font
+# lfont=/mnt/font/GoRegular/13a/font
+font=/mnt/font/Monaco/13a/font
+lfont=/mnt/font/LucidaGrande/14a/font
 
 # homebrew
 path=($path '/opt/homebrew/opt/node@16/bin')

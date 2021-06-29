@@ -189,10 +189,10 @@ ifneq (v$(TF_VERSION), $(shell terraform version | head -n 1 | awk '{print $$2}'
 endif
 
 cqlsh:
-ifeq (, $(shell which cqlsh))
+# ifeq (, $(shell which cqlsh))
 	sudo mkdir -p /usr/local/share/cqlsh
 	sudo tar -xf sources/cqlsh.tar -C /usr/local/share/cqlsh
-endif
+# endif
 
 setupacme:
 	GO111MODULE=on go get github.com/fhs/acme-lsp/cmd/acme-lsp@latest
