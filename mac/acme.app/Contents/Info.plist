@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>0.1-1</string>
 	<key>CFBundleIconFile</key>
-	<string>spaceglenda.icns</string>
+	<string>anvil.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.swtch.acme</string>
 	<key>CFBundleInfoDictionaryVersion</key>

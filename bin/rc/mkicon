@@ -1,0 +1,42 @@
+#!/usr/bin/env rc
+
+baseimg=$1
+name=$2
+
+fn usage{
+	echo usage: `{basename $0} '<file>' '<icon name>'
+}
+
+fn die{
+	echo
+	>[1=2] echo `{basename $0}: $*
+	echo
+	usage
+	echo
+	exit $"*
+}
+
+if(~ $#name 0)
+	die 'must provide icon name'
+if(~ $#baseimg 0)
+	die 'must provide 1024px base image'
+
+in=/tmp/`{echo $baseimg | sed 's/\..*//g'}^'1024.png'
+out=$name^'.iconset'
+
+sips -z 1024 1024 $baseimg --out $in
+
+rm -rf $out
+mkdir $out
+sips -z 16 16     $in --out $out/icon_16x16.png
+sips -z 32 32     $in --out $out/icon_16x16@2x.png
+sips -z 32 32     $in --out $out/icon_32x32.png
+sips -z 64 64     $in --out $out/icon_32x32@2x.png
+sips -z 128 128   $in --out $out/icon_128x128.png
+sips -z 256 256   $in --out $out/icon_128x128@2x.png
+sips -z 256 256   $in --out $out/icon_256x256.png
+sips -z 512 512   $in --out $out/icon_256x256@2x.png
+sips -z 512 512   $in --out $out/icon_512x512.png
+cp $in $out/icon_512x512@2x.png
+iconutil -c icns $out
+
