@@ -17,8 +17,13 @@
 	smtpuser = dnjp@posteo.org
 	smtpencryption = tls
 	smtpserverport = 587
-[color]
+[color]        
 	ui = false
+	branch = false
+	diff = false
+	interactive = false
+	status = false
+	log = false
 [init]
 	defaultBranch = master
 [core]

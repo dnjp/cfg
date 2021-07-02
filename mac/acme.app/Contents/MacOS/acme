@@ -12,9 +12,9 @@ export MANPAGER=nobs
 cd $HOME
 case "$SHELL" in
 */rc)
-	$PLAN9/bin/plumber &
-	$PLAN9/bin/fontsrv &
 	echo '
+		$PLAN9/bin/plumber &
+		$PLAN9/bin/fontsrv &
 		if(! ~ $PLAN9/bin $path)
 			path=($path $PLAN9/bin)
 		hasskhd=`{which skhd}
