@@ -25,7 +25,7 @@ case "$SHELL" in
 		if not{
 			echo 'acme: skhd not in $PATH, skipping...' >> /tmp/acmelog
 		}
-		$PLAN9/bin/acme -a -f $font &
+		edwood -a -f $lfont -F $font &
 	' | $SHELL -l
 	exit 0
 	;;
