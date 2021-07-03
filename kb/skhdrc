@@ -1,15 +1,15 @@
 shift + cmd - f [
   "/usr/local/plan9/bin/acme" : L comp -e | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
-  "/Users/daniel/go/bin/edwood" : L comp -e | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
+  "edwood" : L comp -e | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
 ]
 
 shift + cmd - r [
   "/usr/local/plan9/bin/acme" : L refs | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
-  "/Users/daniel/go/bin/edwood" : L refs | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
+  "edwood" : L refs | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
 ]
 
 shift + cmd - d [
   "/usr/local/plan9/bin/acme" : L def | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
-  "/Users/daniel/go/bin/edwood" : L def | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
+  "edwood" : L def | 9p write acme/`{dial unix!`{namespace}/acmefocused}/errors
 ]
 
