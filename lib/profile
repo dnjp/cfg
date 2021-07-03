@@ -4,6 +4,7 @@ VISUAL=$EDITOR
 GIT_EDITOR=$EDITOR
 
 # constants
+NO_COLOR=1
 NEXTCLOUD=$HOME/Nextcloud
 MARTIN=$HOME/work/martin-bidder
 PERSONAL=$HOME/personal
@@ -137,7 +138,7 @@ path=($path $HOME/.local/bin)
 
 # Go
 path=($path $GOROOT/bin)
-path=($path $GOPATH/bin)
+path=($GOPATH/bin $path)
 
 #
 # Shell
@@ -150,8 +151,8 @@ prompt='; '
 TERM=dumb
 
 # set font
-font=/mnt/font/InputMono-Regular/13a/font
-lfont=/mnt/font/Geneva/14a/font
+font=/mnt/font/GoMono/14a/font
+lfont=/mnt/font/GoRegular/16a/font
 
 # homebrew
 path=($path '/opt/homebrew/opt/node@16/bin')

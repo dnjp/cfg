@@ -13,9 +13,11 @@ cd $HOME
 case "$SHELL" in
 */rc)
 	echo '
-		if(! ~ $PLAN9/bin $path)
-			path=($path $PLAN9/bin)
-		$PLAN9/bin/sam -a &
+		font=$lfont
+		# if(! ~ $PLAN9/bin $path)
+		#	path=($path $PLAN9/bin)
+		# $PLAN9/bin/sam -a &
+		sam -a &
 	' | $SHELL -l
 	exit 0
 	;;

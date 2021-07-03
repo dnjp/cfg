@@ -159,6 +159,8 @@ symlinks:
 	bin/sh/sym $(shell pwd)/shells/zsh/zshrc ${HOME}/.zshrc
 	# p9p
 	bin/sh/sym $(shell pwd)/lib ${HOME}/lib
+	# notes
+	bin/sh/sym $(shell pwd)/notes/NOTES.md ${HOME}/NOTES.md
 
 
 ###########################

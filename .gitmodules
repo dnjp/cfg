@@ -19,3 +19,6 @@
 [submodule "src"]
 	path = src
 	url = git@github.com:dnjp/tools.git
+[submodule "notes"]
+	path = notes
+	url = git@github.com:dnjp/notes.git
