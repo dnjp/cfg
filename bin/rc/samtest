@@ -1,0 +1,9 @@
+#!/usr/local/plan9/bin/rc
+
+echo samfile: $samfile
+echo f: $f
+echo filename: $%
+echo dot: $%dot
+echo sf: $sf
+echo sfdot: $sfdot
+

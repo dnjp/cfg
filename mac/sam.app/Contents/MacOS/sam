@@ -16,8 +16,7 @@ case "$SHELL" in
 		font=$lfont
 		# if(! ~ $PLAN9/bin $path)
 		#	path=($path $PLAN9/bin)
-		# $PLAN9/bin/sam -a &
-		sam -a &
+		$PLAN9/bin/sam -a -W2048x1024 &
 	' | $SHELL -l
 	exit 0
 	;;
