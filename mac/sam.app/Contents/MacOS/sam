@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 
 fshell=$(finger $(whoami) | sed -n 's/.*Shell: //p' | sed 1q)
 SHELL=${fshell:-$SHELL}

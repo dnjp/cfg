@@ -28,7 +28,7 @@ export PATH := /bin:$(PATH):/usr/local/go/bin
 #         Versions
 ###########################
 GO_VERSION=1.16.4
-TF_VERSION=0.14.10
+TF_VERSION=1.0.1
 ###########################
 #         Deps
 ###########################

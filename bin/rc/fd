@@ -1,6 +1,0 @@
-#!/usr/bin/env rc
-
-search=$*
-if(~ $#search 0)
-	search='.*'
-du | awk '{print $2}' | grep $search

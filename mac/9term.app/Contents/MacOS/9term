@@ -11,7 +11,7 @@ case "$SHELL" in
 	echo '
 		if(! ~ $PLAN9/bin $path)
 			path=($path $PLAN9/bin)
-		$PLAN9/bin/9term -l -s -W600x800 &
+		9term -l -s -W1246x900 &
 	' | $SHELL -l
 	exit 0
 	;;

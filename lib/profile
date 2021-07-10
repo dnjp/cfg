@@ -1,5 +1,5 @@
 # defaults
-EDITOR='B'
+EDITOR=E
 VISUAL=$EDITOR
 GIT_EDITOR=$EDITOR
 
@@ -41,7 +41,7 @@ fn drop{ cd $home/Dropbox }
 fn next{ cd $NEXTCLOUD }
 fn learn{ cd $HOME/exercism }
 fn brewup{ brew update; brew upgrade; brew cleanup; brew doctor }
-fn refresh{ . $home/.zshrc }
+fn refresh{ . $home/lib/profile }
 fn icloud{ cd $ICLOUDDIR }
 fn gs{ git status }
 fn gp{ git push >[2=1] | cat }
@@ -102,6 +102,24 @@ fn kdp{ kubectl get deploy }
 # terraform
 fn tf{ terraform $* $TERRAFORM_DEFAULT_ARGS }
 
+fn capture{
+	sudo dtrace -p $1 -qn '
+		syscall::write*:entry
+		/pid == $target && arg0 == 1/ {
+			printf("%s", copyinstr(arg1, arg2));
+		}
+	'
+}
+
+fn tos{
+	awk '{print $1}' | sed 's/:$//g'
+}
+
+# java
+fn m{
+	mvn -Dstyle.color=never $*
+}
+
 # ensure homebrew path is set
 HOMEBREW_PREFIX=/opt/homebrew
 HOMEBREW_CELLAR=/opt/homebrew/Cellar
@@ -151,8 +169,12 @@ prompt='; '
 TERM=dumb
 
 # set font
-font=/mnt/font/GoMono/14a/font
-lfont=/mnt/font/GoRegular/16a/font
+font=/mnt/font/GoMono/13a/font
+lfont=/mnt/font/GoRegular/15a/font
+# lfont=/mnt/font/InputSans-Regular/13a/font
+# font=/mnt/font/InputMono-Regular/12a/font
+# lfont=/lib/font/bit/lucsans/unicode.8.font
+# font=/lib/font/bit/pelm/unicode.8.font
 
 # homebrew
 path=($path '/opt/homebrew/opt/node@16/bin')

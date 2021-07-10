@@ -1,8 +1,0 @@
-#!/usr/bin/env rc
-
-cmd=$*
-while(){
-	eval $cmd
-	echo ' --- '
-	sleep 2
-}
